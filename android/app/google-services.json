@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "595557534470",
+    "project_id": "oms-ecomerce",
+    "storage_bucket": "oms-ecomerce.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:595557534470:android:46d95800bd8b05d69bac87",
+        "android_client_info": {
+          "package_name": "com.oms.ecommerce.omsecommerce.oms_ecommerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "595557534470-dnhef62k0iv8diknfvnjqhkg2papt61s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.oms.ecommerce.omsecommerce.oms_ecommerce",
+            "certificate_hash": "bcef607b68ae655536748c2c9be892d2fb36ba94"
+          }
+        },
+        {
+          "client_id": "595557534470-0tnp7bj5btu87ev43f560ogestqnfe38.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFAaSoapa7pbb1957WQ9Nxg449ETHz_G0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "595557534470-0tnp7bj5btu87ev43f560ogestqnfe38.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
