@@ -11,7 +11,7 @@ class CategoryTopBloc extends Bloc<CategoryTopEvent,CategoryTopState>{
      on<CategoryTopReqEvent>((event, omit)async{
        if(response == null){
        try{
-         emit(CategoryTopLoadingState());
+        // emit(CategoryTopLoadingState());
         response  =await  CategoryRepo.getCategoryTopHome();
          if(response!.success == true){
            omit(CategoryTopLoadedState(categoryTopResponse: response));

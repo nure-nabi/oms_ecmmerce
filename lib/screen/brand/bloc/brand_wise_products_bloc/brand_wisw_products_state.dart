@@ -47,7 +47,7 @@ class BrandWiseProductsLoadedState extends BrandWiseProductsState{
     );
   }
   @override
-  List<Object?> get props => [brandResponse];
+  List<Object?> get props => [product, hasMore, listLoading];
 }
 
 class BrandWiseProductsErrorState extends BrandWiseProductsState{

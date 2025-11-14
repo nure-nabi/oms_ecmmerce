@@ -28,7 +28,7 @@ class ProductDetailsResModel{
   String? discount;
   String? actual_price;
   String? sell_price;
-
+  String? product_catalogue;
   int? available_quantity;
   int? stock_quantity;
   int? status;
@@ -55,7 +55,7 @@ class ProductDetailsResModel{
     required this.discount,
     required this.actual_price,
     required this.sell_price,
-
+    required this.product_catalogue,
     required this.available_quantity,
     required this.stock_quantity,
     required this.status,
@@ -85,7 +85,7 @@ class ProductDetailsResModel{
         discount: json["discount"] ?? "0",
         actual_price:json["actual_price"] ?? "",
         sell_price: json["sell_price"] ?? "",
-
+        product_catalogue: json["product_catalogue"] ?? "",
         available_quantity: json["available_quantity"] ?? 0,
         stock_quantity: json["stock_quantity"] ?? 0,
         status: json["status"] ?? 0,
@@ -97,7 +97,11 @@ class ProductDetailsResModel{
         catalogue_full_url: json["catalogue_full_url"] ?? "",
         average_rating: json["average_rating"] ?? "",
         review_count: json["review_count"] ?? "",
-        filesFullUrl: json['files_full_url'] != null ? List<String>.from(json['files_full_url']) : [],
+        //filesFullUrl: json['files_full_url'] != null ? List<String>.from(json['files_full_url']) : [],
+        filesFullUrl: json['files_full_url'] != null
+            ? List<String>.from(json['files_full_url']
+            .where((e) => e != null && e.toString().isNotEmpty))
+            : [],
         reviews: json["reviews"] != null ? List<ReviewModel>.from(json["reviews"].map((x)=> ReviewModel.fromJson(x))) : [],
         variations: json["variations"] != null ? List<VariationsModel>.from(json["variations"].map((x)=> VariationsModel.fromJson(x))) : []
     );
@@ -152,7 +156,7 @@ class VariationsModel{
     return VariationsModel(
       product_code: json["product_code"] ?? "",
       product_name: json["product_name"] ?? "",
-      image_full_url: json["image_full_url"] ?? "",
+      image_full_url: json["image_full_url"] != null ? json["image_full_url"] : "",
       main_image_full_url: json["main_image_full_url"] ?? "",
       product_description: json["product_description"] ?? "",
       category_id: json["category_id"] ?? 0,

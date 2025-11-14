@@ -59,7 +59,7 @@ class _WishListPageState extends State<WishListPage> {
         },
       ),
       body: Padding(
-        //                                        CustomToast.showCustomRoast(context: context, message: "Please login", icon: Bootstrap.check_circle,iconColor: Colors.red);
+        //  CustomToast.showCustomRoast(context: context, message: "Please login", icon: Bootstrap.check_circle,iconColor: Colors.red);
         padding: EdgeInsets.only(left: 5,right: 5),
         child:  BlocBuilder<WishlistBloc,WishlistState>(builder: (BuildContext context, state) {
           if(state is WishlistLoadingState){
@@ -88,84 +88,86 @@ class _WishListPageState extends State<WishListPage> {
               ),
             );
           }else if(state is WishlistLoadedState){
-            return Expanded(
-              child:state.response.wishlist.isNotEmpty ? ListView.builder(
-                itemCount: state.response.wishlist.length,
-                itemBuilder: (context, index) {
-                  var info =state.response.wishlist[index];
-                  return Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(3.0), // Adjust the radius as needed
-                    ),
-                    elevation: 0,
-                    child: Container(
-                    //  height: 125,
-                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+            return state.response.wishlist.isNotEmpty ? ListView.builder(
+              itemCount: state.response.wishlist.length,
+              itemBuilder: (context, index) {
+                var info =state.response.wishlist[index];
+                return Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(3.0), // Adjust the radius as needed
+                  ),
+                  elevation: 0,
+                  child: Container(
+                  //  height: 125,
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 5),
 
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Expanded(
-                                child: CachedNetworkImage(
-                                  imageUrl: info.productModel!.main_image_full_url! != "" ? info.productModel!.main_image_full_url!
-                                      : info.productModel!.image_full_url! != "" ? info.productModel!.image_full_url!
-                                      : "https://iiserbpr.ac.in/imges/people/imges/noimage.png",
-                                  width: 70,
-                                  height: 50,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) =>
-                                      Container(),
-                                  errorWidget: (context, url, error) =>
-                                      Icon(Bootstrap.image),
-                                ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(
+                              child: CachedNetworkImage(
+                                imageUrl: info.productModel!.main_image_full_url! != "" ? info.productModel!.main_image_full_url!
+                                    : info.productModel!.image_full_url! != "" ? info.productModel!.image_full_url!
+                                    : "https://iiserbpr.ac.in/imges/people/imges/noimage.png",
+                                width: 70,
+                                height: 50,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) =>
+                                    Container(),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Bootstrap.image),
                               ),
-                              SizedBox(width: 10,),
-                              Expanded(
-                                  flex:4,
-                                  child: Container(
-                                  //  color: Colors.red,
-                                    alignment: Alignment.topLeft,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Text(info.productModel!.product_name!,maxLines: 2,overflow: TextOverflow.ellipsis,style: GoogleFonts.poppins(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w600,
-                                        )),
-                                        SizedBox(height: 5,),
-                                        Text(info.productModel!.sell_price!,style: GoogleFonts.poppins(
-
-                                        ),)
-
-                                      ],
-                                    ),
-                                  )
-                              ),
-                              Expanded(
-                                  flex:1,
+                            ),
+                            SizedBox(width: 10,),
+                            Expanded(
+                                flex:4,
+                                child: Container(
+                                //  color: Colors.red,
+                                  alignment: Alignment.topLeft,
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.max,
                                     children: [
-                                      InkWell(
-                                          onTap:() {
-                                            LoadingOverlay.show(context);
-                                            context.read<WishlistBloc>().add(WishlistRemovedEvent(item_code: info.id!.toString(),context: context));
-                                          },
-                                          child: Icon(Bootstrap.trash,color: Colors.red,))
+                                      Text(info.productModel!.product_name!,maxLines: 2,overflow: TextOverflow.ellipsis,style: GoogleFonts.poppins(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                      )),
+                                      SizedBox(height: 5,),
+                                      Text(info.productModel!.sell_price!,style: GoogleFonts.poppins(
+
+                                      ),)
+
                                     ],
-                                  )
-                              ),
-                            ],
-                          ),
+                                  ),
+                                )
+                            ),
+                            Expanded(
+                                flex:1,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    InkWell(
+                                        onTap:() {
+                                         // context.read<WishlistBloc>().add(WishlistReqEvent());
+                                          LoadingOverlay.show(context);
+                                          context.read<WishlistBloc>().add(WishlistRemovedEvent(
+                                              item_code: info.id!.toString(),product_code:info.product_code,context: context));
+                                        },
+                                        child: Icon(Bootstrap.trash,color: Colors.red,))
+                                  ],
+                                )
+                            ),
+                          ],
+                        ),
+                        if(int.parse(info.productModel!.stock_quantity!) > 0)...[
                           Row(
                             children: [
                               Spacer(),
@@ -209,41 +211,49 @@ class _WishListPageState extends State<WishListPage> {
 
                             ],
                           )
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ) : Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 40),
-                    Icon(Bootstrap.heart, size: 80, color: Colors.grey[400]),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Oops!! Your wishlist is empty.',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Let\'s do some shopping and fill it up.',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 30),
-                    Divider(thickness: 1),
+                        ]else...[
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Text("Out of stock",style: GoogleFonts.poppins(
+                              color: Colors.red
+                            ),),
+                          )
+                        ]
 
-                  ],
-                ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ) : Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 40),
+                  Icon(Bootstrap.heart, size: 80, color: Colors.grey[400]),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Oops!! Your wishlist is empty.',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Let\'s do some shopping and fill it up.',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 30),
+                  Divider(thickness: 1),
+
+                ],
               ),
             );
           }else if(state is WishlistErrorState){
@@ -251,7 +261,7 @@ class _WishListPageState extends State<WishListPage> {
               fontWeight: FontWeight.w600
             ),),);
           } else{
-            return Container();
+            return SizedBox.shrink();
           }
         },),
       ),

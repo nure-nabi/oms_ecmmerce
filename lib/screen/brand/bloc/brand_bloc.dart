@@ -19,7 +19,7 @@ class BrandBloc extends Bloc<BrandEvent, BrandState> {
   ) async {
 
     if (response == null) {
-      emit(BrandLoadingState());
+    //  emit(BrandLoadingState());
      response = await BrandRepo.getBrand();
     }
     if (response!.success == true) {

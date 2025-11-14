@@ -265,10 +265,7 @@ class _CategorySubcategoryListState extends State<CategorySubcategoryList> {
                           // physics: Scro(),
                           // Disable scrolling if nested
                           itemCount: state
-                              .categoryResModel!
-                              .categoriesList[state.index!]
-                              .activeChildren!
-                              .length,
+                              .categoryResModel!.categoriesList[state.index!].activeChildren!.length,
                           // Total number of items
                           itemBuilder: (BuildContext context, int index) {
                             final item = state
@@ -298,6 +295,10 @@ class _CategorySubcategoryListState extends State<CategorySubcategoryList> {
                                             .activeChildren![index]
                                             .activeChildren2!
                                             .isEmpty) {
+                                          Navigator.pushNamed(context, topCategoryProductListPage,
+                                              arguments: state
+                                                  .categoryResModel!.categoriesList[state.index!].id
+                                          );
                                           Fluttertoast.showToast(msg: "EMPITY");
                                         }
                                       },
@@ -383,6 +384,10 @@ class _CategorySubcategoryListState extends State<CategorySubcategoryList> {
                 .activeChildren2![index]
                 .activeChildren3!
                 .isEmpty) {
+              Navigator.pushNamed(context, topCategoryProductListPage,
+                  arguments: state
+                      .categoryResModel!.categoriesList[state.index!].id
+              );
               Fluttertoast.showToast(msg: "no");
               i = index;
               //exp = true;

@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:oms_ecommerce/core/services/routeHelper/route_name.dart';
+import 'package:oms_ecommerce/payment/payment_connectips.dart';
 import 'package:oms_ecommerce/screen/address/adddress_show.dart';
 import 'package:oms_ecommerce/screen/address/address_page.dart';
 import 'package:oms_ecommerce/screen/address/model/address_model.dart';
@@ -9,6 +10,8 @@ import 'package:oms_ecommerce/screen/brand/brand_product.dart';
 import 'package:oms_ecommerce/screen/cart/cart.dart';
 import 'package:oms_ecommerce/screen/category/category_subcategory_list.dart';
 import 'package:oms_ecommerce/screen/contact_us/contact_us.dart';
+import 'package:oms_ecommerce/screen/forget_password/component/change_password_page.dart';
+import 'package:oms_ecommerce/screen/forget_password/component/forget_password.dart';
 import 'package:oms_ecommerce/screen/home_navbar/home_navbar.dart';
 import 'package:oms_ecommerce/screen/login/login_home_page.dart';
 import 'package:oms_ecommerce/screen/order/component/order_cancel.dart';
@@ -22,11 +25,12 @@ import 'package:oms_ecommerce/screen/privacy_policy/privacy_policy_page.dart';
 import 'package:oms_ecommerce/screen/product/product_search.dart';
 import 'package:oms_ecommerce/screen/profile/edit_profile.dart';
 import 'package:oms_ecommerce/screen/profile/profile_page.dart';
+import 'package:oms_ecommerce/screen/search_product/searchpage.dart';
 import 'package:oms_ecommerce/screen/singup/singup.dart';
 import 'package:oms_ecommerce/screen/verification_register/verification_register.dart';
 import 'package:oms_ecommerce/screen/wish_list/wish_list_page.dart';
 
-import 'package:page_transition/page_transition.dart';
+
 
 import '../../../screen/address/address_update_page.dart';
 import '../../../screen/cart/model/cart_model.dart';
@@ -35,9 +39,11 @@ import '../../../screen/order/order_cart_details.dart';
 import '../../../screen/order/order_confirm_page.dart';
 import '../../../screen/order/product_review_and_ratingpage.dart';
 import '../../../screen/profile/model/user_model.dart';
+import '../../../screen/reset_password/component/reset_password_page.dart';
 import '../../../screen/splash/splash_screen.dart';
+import '../../../screen/top_category/top_category_product.dart';
 
-
+import 'package:page_transition/page_transition.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -57,6 +63,11 @@ class RouteGenerator {
           type: PageTransitionType.rightToLeft,
           child:  LoginPage(),
         );
+      case searchScreenPath:
+        return PageTransition(
+          type: PageTransitionType.rightToLeft,
+          child:  SearchScreen(),
+        );
       case singupPath:
         return PageTransition(
           type: PageTransitionType.rightToLeft,
@@ -70,9 +81,10 @@ class RouteGenerator {
         );
 
       case verificationRegister:
+        final verify = settings.arguments as String;
         return PageTransition(
           type: PageTransitionType.rightToLeft,
-          child: const VerificationRegister(),
+          child:  VerificationRegister(verify: verify,),
         );
 
       case profile:
@@ -108,11 +120,37 @@ class RouteGenerator {
           type: PageTransitionType.fade,
           child:  ProductSearch(),
         );
+      case paymentConnectipsPage:
+        return PageTransition(
+          type: PageTransitionType.fade,
+          child:  PaymentFormPage(),
+        );
       case brandProductListPage:
         var brandId = settings.arguments as int;
         return PageTransition(
           type: PageTransitionType.fade,
           child:  BrandProductListPage(brandId: brandId,),
+        );
+      case forgetPasswordPage:
+        return PageTransition(
+          type: PageTransitionType.fade,
+          child:  ForgetPasswordPage(),
+        );
+      case resetPasswordPage:
+        return PageTransition(
+          type: PageTransitionType.fade,
+          child:  ResetPasswordPage(),
+        );
+      case changePasswordPage:
+        return PageTransition(
+          type: PageTransitionType.fade,
+          child:  ChangePasswordPage(),
+        );
+      case topCategoryProductListPage:
+        var categoryId = settings.arguments as int;
+        return PageTransition(
+          type: PageTransitionType.fade,
+          child:  TopCategoryProductListPage(categoryId: categoryId,),
         );
       case addressPage:
         // var addressUpdate = settings.arguments as String;

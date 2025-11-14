@@ -3,6 +3,9 @@ import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
+    // START: FlutterFire Configuration
+    id("com.google.gms.google-services")
+    // END: FlutterFire Configuration
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
@@ -14,9 +17,9 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.oms.ecommerce.omsecommerce.oms_ecommerce"
+    namespace = "com.oms.ecommerce.omsecommerce"
     compileSdk = 35
-    ndkVersion = "27.0.12077973"
+    ndkVersion = "29.0.14206865"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -27,10 +30,10 @@ android {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
-    //com.oms.ecommerce.omsecommerce.oms_ecommerce
+    //// flutter pub run change_app_package_name:main com.oms.ecommerce.omsecommerce
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.oms.ecommerce.omsecommerce.oms_ecommerce"
+        applicationId = "com.oms.ecommerce.omsecommerce"
 
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
@@ -61,6 +64,6 @@ flutter {
 dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation(platform("com.google.firebase:firebase-bom:33.16.0"))
-    implementation("com.google.firebase:firebase-analytics-ktx")
+   // implementation("com.google.firebase:firebase-analytics-ktx")
     // Add other Firebase dependencies here
 }

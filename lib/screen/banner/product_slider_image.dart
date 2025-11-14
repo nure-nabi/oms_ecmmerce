@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,7 +38,7 @@ class _ProductBannerImageSliderState extends State<ProductBannerImageSlider> {
           highlightColor: Colors.grey[100]!,
           child: Container(
             color: Colors.white,
-            height: 140,
+            height: 200,
             width: double.infinity,
           ),
         );
@@ -46,7 +47,7 @@ class _ProductBannerImageSliderState extends State<ProductBannerImageSlider> {
           return ImageSlideshow(
             indicatorColor: Colors.deepPurple,
             indicatorBackgroundColor: Colors.white,
-            height: 140,
+            height: 200,
             autoPlayInterval: 3000,
             indicatorRadius: 4,
             indicatorBottomPadding: 1,
@@ -58,13 +59,19 @@ class _ProductBannerImageSliderState extends State<ProductBannerImageSlider> {
                     if(!network){
                       CustomToast.showCustomRoast(context:context, message: "No network found.", icon: Bootstrap.check_circle,iconColor: Colors.red);
                     }else{
+                      if(bannerImage.products == null){
+                     //   Fluttertoast.showToast(msg: "asdfsd");
+                      }
+                    //  final f = bannerImage.products!.product_name! ?? "f";
+                    //  Fluttertoast.showToast(msg: bannerImage.products!.product_name! ?? "f");
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => ProductDetails(
                             productCode: bannerImage.productCode!,
-                            productName: bannerImage.products!.product_name!,
-                            sellingPrice: double.parse(bannerImage.products!.sell_price!),
+                            stock_quantity: bannerImage.products!.stock_quantity,
+                            productName:bannerImage.products != null ? bannerImage.products!.product_name! : "",
+                            sellingPrice:bannerImage.products != null ? double.parse(bannerImage.products!.sell_price!) : 0,
                             productImage: bannerImage.imageFullUrl,
                             variation: 0,),
                         ),
@@ -85,32 +92,40 @@ class _ProductBannerImageSliderState extends State<ProductBannerImageSlider> {
                           highlightColor: Colors.grey[100]!,
                           child: Container(
                             color: Colors.white,
-                            height: 200,
+                            height: MediaQuery.of(context).size.height * 0.40,
                             width: double.infinity,
                           ),
                         ),
                         // Image with loading builder
-                        Image.network(
-                          bannerImage.imageFullUrl!,
-                          height: 200,
-                          width: double.infinity,
+                        CachedNetworkImage(
+                          //imageUrl: info.products!.main_image_full_url != null ? info.products!.main_image_full_url! : info.products!.image_full_url!,
+                          imageUrl:  bannerImage.imageFullUrl!,
+                          height: MediaQuery.of(context).size.height * 0.40,
                           fit: BoxFit.cover,
-                          loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child; // Image has finished loading
-                            } else {
-                              return Shimmer.fromColors(
-                                baseColor: Colors.grey[300]!,
-                                highlightColor: Colors.grey[100]!,
-                                child: Container(
-                                  color: Colors.white,
-                                  height: 200,
-                                  width: double.infinity,
-                                ),
-                              ); // Show shimmer while loading
-                            }
-                          },
+                          width: double.infinity,
+                          errorWidget: (context, url, error) => Image.asset("assets/icons/noimage.jpg",fit: BoxFit.cover),
                         ),
+                        // Image.network(
+                        //   bannerImage.imageFullUrl!,
+                        //   height: 200,
+                        //   width: double.infinity,
+                        //   fit: BoxFit.cover,
+                        //   loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                        //     if (loadingProgress == null) {
+                        //       return child; // Image has finished loading
+                        //     } else {
+                        //       return Shimmer.fromColors(
+                        //         baseColor: Colors.grey[300]!,
+                        //         highlightColor: Colors.grey[100]!,
+                        //         child: Container(
+                        //           color: Colors.white,
+                        //           height: 200,
+                        //           width: double.infinity,
+                        //         ),
+                        //       ); // Show shimmer while loading
+                        //     }
+                        //   },
+                        // ),
 
                       ],
                     ),

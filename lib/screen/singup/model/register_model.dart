@@ -32,7 +32,8 @@ class RegisterReqModel{
 class RegisterResModel{
   int? code;
   String? email;
-  RegisterResModel({this.code,this.email});
+   List<ValidationError>? errors;
+  RegisterResModel({this.code,this.email,  this.errors,});
 
   Map<String,  dynamic> toJson() => {
     "code":code,
@@ -43,7 +44,27 @@ class RegisterResModel{
     return RegisterResModel(
       code: json["code"] ?? 0,
       email: json["email"] ?? "",
+        errors: json["errors"] != null
+            ?
+        List<ValidationError>.from(json["errors"].map((x) => ValidationError.fromJson(x)))
+            : []
     );
   }
 
 }
+
+// Model for individual error
+class ValidationError {
+  final String code;
+  final String message;
+
+
+  ValidationError({required this.code, required this.message,});
+
+  factory ValidationError.fromJson(Map<String, dynamic> json) {
+    return ValidationError(
+      code: json['code'],
+      message: json['message'],
+    );
+  }
+  }

@@ -21,9 +21,9 @@ class CustomLog {
   }
 
   static successLog({required dynamic value}) {
-    if(kDebugMode) {
+   // if(kDebugMode) {
       debugPrint("\x1B[32m $value \x1B[0m");
-    }
+   // }
   }
 
   static actionLog({required dynamic value}) {

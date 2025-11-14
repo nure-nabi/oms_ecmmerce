@@ -290,6 +290,8 @@ class _SingUpPageState extends State<SingUpPage> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter password';
+                            } else if (value.length < 6) {
+                              return 'Please enter minimum 6 password';
                             }
                             return null; // Valid input
                           },
@@ -336,6 +338,8 @@ class _SingUpPageState extends State<SingUpPage> {
                               return 'Please confirm your password';
                             } else if (value != passwordController.text) {
                               return 'Passwords do not match';
+                            }else if (value.length < 6) {
+                              return 'Please enter minimum 6 password';
                             }
                             return null;
                           },
@@ -395,8 +399,6 @@ class _SingUpPageState extends State<SingUpPage> {
                                           password: passwordController.text.trim(),
                                           phone:phoneController.text.trim(),
                                           email:emailController.text.trim(),)));
-                              }else{
-                                Fluttertoast.showToast(msg: "All fields requireds");
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -464,19 +466,19 @@ class _SingUpPageState extends State<SingUpPage> {
                 ),
               ),
             );
-          }else if(state is RegisterLoadingState){
-            return const CircularProgressIndicator();
-          }else if(state is RegisterLoadedState){
-            return Center(child: Text(state.registerResModel?.email??""),);
-          }else if(state is RegisterErrorState){
-            return Center(child: Text(state.errorMsg??""),);
           }else{
             return Container();
           }
         },
-          listener: (BuildContext context, Object? state) {
+          listener: (BuildContext context, Object? state) async {
             if(state is RegisterLoadedState){
-              Navigator.pushNamed(context,verificationRegister);
+              Navigator.pushNamed(context,
+                  verificationRegister,
+                arguments: state.registerResModel!.code.toString()
+              );
+            await  SetAllPref.verificationEmail(value: state.registerResModel!.email!);
+            }else if(state is RegisterErrorState){
+               Fluttertoast.showToast(msg:state.errorMsg!);
             }
           },),
       ),

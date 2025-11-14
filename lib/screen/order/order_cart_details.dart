@@ -92,6 +92,7 @@ class _OrderDetailsState extends State<OrderCartDetails> {
           child: Column(
             children: [
               //Profile
+              //Profile
               BlocBuilder<ProfileBloc,ProfileState>(builder: (BuildContext context, state) {
                 if(state is ProfileLoadedState){
                   WidgetsBinding.instance.addPostFrameCallback((_){
@@ -100,6 +101,14 @@ class _OrderDetailsState extends State<OrderCartDetails> {
                 }
                 return SizedBox.shrink();
               },),
+              // BlocConsumer<ProfileBloc,ProfileState>(builder: (BuildContext context, state) {
+              //   return SizedBox.shrink();
+              // },
+              //   listener: (BuildContext context, state) {
+              //     if(state is ProfileLoadedState){
+              //         emailController.text = state.userInfoResMode!.user!.email!;
+              //     }
+              //   },),
               //Address
               BlocBuilder<AddressBloc, AddressState>(
                 builder: (BuildContext context, state) {

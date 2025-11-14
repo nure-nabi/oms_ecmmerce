@@ -19,8 +19,9 @@ class WishlistSaveEvent extends WishlistEvent{
 
 class WishlistRemovedEvent extends WishlistEvent{
   String item_code;
+  String? product_code;
   BuildContext context;
-  WishlistRemovedEvent({required this.item_code,required this.context});
+  WishlistRemovedEvent({required this.item_code,this.product_code,required this.context});
   @override
-  List<Object?> get props => [item_code,context];
+  List<Object?> get props => [item_code,product_code,context];
 }

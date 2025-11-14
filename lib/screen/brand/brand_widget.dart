@@ -55,7 +55,7 @@ class _BrandWidgetState extends State<BrandWidget> {
                 ),
                 SizedBox(height: 7,),
                 SizedBox(
-                  height: 90,
+                  height: MediaQuery.of(context).size.height * 0.18,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     separatorBuilder: (context, index) => SizedBox(width: 10,),
@@ -83,7 +83,7 @@ class _BrandWidgetState extends State<BrandWidget> {
                 ),),
                 SizedBox(height: 7,),
                 SizedBox(
-                  height: 90,
+                  height: MediaQuery.of(context).size.height * 0.18,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     separatorBuilder: (context, index) => SizedBox(width: 10,),
@@ -129,7 +129,7 @@ class _BrandWidgetState extends State<BrandWidget> {
       child: Column(
         children: [
           Container(
-            height: 50,
+            height: MediaQuery.of(context).size.height * 0.15,
             width: 100,
             decoration: BoxDecoration(
               // shape: BoxShape.circle, // This makes the container perfectly circular
@@ -172,7 +172,7 @@ class _BrandWidgetState extends State<BrandWidget> {
           baseColor: Colors.grey[300]!,
           highlightColor: Colors.grey[100]!,
           child: Container(
-            height: 50,
+            height: MediaQuery.of(context).size.height * 0.15,
             width: 100,
             decoration: BoxDecoration(
               // shape: BoxShape.circle, // This makes the container perfectly circular

@@ -19,7 +19,6 @@ class AddressBloc extends Bloc<AddressEvent, AddressState> {
     on<AddressReqEvent>((event, omit) async{
     //  omit(AddressLoadingState());
      responseModel = await  AddressRepo.getAddress();
-
       omit(AddressLoadedState(
           addressTypeHomeFlag: event.typeHomeFlag,
           addressTypeOfficeFlag: event.typeOfficeFlag,

@@ -169,7 +169,8 @@ class _DrawerShowState extends State<DrawerShow> {
                         ),
                       ),
                     );
-                  }else if(state is ProfileLoadingState){
+                  }else
+                    if(state is ProfileLoadingState){
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 30),
                       child: InkWell(
@@ -201,7 +202,8 @@ class _DrawerShowState extends State<DrawerShow> {
                         ),
                       ),
                     );
-                  }else if(state is ProfileLoadedState){
+                  }
+                    else if(state is ProfileLoadedState){
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 30),
                       child: InkWell(

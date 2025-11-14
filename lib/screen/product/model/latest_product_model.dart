@@ -67,6 +67,39 @@ class LatestProductModel{
     required this.variations,
     required this.reviews,
   });
+  // 👇 This is the copyWith method
+  LatestProductModel copyWith({
+    String? product_code,
+    bool? is_wishlisted,
+  }) {
+    return LatestProductModel(
+      product_code: product_code ?? this.product_code,
+      product_name: product_name ?? this.product_name,
+      image_full_url: image_full_url,
+      main_image_full_url: main_image_full_url,
+      product_description: product_description,
+      category_id: category_id,
+      delivery_target_days: delivery_target_days,
+      discount: discount,
+      actual_price: actual_price,
+      sell_price: sell_price,
+      mr_price: mr_price,
+      available_quantity: available_quantity,
+      stock_quantity: stock_quantity,
+      flash_sale: flash_sale,
+      status: status,
+      has_variations: has_variations,
+      key_specifications: key_specifications,
+      packaging: packaging,
+      warranty: warranty,
+      starting_price: starting_price,
+      average_rating: average_rating,
+      review_count: review_count,
+      variations: variations,
+      reviews: reviews,
+      is_wishlisted: is_wishlisted ?? this.is_wishlisted,
+    );
+  }
 
 
   factory LatestProductModel.fromJson(Map<String, dynamic> json){

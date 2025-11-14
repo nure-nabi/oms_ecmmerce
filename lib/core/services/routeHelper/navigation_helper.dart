@@ -48,6 +48,10 @@ class NavigationHelper {
         Navigator.pushNamed(context, brandProductListPage);
         break;
 
+      case topCategoryProductListPage:
+        Navigator.pushNamed(context, topCategoryProductListPage);
+        break;
+
       case orderConfirmPage:
         Navigator.pushNamed(context, orderConfirmPage);
         break;

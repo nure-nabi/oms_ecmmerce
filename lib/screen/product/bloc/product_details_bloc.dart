@@ -22,6 +22,7 @@ class ProductDetailsBloc extends Bloc<ProductDetailsEvent,ProductDetailsState>{
       // await calculatePriceAmount(double.parse(resModel.sell_price!),double.parse(resModel.actual_price!),qty: 1);
         emit(ProductDetailsLoadedState(productDetailsReqModel: resModel,discount: discount));
       }catch(e){
+        Fluttertoast.showToast(msg: e.toString());
         emit(ProductDetailsErrorState(errorMsg: e.toString()));
       }
     });
@@ -43,8 +44,12 @@ class ProductDetailsBloc extends Bloc<ProductDetailsEvent,ProductDetailsState>{
     });
 
     on<ProductWishListAddEvent>((event,emit)async{
+
+      resModel  =  await ProductRepo.getProductDetails(productCode: event.productCode);
       resModel!.productDetailsResModel!.is_wishlisted = event.flage;
-      emit((state as ProductDetailsLoadedState).copyWith(productDetailsResModel: resModel));
+    //  Fluttertoast.showToast(msg: event.productCode.toString());
+          emit((state as ProductDetailsLoadedState).copyWith(productDetailsResModel: resModel));
+     // emit(ProductDetailsLoadedState(productDetailsReqModel: resModel));
     });
     
   }

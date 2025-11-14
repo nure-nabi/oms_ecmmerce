@@ -94,17 +94,19 @@ class _OrderDetailsState extends State<OrderDetails> {
                 }
                 return SizedBox.shrink();
               },),
-      
+
+              // BlocConsumer<ProfileBloc,ProfileState>(builder: (BuildContext context, state) {
+              //   return SizedBox.shrink();
+              // },
+              //   listener: (BuildContext context, state) {
+              //     if(state is ProfileLoadedState){
+              //         emailController.text = state.userInfoResMode!.user!.email!;
+              //     }
+              //   },),
               //Address
               BlocBuilder<AddressBloc, AddressState>(
                 builder: (BuildContext context, state) {
                   if (state is AddressLoadedState) {
-                    //
-                    // return Column(
-                    //   children: state.addressResponseModel!.addresses!.map((addd){
-                    //     return Text(addd!.full_name!);
-                    //   }).toList(),
-                    // );
                 return ListView.builder(
                        physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,

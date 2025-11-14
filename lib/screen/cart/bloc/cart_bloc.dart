@@ -207,6 +207,7 @@ class CartBloc extends Bloc<CartEvent,CartState>{
               sell_price:   cartResModel!.cart!.items[i].products!.sell_price!,
               mr_price:     cartResModel!.cart!.items[i].products!.mr_price!,
               quantity:  cartResModel!.cart!.items[i].quantity.toString(),
+              stock_quantity: cartResModel!.cart!.items[i].products!.stock_quantity!,
               product_description: cartResModel!.cart!.items[i].products!.product_description!,
               image_full_url: cartResModel!.cart!.items[i].products!.image_full_url!,
               main_image_full_url: cartResModel!.cart!.items[i].products!.main_image_full_url!);

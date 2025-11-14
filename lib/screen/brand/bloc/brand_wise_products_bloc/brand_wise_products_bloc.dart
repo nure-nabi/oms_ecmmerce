@@ -15,9 +15,11 @@ import 'brand_wisw_products_state.dart';
 
 
 class BrandWiseProductsBloc extends Bloc<BrandWiseProductsEvent, BrandWiseProductsState> {
+  BrandProductResModel? resModel;
   BrandWiseProductsBloc() : super(BrandWiseProductsInitialState()) {
     on<BrandWiseProductsReqEvent>(_onBrandWiseProductsReqEvent);
     on<BrandWiseProductsLazyLoadEvent>(_onBrandWiseProductsLazyLoadEvent);
+    on<BrandWiseProductsWishListFlagReqEvent>(_onWishlistFlagUpdate);
 
   }
 
@@ -29,17 +31,17 @@ class BrandWiseProductsBloc extends Bloc<BrandWiseProductsEvent, BrandWiseProduc
     emit(BrandWiseProductsLoadingState(listLoading: 20)); // Show loading with 20 items
 
     try {
-      final resModel = await BrandRepo.getAllBrandProduct(
+       resModel = await BrandRepo.getAllBrandProduct(
         limit: event.limit,
         offset: event.offset,
         brandId: event.brandId,
       );
-      if (resModel.products.isEmpty) {
+      if (resModel!.products.isEmpty) {
         emit(BrandWiseProductsEmptyState());
       } else {
         emit(BrandWiseProductsLoadedState(
-          product: resModel.products,
-          hasMore: resModel.products.length >= event.limit,
+          product: resModel!.products,
+          hasMore: resModel!.products.length >= event.limit,
           listLoading: 20,
         ));
       }
@@ -75,21 +77,21 @@ class BrandWiseProductsBloc extends Bloc<BrandWiseProductsEvent, BrandWiseProduc
       // Show loading while keeping current items
       emit(currentState.copyWith(isLoadingMore: true));
 
-      final resModel = await BrandRepo.getAllBrandProduct(
+       resModel = await BrandRepo.getAllBrandProduct(
         limit: event.limit,
         offset: nextOffset,
         brandId: event.brandId,
       );
 
-      if (resModel.products.isNotEmpty) {
+      if (resModel!.products.isNotEmpty) {
         List<BrandProductModel> newProducts = [
           ...currentState.product!,
-          ...resModel.products
+          ...resModel!.products
         ];
         // product.addAll(resModel.products);
         emit(BrandWiseProductsLoadedState(
           product: newProducts,
-          hasMore: resModel.products.length >= event.limit,
+          hasMore: resModel!.products.length >= event.limit,
           listLoading: currentState.listLoading,
         ));
         // Fluttertoast.showToast(msg: "Loaded ${newProducts.length} items");
@@ -105,4 +107,21 @@ class BrandWiseProductsBloc extends Bloc<BrandWiseProductsEvent, BrandWiseProduc
       Fluttertoast.showToast(msg: "Error loading more: ${e.toString()}");
     }
   }
+
+  Future<void> _onWishlistFlagUpdate(
+      BrandWiseProductsWishListFlagReqEvent event,
+      Emitter<BrandWiseProductsState> emit,
+      ) async {
+    if (resModel == null) return;
+    try {
+      List<BrandProductModel> newProduct = List.from(resModel!.products);
+      newProduct[event.index] = newProduct[event.index].copyWith(
+        is_wishlisted: event.flag,
+      );
+      emit((state as BrandWiseProductsLoadedState).copyWith(product: newProduct));
+    } catch (e) {
+     // debugPrint('Error updating wishlist: $e');
+    }
+  }
+
 }

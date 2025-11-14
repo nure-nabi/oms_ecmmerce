@@ -32,7 +32,7 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
       appBar: AppBar(
         title: Text(widget.title),
         centerTitle: true,
-        backgroundColor: gPrimaryColor,
+      //  backgroundColor: gPrimaryColor,
         leading:  InkWell(
           onTap: ()=>Navigator.pop(context),
             child: Icon(Bootstrap.chevron_left)),

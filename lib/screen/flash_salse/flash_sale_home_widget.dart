@@ -204,6 +204,7 @@ class _FlashSaleHomeWidgetState extends State<FlashSaleHomeWidget> {
                                   builder: (context) => ProductDetails(
                                     productCode: info.product_code!,
                                     productName: info.product_name!,
+                                    stock_quantity: info.stock_quantity,
                                     //sellingPrice: info.sell_price! != "" ? double.parse(info.sell_price!) : 0.00,
                                     sellingPrice: info.sell_price! != "" ? double.parse(info.sell_price!) : double.parse(info.starting_price!),
                                     productImage: info.image_full_url != "" ? info.image_full_url: info.main_image_full_url,

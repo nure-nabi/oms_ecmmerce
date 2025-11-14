@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connect_ips_flutter/connect_ips_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +15,9 @@ import 'package:oms_ecommerce/scroll/scroll_event.dart';
 import 'package:oms_ecommerce/scroll/scroll_state.dart';
 
 import '../../component/drawer.dart';
+import '../../component/loading_overlay.dart';
 import '../../core/services/routeHelper/route_name.dart';
+import '../../utils/custome_toast.dart';
 import '../banner/product_slider_image.dart';
 import '../brand/bloc/brand_bloc.dart';
 import '../brand/bloc/brand_event.dart';
@@ -23,11 +27,20 @@ import '../cart/bloc/cart_state.dart';
 import '../cart/cart.dart';
 import '../category/category_home.dart';
 import '../category/category_home_widget.dart';
+import '../product/bloc/product_bloc/product_list_bloc.dart';
+import '../product/bloc/product_bloc/product_list_event.dart';
+import '../product/bloc/product_bloc/product_list_state.dart';
 import '../product/component/latest_product.dart';
 import '../product/feature_produdct_home_widget.dart';
+import '../product/product_details.dart';
+import '../product/product_list.dart';
+import '../product/product_list_home.dart';
 import '../profile/block/profile_bloc/profile_bloc.dart';
 import '../profile/block/profile_bloc/profile_event.dart';
+import '../service/sharepref/get_all_pref.dart';
 import '../widget/scrolling.dart';
+import '../wish_list/bloc/wishlist_bloc.dart';
+import '../wish_list/bloc/wishlist_event.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -139,41 +152,18 @@ class _HomeScreenState extends State<HomeScreen> {
              bottomOpacity: 55,
              title: Row(
                children: [
-                 Expanded(
-                   child: Padding(
-                     padding: const EdgeInsets.symmetric(horizontal: 0),
-                     child: Container(
-                       height: 40,
-                       decoration: BoxDecoration(
-                         border: Border.all(width: 1, color: Colors.grey.shade200),
-                         borderRadius: const BorderRadius.all(Radius.circular(3)),
-                         color: Colors.white.withOpacity(0.2),
-                       ),
-                       child: TextFormField(
-                         readOnly: true,
-                         decoration: InputDecoration(
-                           hintText: 'Search products',
-                           // suffixText: 'Search',
-                           // Suffix text
-                           border: InputBorder.none,
-                           prefixIcon: const Icon(
-                             EvaIcons.search,
-                             size: 20,
-                           ),
-                           prefixIconColor: Colors.grey,
-                           hintStyle: const TextStyle(color: Colors.grey),
-                           suffixStyle: const TextStyle(color: Colors.white),
-                           filled: true,
-                           fillColor: gPrimaryColor.withOpacity(0.2), // Fill color of the TextField
-                         ),
-                         style: const TextStyle(color: Colors.black),
-                         onTap: () {
-
-                         },
-                       ),
-                     ),
-                   ),
+                 Align(
+                   alignment: Alignment.center,
+                   child: Text("Garg Dental",style: GoogleFonts.poppins(
+                     fontWeight: FontWeight.w600,
+                     // color: Colors.blueAccent
+                   ),),
                  ),
+                 Spacer(),
+                 InkWell(
+                     onTap:() =>Navigator.pushNamed(context, searchScreenPath),
+                     child: Icon(Bootstrap.search,size: 20,)),
+                 SizedBox(width: 10,),
                  getCartData(false)
                ],
              ),
@@ -183,43 +173,22 @@ class _HomeScreenState extends State<HomeScreen> {
          }else if(state is ScrollLoadedState){
            return AppBar(
              bottomOpacity: 55,
-             title: Row(
+             title:
+             Row(
+               mainAxisAlignment: MainAxisAlignment.center,
                children: [
-                 Expanded(
-                   child: Padding(
-                     padding: const EdgeInsets.symmetric(horizontal: 0),
-                     child: Container(
-                       height: 40,
-                       decoration: BoxDecoration(
-                         border: Border.all(width: 1, color: Colors.grey.shade400),
-                         borderRadius: const BorderRadius.all(Radius.circular(3)),
-                         color: Colors.white.withOpacity(0.2),
-                       ),
-                       child: TextFormField(
-                         readOnly: true,
-                         decoration: InputDecoration(
-                           hintText: 'Search products',
-                           // suffixText: 'Search',
-                           // Suffix text
-                           border: InputBorder.none,
-                           prefixIcon: const Icon(
-                             EvaIcons.search,
-                             size: 20,
-                           ),
-                           prefixIconColor: Colors.grey,
-                           hintStyle: const TextStyle(color: Colors.grey),
-                           suffixStyle: const TextStyle(color: Colors.white),
-                           filled: true,
-                           fillColor: gPrimaryColor.withOpacity(0.2), // Fill color of the TextField
-                         ),
-                         style: const TextStyle(color: Colors.black),
-                         onTap: () {
-
-                         },
-                       ),
-                     ),
-                   ),
+                 Align(
+                   alignment: Alignment.center,
+                   child: Text("Garg Dental",style: GoogleFonts.poppins(
+                     fontWeight: FontWeight.w600,
+                    // color: Colors.blueAccent
+                   ),),
                  ),
+                 Spacer(),
+                 InkWell(
+                   onTap:() =>Navigator.pushNamed(context, searchScreenPath),
+                     child: Icon(Bootstrap.search,size: 20,)),
+                 SizedBox(width: 10,),
                  getCartData(state.scrollFlag)
                ],
              ),
@@ -229,48 +198,67 @@ class _HomeScreenState extends State<HomeScreen> {
          }else{
            return AppBar(
              bottomOpacity: 55,
-             title: Row(
-               children: [
-                 Expanded(
-                   child: Padding(
-                     padding: const EdgeInsets.symmetric(horizontal: 0),
-                     child: Container(
-                       height: 40,
-                       decoration: BoxDecoration(
-                         border: Border.all(width: 1, color: Colors.grey.shade200),
-                         borderRadius: const BorderRadius.all(Radius.circular(3)),
-                         color: Colors.white.withOpacity(0.2),
-                       ),
-                       child: TextFormField(
-                         readOnly: true,
-                         decoration: InputDecoration(
-                           hintText: 'Search products',
-                           // suffixText: 'Search',
-                           // Suffix text
-                           border: InputBorder.none,
-                           prefixIcon: const Icon(
-                             EvaIcons.search,
-                             size: 20,
-                           ),
-                           prefixIconColor: Colors.grey,
-                           hintStyle: const TextStyle(color: Colors.grey),
-                           suffixStyle: const TextStyle(color: Colors.white),
-                           filled: true,
-                           fillColor: gPrimaryColor.withOpacity(0.2), // Fill color of the TextField
-                         ),
-                         style: const TextStyle(color: Colors.black),
-                         onTap: () {
+             title:
+             // Text("Garg Dental",style: GoogleFonts.poppins(
+             //
+             // ),),
 
-                         },
-                       ),
-                     ),
-                   ),
+             Row(
+               mainAxisAlignment: MainAxisAlignment.center,
+               children: [
+                 // Expanded(
+                 //   child: Padding(
+                 //     padding: const EdgeInsets.symmetric(horizontal: 0),
+                 //     child: Container(
+                 //       height: 40,
+                 //       decoration: BoxDecoration(
+                 //         border: Border.all(width: 1, color: Colors.grey.shade400),
+                 //         borderRadius: const BorderRadius.all(Radius.circular(3)),
+                 //         color: Colors.white.withOpacity(0.2),
+                 //       ),
+                 //       child: TextFormField(
+                 //         readOnly: true,
+                 //         decoration: InputDecoration(
+                 //           hintText: 'Search products',
+                 //           // suffixText: 'Search',
+                 //           // Suffix text
+                 //           border: InputBorder.none,
+                 //           prefixIcon: const Icon(
+                 //             EvaIcons.search,
+                 //             size: 20,
+                 //           ),
+                 //           prefixIconColor: Colors.grey,
+                 //           hintStyle: const TextStyle(color: Colors.grey),
+                 //           suffixStyle: const TextStyle(color: Colors.white),
+                 //           filled: true,
+                 //           fillColor: gPrimaryColor.withOpacity(0.2), // Fill color of the TextField
+                 //         ),
+                 //         style: const TextStyle(color: Colors.black),
+                 //         onTap: () {
+                 //         Navigator.pushNamed(context, searchScreenPath);
+                 //        // Navigator.pushNamed(context, paymentConnectipsPage);
+                 //         },
+                 //       ),
+                 //     ),
+                 //   ),
+                 // ),
+                 Align(
+                   alignment: Alignment.center,
+                   child: Text("Garg Dental",style: GoogleFonts.poppins(
+                     fontWeight: FontWeight.w600,
+                     // color: Colors.blueAccent
+                   ),),
                  ),
-                 getCartData(false)
+                 Spacer(),
+                 InkWell(
+                     onTap:() =>Navigator.pushNamed(context, searchScreenPath),
+                     child: Icon(Bootstrap.search,size: 20,)),
+                 SizedBox(width: 10,),
+                 getCartData(true)
                ],
              ),
              elevation: 0,
-           //  backgroundColor: blueColor,
+             //  backgroundColor: state.scrollFlag ? whiteColor : blueColor,
            );
          }
         },),
@@ -278,8 +266,8 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: DrawerShow(),
       body:  SingleChildScrollView(
         controller: _scrollController,
-        child: const Padding(
-          padding: EdgeInsets.only(),
+        child: Padding(
+          padding: const EdgeInsets.only(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -398,11 +386,11 @@ class _HomeScreenState extends State<HomeScreen> {
               //     ),
               //   ),
               // ),
-              ProductBannerImageSlider(),
-              SizedBox(height: 10,),
-              CategoryHomeWidget(),
-              SizedBox(height: 0,),
-              BrandWidget(),
+              const ProductBannerImageSlider(),
+              const SizedBox(height: 10,),
+              const CategoryHomeWidget(),
+              const SizedBox(height: 0,),
+              const BrandWidget(),
 
               // Padding(
               //   padding: const EdgeInsets.only(left: 10,bottom: 5),
@@ -428,12 +416,15 @@ class _HomeScreenState extends State<HomeScreen> {
            //      ],
            //    ),
 
-               LatestProduct(),
-               FlashSaleHomeWidget(),
-               FeatureProdudctHomeWidget(title: "Feature Product", one: Colors.blue, two: Colors.black,),
-               FeatureProdudctHomeWidget(title: "Weekly Product",one: Colors.cyan, two: Colors.black,),
-               ScrollingImages(),
-              SizedBox(height: 10,),
+               const LatestProduct(),
+               const FlashSaleHomeWidget(),
+               const FeatureProdudctHomeWidget(title: "Today Deals", one: Colors.blue, two: Colors.black,),
+              // FeatureProdudctHomeWidget(title: "Weekly Product",one: Colors.cyan, two: Colors.black,),
+               const ScrollingImages(),
+              const SizedBox(height: 10,),
+             // ALL PRODUCT
+              ProductListHome(scrollController: _scrollController,)
+
             ],
           ),
         ),

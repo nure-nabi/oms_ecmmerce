@@ -1,42 +1,49 @@
 {
   "project_info": {
-    "project_number": "595557534470",
-    "project_id": "oms-ecomerce",
-    "storage_bucket": "oms-ecomerce.firebasestorage.app"
+    "project_number": "487714998715",
+    "project_id": "oms-ecom",
+    "storage_bucket": "oms-ecom.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:595557534470:android:46d95800bd8b05d69bac87",
+        "mobilesdk_app_id": "1:487714998715:android:7b8d3d716fedf9f4141c9e",
         "android_client_info": {
-          "package_name": "com.oms.ecommerce.omsecommerce.oms_ecommerce"
+          "package_name": "com.oms.ecommerce.omsecommerce"
         }
       },
       "oauth_client": [
         {
-          "client_id": "595557534470-dnhef62k0iv8diknfvnjqhkg2papt61s.apps.googleusercontent.com",
+          "client_id": "487714998715-ou2pltjihcp7ci8e5402ug54nmt38rtl.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.oms.ecommerce.omsecommerce.oms_ecommerce",
+            "package_name": "com.oms.ecommerce.omsecommerce",
             "certificate_hash": "bcef607b68ae655536748c2c9be892d2fb36ba94"
           }
         },
         {
-          "client_id": "595557534470-0tnp7bj5btu87ev43f560ogestqnfe38.apps.googleusercontent.com",
+          "client_id": "487714998715-2f5e1fbrlkngea825u0eej84veth63po.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDFAaSoapa7pbb1957WQ9Nxg449ETHz_G0"
+          "current_key": "AIzaSyC1HkWdkRZbOV0d7JEY7k1XEjxjV3MvXu0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "595557534470-0tnp7bj5btu87ev43f560ogestqnfe38.apps.googleusercontent.com",
+              "client_id": "487714998715-2f5e1fbrlkngea825u0eej84veth63po.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "487714998715-gbpmua9caetdlmf6i80k2isncp33glc6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.oms.ecommerce.omsecommerce"
+              }
             }
           ]
         }

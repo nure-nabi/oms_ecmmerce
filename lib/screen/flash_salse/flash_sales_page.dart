@@ -233,6 +233,7 @@ class _FlashSaleProductPageState extends State<FlashSaleProductPage> {
                               builder: (context) => ProductDetails(
                                 productCode: info.product_code!,
                                 productName: info.product_name!,
+                                stock_quantity: info.stock_quantity,
                                 sellingPrice: double.parse(info.sell_price!),
                                 productImage: info.image_full_url,
                                 variation: info.has_variations,),

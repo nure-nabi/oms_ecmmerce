@@ -3,6 +3,7 @@ const String loginHomePath = "/loginHomePath";
 const String loginPath = "/loginPath";
 const String singupPath = "/singupPath";
 const String homeNavbar = "/homeNavbar";
+const String searchScreenPath = "/searchScreenPath";
 const String verificationRegister = "/verificationRegister";
 
 const String homePagePath = "/homePagePath";
@@ -31,6 +32,11 @@ const String contactUsPage = "/contactUs";
 const String orderConfirmPage = "/orderConfirmPage";
 const String productReviewAndRatingPage = "/productReviewAndRatingPage";
 const String brandProductListPage = "/brandProductListPage";
+const String forgetPasswordPage = "/forgetPasswordPage";
+const String resetPasswordPage = "/resetPasswordPage";
+const String changePasswordPage = "/changePasswordPage";
+const String topCategoryProductListPage = "/topCategoryProductListPage";
+const String paymentConnectipsPage = "/paymentConnectips";
 
 ///
 const String cardScanPath = "/cardScanPath";

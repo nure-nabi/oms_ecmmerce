@@ -47,6 +47,7 @@ class _LatestProductState extends State<LatestProduct> {
   @override
   void initState() {
     BlocProvider.of<ProductLatestBloc>(context).add(ProductLatestReqEvent());
+    context.read<WishlistBloc>().add(WishlistReqEvent());
     super.initState();
   }
 
@@ -200,6 +201,7 @@ class _LatestProductState extends State<LatestProduct> {
                                     builder: (context) => ProductDetails(
                                       productCode: info.product_code!,
                                       productName: info.product_name!,
+                                      stock_quantity: info.stock_quantity,
                                       //sellingPrice: info.sell_price! != "" ? double.parse(info.sell_price!) : 0.00,
                                       sellingPrice: info.sell_price! != "" ? double.parse(info.sell_price!) : double.parse(info.starting_price!),
                                       productImage: info.image_full_url != "" ?  info.image_full_url: info.main_image_full_url,
@@ -242,7 +244,7 @@ class _LatestProductState extends State<LatestProduct> {
                                           fit: BoxFit.cover,
                                           placeholder: (context, url) => Container(),
                                           errorWidget: (context, url, error) =>
-                                              Icon(Icons.error),
+                                              Image.asset(AssetsList.gargImage),
                                         ),
                                         // child: Image.network(
                                         //   info.image_full_url!,
@@ -257,6 +259,7 @@ class _LatestProductState extends State<LatestProduct> {
                                           child: InkWell(
                                             onTap: ()async{
                                               if(await GetAllPref.loginSuccess()){
+
                                                 if(!info.is_wishlisted!){
                                                   LoadingOverlay.show(context);
                                                   BlocProvider.of<WishlistBloc>(context).add(WishlistSaveEvent(
@@ -264,12 +267,19 @@ class _LatestProductState extends State<LatestProduct> {
                                                   context.read<ProductLatestBloc>().add(ProductLatestWishListFlagReqEvent(
                                                       flag: true, index: index));
 
+                                                }else{
+                                                //  context.read<WishlistBloc>().add(WishlistReqEvent());
+                                                  LoadingOverlay.show(context);
+                                                  BlocProvider.of<WishlistBloc>(context).add(WishlistRemovedEvent(
+                                                      item_code: info.product_code!,product_code: info.product_code!,context: context));
+                                                  context.read<ProductLatestBloc>().add(ProductLatestWishListFlagReqEvent(
+                                                      flag: false, index: index));
                                                 }
                                               }else{
-                                                CustomToast.showCustomRoast(context: context, message: "You are not authorized!", icon: Bootstrap.check_circle,iconColor: Colors.red);
+                                                CustomToast.showCustomRoast(context: context, message: "You are not login!", icon: Bootstrap.check_circle,iconColor: Colors.red);
                                               }
 
-                                                                                       },
+                                               },
                                             child: Icon(
                                               info.is_wishlisted!?
                                               Bootstrap.heart_fill : Bootstrap.heart_fill,
@@ -561,11 +571,11 @@ class ProductItem extends StatelessWidget {
               Text("(${review_count.toString()})",style: GoogleFonts.poppins(
                 fontSize: 8
               ),),
-              //Text("($stockQuantity)"),
+              //Text("(Image.asset(AssetsList.gargImage))"),
               Spacer(),
               if(variation! == "0")
               InkWell(
-                              onTap: () {
+                onTap: () {
               if(stockQuantity! > 0){
                 LoadingOverlay.show(context);
                 BlocProvider.of<AddCartBloc>(context).add(

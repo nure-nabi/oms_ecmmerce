@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+
 import 'package:oms_ecommerce/screen/widget/gredient_container.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -15,26 +15,26 @@ class LoginHomePage extends StatelessWidget {
   const LoginHomePage({super.key});
 
 
-  Future<void> login() async {
-    try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-      if (googleUser == null) {
-        // User canceled the login process
-        return;
-      }
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
-
-      await FirebaseAuth.instance.signInWithCredential(credential);
-    } catch (e) {
-      print('Error during Google login: $e');
-      // Handle the error appropriately (show a message to user, etc.)
-    }
-  }
+  // Future<void> login() async {
+  //   try {
+  //     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  //
+  //     if (googleUser == null) {
+  //       // User canceled the login process
+  //       return;
+  //     }
+  //     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+  //     final credential = GoogleAuthProvider.credential(
+  //       accessToken: googleAuth.accessToken,
+  //       idToken: googleAuth.idToken,
+  //     );
+  //
+  //     await FirebaseAuth.instance.signInWithCredential(credential);
+  //   } catch (e) {
+  //     print('Error during Google login: $e');
+  //     // Handle the error appropriately (show a message to user, etc.)
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

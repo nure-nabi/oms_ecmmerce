@@ -30,9 +30,10 @@ class ProductQtyDecrementEvent extends ProductDetailsEvent{
 }
 
 class ProductWishListAddEvent extends ProductDetailsEvent{
+  String? productCode;
   int index;
   bool flage;
-  ProductWishListAddEvent({required this.index,required this.flage});
+  ProductWishListAddEvent({this.productCode,required this.index,required this.flage});
   @override
-  List<Object?> get props => [index,flage];
+  List<Object?> get props => [productCode,index,flage];
 }

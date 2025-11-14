@@ -94,7 +94,7 @@ class _CartPageState extends State<CartPage> {
               BlocProvider.of<CartBloc>(context).add(CartItemsSelectAllEvent(checkedCart: checked));
             },
                 child: Text(checked ? "UnSelect" : "Select All",style: GoogleFonts.poppins(
-                  color: Colors.white,
+                  color: Colors.black,
                   letterSpacing: 1
                 ),)
             )
@@ -104,34 +104,39 @@ class _CartPageState extends State<CartPage> {
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-           // mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              BlocBuilder<ProfileBloc,ProfileState>(builder: (BuildContext context, state) {
-                if(state is ProfileLoadedState){
-                  WidgetsBinding.instance.addPostFrameCallback((_){
+              BlocConsumer<ProfileBloc, ProfileState>(
+                listener: (context, state) {
+                  if (state is ProfileLoadedState) {
                     shipping_cost = state.userInfoResMode!.addresses![0].city!.shipping_cost!;
-                  });
-                }
-                return SizedBox.shrink();
-              },),
-              //call address
-              BlocBuilder<AddressBloc, AddressState>(
+                  }
+                },
                 builder: (context, state) {
+                  return SizedBox.shrink(); // or your UI widget
+                },
+              ),
+              //call address
+              BlocConsumer<AddressBloc, AddressState>(
+                listener: (context, state) {
                   if (state is AddressLoadedState) {
                     // Navigate after a delay to avoid context issues
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      addressResponseModel = state.addressResponseModel!;
-
-                    });
+                    addressResponseModel = state.addressResponseModel!;
+                    // WidgetsBinding.instance.addPostFrameCallback((_) {
+                    //   addressResponseModel = state.addressResponseModel!;
+                    //
+                    // });
                   }
-                    return SizedBox.shrink();
-
                 },
+                  builder: (context, state) {
+                    return SizedBox.shrink(); // or your UI widget
+                  },
               ),
 
 
               BlocConsumer<CartBloc,CartState>(builder: (BuildContext context, state) {
+
                 if(state is CartLoadingState){
+
                   return Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
@@ -160,233 +165,235 @@ class _CartPageState extends State<CartPage> {
                   if(state.cartResModel!.cart!.items.length > 0){
                     return Stack(
                       children: [
-                        Expanded(
-                          child: ListView.builder(
-                              itemCount: state.cartResModel!.cart!.items.length,
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              itemBuilder: (context ,index){
-                                final info = state.cartResModel!.cart!.items[index];
+                        ListView.builder(
+                            itemCount: state.cartResModel!.cart!.items.length,
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context ,index){
+                              final info = state.cartResModel!.cart!.items[index];
 
-                                return Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 5,right: 5,bottom: 10,top: 10),
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        //   const Checkbox(value: true, onChanged: null),
-                                        Checkbox(
-                                            value: state.checkedCart![index],
-                                            checkColor: Colors.white,
-                                            activeColor: Colors.orange,
-                                            focusColor: Colors.grey,
-                                            onChanged: (value){
-                                              if(value!){
+                              return Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 5,right: 5,bottom: 10,top: 10),
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      //   const Checkbox(value: true, onChanged: null),
+                                      Checkbox(
+                                          value: state.checkedCart![index],
+                                          checkColor: Colors.white,
+                                          activeColor: Colors.orange,
+                                          focusColor: Colors.grey,
+                                          onChanged: (value){
+                                            if(value!){
 
+                                            LoadingOverlay.show(context);
+                                           var cartValue =   CartProductModel(
+                                                  product_code: state.cartResModel!.cart!.items[index].products!.product_code!,
+                                                  product_name: state.cartResModel!.cart!.items[index].products!.product_name!,
+                                                  actual_price: state.cartResModel!.cart!.items[index].products!.actual_price!,
+                                                  sell_price: state.cartResModel!.cart!.items[index].products!.sell_price!,
+                                                  mr_price: state.cartResModel!.cart!.items[index].products!.mr_price!,
+                                                //  quantity: info.quantity.toString(),
+                                                 stock_quantity: state.cartResModel!.cart!.items[index].products!.stock_quantity!,
+                                                  quantity: state.qtyLits![index].toString(),
+                                                  product_description: state.cartResModel!.cart!.items[index].products!.product_description!,
+                                                  image_full_url: state.cartResModel!.cart!.items[index].products!.image_full_url!,
+                                                  main_image_full_url: state.cartResModel!.cart!.items[index].products!.main_image_full_url!);
+
+                                              //   state.tempCartList.add(cartValue);
+                                              context.read<CartBloc>().add(CartItemCheckeEvent(index: index,checked: value,checkedValue: info.id.toString(),cartProductModel: cartValue));
+                                            }else{
                                               LoadingOverlay.show(context);
-                                             var cartValue =   CartProductModel(
-                                                    product_code: state.cartResModel!.cart!.items[index].products!.product_code!,
-                                                    product_name: state.cartResModel!.cart!.items[index].products!.product_name!,
-                                                    actual_price: state.cartResModel!.cart!.items[index].products!.actual_price!,
-                                                    sell_price: state.cartResModel!.cart!.items[index].products!.sell_price!,
-                                                    mr_price: state.cartResModel!.cart!.items[index].products!.mr_price!,
-                                                  //  quantity: info.quantity.toString(),
-                                                    quantity: state.qtyLits![index].toString(),
-                                                    product_description: state.cartResModel!.cart!.items[index].products!.product_description!,
-                                                    image_full_url: state.cartResModel!.cart!.items[index].products!.image_full_url!,
-                                                    main_image_full_url: state.cartResModel!.cart!.items[index].products!.main_image_full_url!);
-
-                                                //   state.tempCartList.add(cartValue);
-                                                context.read<CartBloc>().add(CartItemCheckeEvent(index: index,checked: value,checkedValue: info.id.toString(),cartProductModel: cartValue));
-                                              }else{
-                                                LoadingOverlay.show(context);
-                                                var cartValue =   CartProductModel(
-                                                    product_code: state.cartResModel!.cart!.items[index].products!.product_code!,
-                                                    product_name: state.cartResModel!.cart!.items[index].products!.product_name!,
-                                                    actual_price: state.cartResModel!.cart!.items[index].products!.actual_price!,
-                                                    sell_price: state.cartResModel!.cart!.items[index].products!.sell_price!,
-                                                    mr_price: state.cartResModel!.cart!.items[index].products!.mr_price!,
-                                                    quantity: state.qtyLits![index].toString(),
-                                                    product_description: state.cartResModel!.cart!.items[index].products!.product_description!,
-                                                    image_full_url: state.cartResModel!.cart!.items[index].products!.image_full_url!,
-                                                    main_image_full_url: state.cartResModel!.cart!.items[index].products!.main_image_full_url!);
-                                                context.read<CartBloc>().add(CartItemCheckeEvent(index: index,checked: value,checkedValue: info.id.toString(),cartProductModel: cartValue));
-                                              }
-                                            }),
-                                        Expanded(
-                                          flex:1,
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(2),
-                                            child: CachedNetworkImage(
-                                              imageUrl: info.products!.main_image_full_url != "" ? info.products!.main_image_full_url! : info.products!.image_full_url!,
-                                              height: 100,
-                                              fit: BoxFit.cover,
-                                              width: 70,
-                                              errorWidget: (context, url, error) => Image.asset("assets/icons/noimage.jpg"),
-                                            )
-                                          ),
+                                              var cartValue =   CartProductModel(
+                                                  product_code: state.cartResModel!.cart!.items[index].products!.product_code!,
+                                                  product_name: state.cartResModel!.cart!.items[index].products!.product_name!,
+                                                  actual_price: state.cartResModel!.cart!.items[index].products!.actual_price!,
+                                                  sell_price: state.cartResModel!.cart!.items[index].products!.sell_price!,
+                                                  mr_price: state.cartResModel!.cart!.items[index].products!.mr_price!,
+                                                  quantity: state.qtyLits![index].toString(),
+                                                  stock_quantity: state.cartResModel!.cart!.items[index].products!.stock_quantity!,
+                                                  product_description: state.cartResModel!.cart!.items[index].products!.product_description!,
+                                                  image_full_url: state.cartResModel!.cart!.items[index].products!.image_full_url!,
+                                                  main_image_full_url: state.cartResModel!.cart!.items[index].products!.main_image_full_url!);
+                                              context.read<CartBloc>().add(CartItemCheckeEvent(index: index,checked: value,checkedValue: info.id.toString(),cartProductModel: cartValue));
+                                            }
+                                          }),
+                                      Expanded(
+                                        flex:1,
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(2),
+                                          child: CachedNetworkImage(
+                                            imageUrl: info.products!.main_image_full_url != "" ? info.products!.main_image_full_url! : info.products!.image_full_url!,
+                                           // imageUrl: info.main_image!,
+                                            height: 100,
+                                            fit: BoxFit.cover,
+                                            width: 70,
+                                            errorWidget: (context, url, error) => Image.asset("assets/icons/noimage.jpg"),
+                                          )
                                         ),
-                                        SizedBox(width: 5,),
-                                        Expanded(
-                                          flex:3,
-                                          child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                               mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: Text(info.products!.product_name!,maxLines: 2,overflow: TextOverflow.ellipsis,
-                                                      style: GoogleFonts.poppins(
+                                      ),
+                                      SizedBox(width: 5,),
+                                      Expanded(
+                                        flex:3,
+                                        child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                             mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(info.products!.product_name!,maxLines: 2,overflow: TextOverflow.ellipsis,
+                                                    style: GoogleFonts.poppins(
 
-                                                    ),),
-                                                  ),
+                                                  ),),
+                                                ),
 
-                                                  InkWell(
-                                                      onTap: (){
-                                                        LoadingOverlay.show(context);
-                                                        BlocProvider.of<CartBloc>(context).add(CartItemRemoveByIdEvent(id: info.id!,checkedCart: false,context: context));
-                                                      },
-                                                      child:  const Icon(Bootstrap.trash,color: Colors.red,)),
-                                                ],
-                                              ),
-                                              const SizedBox(height: 5,),
-                                              Row(
-                                                children: [
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      style: TextStyle(color: Colors.black, fontSize: 14),
-                                                      children: [
-                                                        TextSpan(text: 'Rs ', style: GoogleFonts.poppins(
-                                                            fontSize: 10,
-                                                            color: Colors.black
-                                                        )),
-                                                        TextSpan(
-                                                          text:  info.products?.sell_price!,
-                                                          style: GoogleFonts.poppins(
-                                                              fontSize: 15,
-                                                              fontWeight: FontWeight.w600,
-                                                              color: Colors.orange,
-
-                                                          ),
-                                                        ),
-
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 5,),
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      style: TextStyle(color: Colors.black, fontSize: 14),
-                                                      children: [
-                                                        TextSpan(text: 'Rs ', style: GoogleFonts.poppins(
-                                                            fontSize: 10,
-                                                            color: Colors.black
-                                                        )),
-                                                        TextSpan(
-                                                          text:  info.products!.actual_price,
-
-                                                          style: GoogleFonts.poppins(
-                                                              fontSize: 15,
-                                                              fontWeight: FontWeight.w600,
-                                                              color: Colors.grey,
-                                                              decoration: TextDecoration.lineThrough
-                                                          ),
-                                                        ),
-
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(height: 5,),
-                                              Row(
-                                                children: [
-                                                   Expanded(child:
-                                                  RichText(
-                                                    text: TextSpan(
-                                                      style: TextStyle(color: Colors.black, fontSize: 14),
-                                                      children: [
-                                                        TextSpan(text: 'Rs ', style: GoogleFonts.poppins(
-                                                            fontSize: 10,
-                                                            color: Colors.black
-                                                        )),
-                                                        TextSpan(
-                                                          text: '(${double.parse(info.products!.actual_price.toString()) - double.parse(info.products!.sell_price.toString())})OFF',
-                                                          style: GoogleFonts.poppins(
-                                                              fontSize: 15,
-                                                              fontWeight: FontWeight.w600,
-                                                              color: Colors.green.shade700,
-                                                          ),
-                                                        ),
-
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  ),
-                                                  Expanded(
-                                                      child: Row(
-                                                    // crossAxisAlignment: CrossAxisAlignment.,
-                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                InkWell(
+                                                    onTap: (){
+                                                      LoadingOverlay.show(context);
+                                                      BlocProvider.of<CartBloc>(context).add(CartItemRemoveByIdEvent(id: info.id!,checkedCart: false,context: context));
+                                                    },
+                                                    child:  const Icon(Bootstrap.trash,color: Colors.red,)),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 5,),
+                                            Row(
+                                              children: [
+                                                RichText(
+                                                  text: TextSpan(
+                                                    style: TextStyle(color: Colors.black, fontSize: 14),
                                                     children: [
-                                                      InkWell(
-                                                          onTap: (){
-                                                            LoadingOverlay.show(context);
-                                                            context.read<CartBloc>().add(CartDecrementEvent(
-                                                                count: state.qtyLits![index]!,
-                                                                index: index,id: info.id!,
-                                                                addOne: 1,updateFlag: true,
-                                                            product_code: info.product_code));
-                                                          },
-                                                          child: SizedBox(
-                                                            height: 30,
-                                                            width: 30,
-                                                            child: Container(
+                                                      TextSpan(text: 'Rs ', style: GoogleFonts.poppins(
+                                                          fontSize: 10,
+                                                          color: Colors.black
+                                                      )),
+                                                      TextSpan(
+                                                        text:  info.products?.sell_price!,
+                                                        style: GoogleFonts.poppins(
+                                                            fontSize: 15,
+                                                            fontWeight: FontWeight.w600,
+                                                            color: Colors.orange,
 
-                                                                decoration: BoxDecoration(
-                                                                    color: Colors.orange,
-                                                                    borderRadius: BorderRadius.all(Radius.circular(50))
-                                                                ),
-                                                                child: const Icon(Bootstrap.dash,color: Colors.white,)),
-                                                          )),
-                                                      const SizedBox(width: 5,),
-                                                      //Text(state.count.toString() =="0" ? info.quantity.toString() : state.count.toString()),
-                                                      Text( state.qtyLits![index].toString()),
-                                                      const SizedBox(width: 5,),
-                                                      InkWell(
-                                                          onTap: (){
-                                                            LoadingOverlay.show(context);
-                                                            context.read<CartBloc>().add(CartIncrementEvent(
-                                                                count: state.qtyLits![index],
-                                                                index: index,
-                                                                id: info.id!,addOne: 1,
-                                                                updateFlag: true,product_code: info.product_code));
-                                                          },
+                                                        ),
+                                                      ),
+
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(width: 5,),
+                                                RichText(
+                                                  text: TextSpan(
+                                                    style: TextStyle(color: Colors.black, fontSize: 14),
+                                                    children: [
+                                                      TextSpan(text: 'Rs ', style: GoogleFonts.poppins(
+                                                          fontSize: 10,
+                                                          color: Colors.black
+                                                      )),
+                                                      TextSpan(
+                                                        text:  info.products!.actual_price,
+
+                                                        style: GoogleFonts.poppins(
+                                                            fontSize: 15,
+                                                            fontWeight: FontWeight.w600,
+                                                            color: Colors.grey,
+                                                            decoration: TextDecoration.lineThrough
+                                                        ),
+                                                      ),
+
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 5,),
+                                            Row(
+                                              children: [
+                                                 Expanded(child:
+                                                RichText(
+                                                  text: TextSpan(
+                                                    style: TextStyle(color: Colors.black, fontSize: 14),
+                                                    children: [
+                                                      TextSpan(text: 'Rs ', style: GoogleFonts.poppins(
+                                                          fontSize: 10,
+                                                          color: Colors.black
+                                                      )),
+                                                      TextSpan(
+                                                        text: '(${double.parse(info.products!.actual_price.toString()) - double.parse(info.products!.sell_price.toString())})OFF',
+                                                        style: GoogleFonts.poppins(
+                                                            fontSize: 15,
+                                                            fontWeight: FontWeight.w600,
+                                                            color: Colors.green.shade700,
+                                                        ),
+                                                      ),
+
+                                                    ],
+                                                  ),
+                                                ),
+                                                ),
+                                                Expanded(
+                                                    child: Row(
+                                                  // crossAxisAlignment: CrossAxisAlignment.,
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: [
+                                                    InkWell(
+                                                        onTap: (){
+
+                                                          LoadingOverlay.show(context);
+                                                          context.read<CartBloc>().add(CartDecrementEvent(
+                                                              count: state.qtyLits![index],
+                                                              index: index,id: info.id!,
+                                                              addOne: 1,updateFlag: true,
+                                                          product_code: info.product_code));
+                                                        },
+                                                        child: SizedBox(
+                                                          height: 30,
+                                                          width: 30,
                                                           child: Container(
-                                                              height: 30,
-                                                              width: 30,
+
                                                               decoration: BoxDecoration(
                                                                   color: Colors.orange,
                                                                   borderRadius: BorderRadius.all(Radius.circular(50))
                                                               ),
-                                                              child: const Icon(Bootstrap.plus,color: Colors.white))),
+                                                              child: const Icon(Bootstrap.dash,color: Colors.white,)),
+                                                        )),
+                                                    const SizedBox(width: 5,),
+                                                    //Text(state.count.toString() =="0" ? info.quantity.toString() : state.count.toString()),
+                                                    Text( state.qtyLits![index].toString()),
+                                                    const SizedBox(width: 5,),
+                                                    InkWell(
+                                                        onTap: (){
+                                                          LoadingOverlay.show(context);
+                                                          context.read<CartBloc>().add(CartIncrementEvent(
+                                                              count: state.qtyLits![index],
+                                                              index: index,
+                                                              id: info.id!,addOne: 1,
+                                                              updateFlag: true,product_code: info.product_code));
+                                                        },
+                                                        child: Container(
+                                                            height: 30,
+                                                            width: 30,
+                                                            decoration: BoxDecoration(
+                                                                color: Colors.orange,
+                                                                borderRadius: BorderRadius.all(Radius.circular(50))
+                                                            ),
+                                                            child: const Icon(Bootstrap.plus,color: Colors.white))),
 
-                                                      const SizedBox(width:5,),
-                                                    ],
-                                                  ))
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                                    const SizedBox(width:5,),
+                                                  ],
+                                                ))
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                );
-                              }
-                          ),
+                                ),
+                              );
+                            }
                         ),
 
                       ],
@@ -454,14 +461,22 @@ class _CartPageState extends State<CartPage> {
                       fontWeight: FontWeight.w600
                   ),),);
                 }else{
-                  return  Container(child: Text(""),);
+                  return SizedBox.shrink();
                 }
               }, listener: (BuildContext context, CartState state) {
-              if(state is CartErrorState){
-                CustomToast.ScaffoldMessage(
-                    context: context, message: "Yor ar not authorized!",
-                    colors: Colors.red);
-              }
+
+                  if (state is CartLoadingState) {
+                   // Fluttertoast.showToast(msg: "cart loading");
+                  } else if (state is CartLoadedState) {
+                  //  Fluttertoast.showToast(msg: "cart loaded");
+                  } else if (state is CartErrorState) {
+                    CustomToast.ScaffoldMessage(
+                      context: context,
+                      message: "You are not authorized!",
+                      colors: Colors.red,
+                    );
+                  }
+
               },),
               SizedBox(height: 30,),
               //Recommended product

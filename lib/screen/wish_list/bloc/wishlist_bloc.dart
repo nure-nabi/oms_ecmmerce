@@ -67,9 +67,20 @@ class WishlistBloc extends Bloc<WishlistEvent,WishlistState>{
        Emitter<WishlistState> omit
        ) async{
      try{
-       BasicModel basicModel = await  WishlistRepo.removeWishList(item_id: event.item_code);
        response = await  WishlistRepo.getWishList();
-       if(basicModel.success == true){
+       BasicModel? basicModel;
+       final matchedItems = response!.wishlist
+           .where((u) => u.product_code!
+           .contains(event.product_code!))
+           .toList();
+       if (matchedItems.isNotEmpty) {
+         basicModel  = await  WishlistRepo.removeWishList(item_id: matchedItems.first.id);
+       } else {
+          basicModel = await  WishlistRepo.removeWishList(item_id: event.item_code);
+       }
+
+       response = await  WishlistRepo.getWishList();
+       if(basicModel!.success == true){
          LoadingOverlay.hide();
          CustomToast.showCustomRoast(context: event.context, message: basicModel.message!,
              icon: Bootstrap.check_circle,iconColor: Colors.green);

@@ -489,6 +489,38 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   ),
                                   Divider(color: Colors.grey.shade400,height: 1,),
+                                  InkWell(
+                                    onTap: (){
+                                      Navigator.pushNamed(context, profileEdit,
+                                        arguments: state.userInfoResMode!.user!.full_name!,
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        // border: Border.all(width: 1,color: Colors.grey)
+                                      ),
+                                      child: Row(
+                                        //  mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Bootstrap.person,size: 20,),
+                                          SizedBox(width: 10,),
+                                          InkWell(
+                                              onTap: (){
+                                                Navigator.pushNamed(context, changePasswordPage
+                                                );
+                                              },
+                                              child: Text("Change password",style: GoogleFonts.poppins(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w500
+                                              ),)),
+                                          Spacer(),
+                                          Icon(Bootstrap.chevron_right,color: Colors.grey.shade400,size: 15,),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Divider(color: Colors.grey.shade400,height: 1,),
                                   SizedBox(height: 10,),
                                   InkWell(
                                     onTap: (){
@@ -1064,168 +1096,6 @@ class _ProfilePageState extends State<ProfilePage> {
               return Container();
             }
 
-            // if(state is ProfileLoadedState){
-            //   Fluttertoast.showToast(msg: state.userInfoResMode!.user!.email!);
-            //   return  Column(
-            //     //mainAxisAlignment: MainAxisAlignment.start,
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       Center(
-            //         child: Column(
-            //           children: [
-            //             const SizedBox(height: 60,),
-            //             BlocBuilder<ImagePickerBlock,ImagePickerState>(
-            //               buildWhen: (previous, current) => previous.file != current.file,
-            //               builder: (BuildContext context, state) {
-            //                 if(state.file == null){
-            //                   return Stack(
-            //                     children: [
-            //                       SizedBox(
-            //                         width: 100,height: 100,
-            //                         child: CircleAvatar(
-            //                           child: Image.asset("assets/icons/people.png",),
-            //                         ),
-            //                       ),
-            //                       Positioned(
-            //                           bottom: 10,
-            //                           right: 0,
-            //                           child:
-            //                           InkWell(
-            //                               onTap: (){
-            //                                 showModalBottomSheet(
-            //                                   context: context,
-            //                                   isScrollControlled: true,
-            //                                   builder: (context) {
-            //                                     return Container(
-            //                                       height: MediaQuery.of(context).size.height * 0.3,
-            //                                       child: Column(
-            //                                         children: [
-            //                                           Padding(
-            //                                             padding: const EdgeInsets.all(16.0),
-            //                                             child: Row(
-            //                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //                                               children: [
-            //                                                 Text(
-            //                                                   'Select Source',
-            //                                                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            //                                                 ),
-            //                                                 IconButton(
-            //                                                   icon: Icon(Icons.close),
-            //                                                   onPressed: () => Navigator.pop(context),
-            //                                                 ),
-            //                                               ],
-            //                                             ),
-            //                                           ),
-            //                                           ElevatedButton(onPressed: (){
-            //                                             context.read<ImagePickerBlock>().add(CameraCaptureEvent());
-            //                                           }, child: const Text("Camera Capture")),
-            //                                           const SizedBox(height: 5,),
-            //                                           ElevatedButton(onPressed: (){
-            //                                             context.read<ImagePickerBlock>().add(GalleryImageEvent());
-            //                                           }, child: const Text("Gallary PickImage"),
-            //
-            //                                           ),
-            //
-            //                                         ],
-            //                                       ),
-            //                                     );
-            //                                   },
-            //                                 );
-            //                               },
-            //                               child: Icon(Bootstrap.camera2,color: Colors.grey,)))
-            //                     ],
-            //                   );
-            //                 }else{
-            //                   return Stack(
-            //                     children: [
-            //                       Container(
-            //                         width: 100,height: 100,
-            //                         decoration: BoxDecoration(
-            //                             borderRadius: const BorderRadius.all(Radius.circular(50)),
-            //                             image: DecorationImage(
-            //                                 image: FileImage(File(state.file!.path.toString()),),
-            //                                 fit: BoxFit.cover
-            //                             )
-            //                         ),
-            //                       ),
-            //                       Positioned(
-            //                           bottom: 10,
-            //                           right: 0,
-            //                           child:
-            //                           InkWell(
-            //                               onTap: (){
-            //                                 showModalBottomSheet(
-            //                                   context: context,
-            //                                   isScrollControlled: true,
-            //                                   builder: (context) {
-            //                                     return Container(
-            //                                       height: MediaQuery.of(context).size.height * 0.3,
-            //                                       child: Column(
-            //                                         children: [
-            //                                           Padding(
-            //                                             padding: const EdgeInsets.all(16.0),
-            //                                             child: Row(
-            //                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //                                               children: [
-            //                                                 Text(
-            //                                                   'Select Source',
-            //                                                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            //                                                 ),
-            //                                                 IconButton(
-            //                                                   icon: Icon(Icons.close),
-            //                                                   onPressed: () => Navigator.pop(context),
-            //                                                 ),
-            //                                               ],
-            //                                             ),
-            //                                           ),
-            //                                           ElevatedButton(onPressed: (){
-            //                                             context.read<ImagePickerBlock>().add(CameraCaptureEvent());
-            //                                             Navigator.pop(context);
-            //                                           }, child: const Text("Camera Capture")),
-            //                                           const SizedBox(height: 5,),
-            //                                           ElevatedButton(onPressed: (){
-            //                                             context.read<ImagePickerBlock>().add(GalleryImageEvent());
-            //                                             Navigator.pop(context);
-            //                                           }, child: const Text("Gallery PickImage"),
-            //
-            //                                           ),
-            //
-            //                                         ],
-            //                                       ),
-            //                                     );
-            //                                   },
-            //                                 );
-            //                               },
-            //                               child: Icon(Bootstrap.camera2,color: Colors.red,)))
-            //                     ],
-            //                   );
-            //                 }
-            //               },),
-            //             SizedBox(height: 10,),
-            //             Text(state.userInfoResMode!.user!.full_name!,style: GoogleFonts.poppins(
-            //               fontSize: 20,
-            //             ),)
-            //           ],
-            //         ),
-            //       ),
-            //       SizedBox(height: 60,),
-            //       TextFormField(
-            //         onChanged: (value) {
-            //
-            //           setState(() {});
-            //         },
-            //         decoration: TextFormDecoration.decoration(
-            //           hintText: "Search Customer",
-            //           hintStyle: hintTextStyle,
-            //           prefixIcon: Icons.search,
-            //         ),
-            //       ),
-            //
-            //     ],
-            //   );
-            // }else{
-            //   return Container();
-            // }
           },
         ));
   },);

@@ -25,17 +25,22 @@ import '../login_page.dart';
 class AuthService {
 
   static Future<void> loginWithGoogle(BuildContext context) async {
+    String webClientId = "487714998715-2f5e1fbrlkngea825u0eej84veth63po.apps.googleusercontent.com";
+
     try {
       await FirebaseAuth.instance.setLanguageCode("en");
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      GoogleSignIn signIn = GoogleSignIn.instance;
+      await signIn.initialize(serverClientId: webClientId);
+      GoogleSignInAccount accountDetails = await signIn.authenticate();
+     // final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
-      if (googleUser == null) {
+      if (accountDetails == null) {
         // User canceled the login process
         return;
       }
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = await accountDetails.authentication;
       final credential = await GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
+      //  accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
       await FirebaseAuth.instance.signInWithCredential(credential);
@@ -70,14 +75,13 @@ class AuthService {
 
   static logout(BuildContext context) async {
     await logOut(context);
-    await GoogleSignIn().signOut();
-    await FirebaseAuth.instance.signOut();
-
-
+    await logoutGmail();
+  //  await FirebaseAuth.instance.signOut();
   }
 
   static navigateHomePage(BuildContext context) {
     Navigator.pushReplacementNamed(context, homeNavbar, arguments: 0);
+    Fluttertoast.showToast(msg: "Login successfully");
   }
 
 static  logOut(context) async {
@@ -100,5 +104,19 @@ static  logOut(context) async {
     );
     Fluttertoast.showToast(msg: "Logout successfully");
   }
+
+ static Future<void> logoutGmail() async {
+    try {
+      GoogleSignIn signIn = GoogleSignIn.instance;
+      await signIn.signOut();
+     // await FirebaseAuth.instance.signOut();
+    } catch (e) {
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text("Logout failed: $e")),
+      // );
+    }
+  }
+
+
 
 }

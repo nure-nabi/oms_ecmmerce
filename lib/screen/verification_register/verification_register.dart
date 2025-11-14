@@ -16,7 +16,9 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../core/constant/colors_constant.dart';
 
 class VerificationRegister extends StatefulWidget {
-  const VerificationRegister({super.key});
+  String? verify;
+   VerificationRegister({super.key,this
+  .verify});
 
   @override
   State<VerificationRegister> createState() => _VerificationRegisterState();
@@ -124,10 +126,10 @@ class _VerificationRegisterState extends State<VerificationRegister> {
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   if(completeText.length == 6){
                                     BlocProvider.of<VerificationBloc>(context).add(VerificationReqEvent(
-                                        verificationReqModel: VerificationReqModel(verificationCode: completeText, email: "email0009@gmail.com")));
+                                        verificationReqModel: VerificationReqModel(verificationCode: completeText, email: await GetAllPref.verificationEmail())));
                                   }else{
                                     Fluttertoast.showToast(msg: "Please enter 6-digit code");
                                   }
@@ -159,11 +161,16 @@ class _VerificationRegisterState extends State<VerificationRegister> {
                     },
                     listener: (BuildContext context,state){
                       if(state is VerificationLoadedState){
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          loginPath,
-                              (Route<dynamic> route) => false, // This removes all routes
-                        );
+                       // if(widget.verify == "resetPassword"){
+                        //  Navigator.pushNamed(context, resetPasswordPage);
+                      //  }else{
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            loginPath,
+                                (Route<dynamic> route) => false, // This removes all routes
+                          );
+                      //  }
+
                       //  Navigator.pushNamed(context,loginPath);
                       }
                     })

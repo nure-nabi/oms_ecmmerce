@@ -23,7 +23,7 @@ class _OrderShowDetailsState extends State<OrderShowDetails> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.orderModel[widget.indexOrder].orderItems[widget.index].productsModel!.product_name!),
-        backgroundColor: gPrimaryColor,
+      //  backgroundColor: gPrimaryColor,
         leading: InkWell(
           onTap: ()=>Navigator.pop(context),
             child: Icon(Bootstrap.chevron_left)),
@@ -124,7 +124,8 @@ class _OrderShowDetailsState extends State<OrderShowDetails> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child:  CachedNetworkImage(
-                          imageUrl: widget.orderModel[widget.indexOrder].orderItems[widget.index].productsModel!.image_full_url!,
+                          imageUrl: widget.orderModel[widget.indexOrder].orderItems[widget.index].productsModel!.main_image_full_url != null ? widget.orderModel[widget.indexOrder].orderItems[widget.index].productsModel!.main_image_full_url!:
+                          widget.orderModel[widget.indexOrder].orderItems[widget.index].productsModel!.main_image_full_url!,
                           placeholder: (context, url) =>Shimmer.fromColors(
                             baseColor: Colors.grey.shade300,
                             highlightColor: Colors.grey.shade100,
@@ -186,7 +187,7 @@ class _OrderShowDetailsState extends State<OrderShowDetails> {
                   isGreen: true),
               const Divider(),
               _buildPriceRow('Total Amount',
-                  'Rs.  ${(double.parse(widget.orderModel[widget.indexOrder].orderItems[widget.index].subtotal!)) - double.parse(widget.orderModel[widget.indexOrder].orderItems[widget.index].discount!)}',
+                  'Rs.  ${(double.parse(widget.orderModel[widget.indexOrder].orderItems[widget.index].subtotal!)) - double.parse(widget.orderModel[widget.indexOrder].orderItems[widget.index].discount!) + (double.parse(widget.orderModel[widget.indexOrder].orderItems[widget.index].shipping_cost!))}',
                   style: const TextStyle(fontWeight: FontWeight.bold)),
               SizedBox(height: 24),
 

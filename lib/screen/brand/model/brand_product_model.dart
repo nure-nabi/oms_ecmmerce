@@ -22,6 +22,7 @@ class BrandProductModel{
   String? product_name;
   String? image_full_url;
   String? main_image_full_url;
+  String? main_image;
   String? product_description;
   int? category_id;
   String? delivery_target_days;
@@ -39,37 +40,74 @@ class BrandProductModel{
   String? warranty;
   String? starting_price;
   String? average_rating;
+  bool? is_wishlisted;
   int? review_count;
-  List<VariationsModel> variations;
-  List<ReviewModel> reviews;
+  List<VariationsModel>? variations;
+  List<ReviewModel>? reviews;
 
   BrandProductModel({
-    required this.product_code,
-    required this.product_name,
-    required this.image_full_url,
-    required this.main_image_full_url,
-    required this.product_description,
-    required this.category_id,
-    required this.delivery_target_days,
-    required this.discount,
-    required this.actual_price,
-    required this.sell_price,
-    required this.mr_price,
-    required this.available_quantity,
-    required this.stock_quantity,
-    required this.flash_sale,
-    required this.status,
-    required this.has_variations,
-    required this.key_specifications,
-    required this.packaging,
-    required this.warranty,
-    required this.starting_price,
-    required this.average_rating,
-    required this.review_count,
-    required this.variations,
-    required this.reviews,
+     this.product_code,
+     this.product_name,
+     this.image_full_url,
+     this.main_image_full_url,
+     this.main_image,
+     this.product_description,
+     this.category_id,
+     this.delivery_target_days,
+     this.discount,
+     this.actual_price,
+     this.sell_price,
+     this.mr_price,
+     this.available_quantity,
+     this.stock_quantity,
+     this.flash_sale,
+     this.status,
+     this.is_wishlisted,
+     this.has_variations,
+     this.key_specifications,
+     this.packaging,
+     this.warranty,
+     this.starting_price,
+     this.average_rating,
+     this.review_count,
+     this.variations,
+     this.reviews,
   });
 
+// 👇 This is the copyWith method
+  BrandProductModel copyWith({
+    String? product_code,
+    bool? is_wishlisted,
+  }) {
+    return BrandProductModel(
+      product_code: product_code ?? this.product_code,
+      product_name: product_name ?? this.product_name,
+      image_full_url: image_full_url,
+      main_image_full_url: main_image_full_url,
+      product_description: product_description,
+      main_image: main_image,
+      category_id: category_id,
+      delivery_target_days: delivery_target_days,
+      discount: discount,
+      actual_price: actual_price,
+      sell_price: sell_price,
+      mr_price: mr_price,
+      available_quantity: available_quantity,
+      stock_quantity: stock_quantity,
+      flash_sale: flash_sale,
+      status: status,
+      has_variations: has_variations,
+      key_specifications: key_specifications,
+      packaging: packaging,
+      warranty: warranty,
+      starting_price: starting_price,
+      average_rating: average_rating,
+      review_count: review_count,
+      variations: variations,
+      reviews: reviews,
+      is_wishlisted: is_wishlisted ?? this.is_wishlisted,
+    );
+  }
 
   factory BrandProductModel.fromJson(Map<String, dynamic> json){
    return BrandProductModel(
@@ -77,6 +115,7 @@ class BrandProductModel{
      product_name: json["product_name"] ?? "",
      image_full_url: json["image_full_url"] ?? "",
      main_image_full_url: json["main_image_full_url"] ?? "",
+       main_image: json["main_image"] ?? "",
      product_description: json["product_description"] ?? "",
      category_id: json["category_id"] ?? 0,
      delivery_target_days:json["delivery_target_days"] ?? "",
@@ -94,6 +133,7 @@ class BrandProductModel{
      warranty: json["warranty"] ?? "",
        starting_price: json["starting_price"] ?? "",
        average_rating: json["average_rating"] ?? "",
+       is_wishlisted: json["is_wishlisted"] ?? false,
        review_count: json["review_count"] ?? 0,
       variations: json["variations"] != null ? List<VariationsModel>.from(json["variations"].map((x)=> VariationsModel.fromJson(x))) : [],
        reviews: json["reviews"] != null ? List<ReviewModel>.from(json["reviews"].map((x)=> ReviewModel.fromJson(x))) : []

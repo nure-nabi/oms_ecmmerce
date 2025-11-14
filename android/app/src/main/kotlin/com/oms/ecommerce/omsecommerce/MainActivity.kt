@@ -1,4 +1,4 @@
-package com.oms.ecommerce.omsecommerce.oms_ecommerce
+package com.oms.ecommerce.omsecommerce
 
 import io.flutter.embedding.android.FlutterActivity
 

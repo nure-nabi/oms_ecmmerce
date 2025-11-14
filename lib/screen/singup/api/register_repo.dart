@@ -8,33 +8,66 @@ import '../../service/apiprovider.dart';
 
 class RegisterAPI {
 
-  static Future register({
+  static Future<RegisterResModel> register({
     required String firstName,
     required String lastName,
     required String password,
     required String phone,
     required String email,
   }) async {
-    RegisterReqModel registerReqModel = RegisterReqModel(
+    try {
+      final registerReqModel = RegisterReqModel(
         firstName: firstName,
         lastName: lastName,
         password: password,
         phone: phone,
-        email: email);
+        email: email,
+      );
 
-    //  var body = jsonEncode({
-    //        "email": email,
-    //        "password": password,
-    //  });
-    // CustomLog.successLog(value: "RESPONSE Save Data => $loginReqModel.toJson()");
-    var body = jsonEncode(registerReqModel.toJson());
+      final body = jsonEncode(registerReqModel.toJson());
 
-    var jsonData = await APIProvider.postAPI(
-      endPoint: "v1/register",
-      body: body,
-    );
+      final jsonData = await APIProvider.postAPI(
+        endPoint: "v1/register",
+        body: body,
+      );
 
-    return RegisterResModel.fromJson(jsonData);
+      if (jsonData == null) {
+        // 🚫 No response case
+        return RegisterResModel(
+          code: 500,
+          email: "",
+          errors: [ValidationError(message: "No response from server", code: '')],
+        );
+      }
+
+      if (jsonData["success"] == true) {
+        // ✅ Registration success
+        CustomLog.successLog(value: "RESPONSE register => $jsonData");
+        return RegisterResModel.fromJson(jsonData);
+      } else {
+        // ⚠️ Registration failed – map error into the model
+        CustomLog.errorLog(value: "Registration failed => ${jsonData["message"]}");
+
+        return RegisterResModel(
+          code: jsonData["code"] ?? 400,
+          email: "",
+          errors: [
+            ValidationError(message: jsonData["message"] ?? "Something went wrong", code: '')
+          ],
+        );
+      }
+    } catch (e) {
+      // ⚠️ Exception case
+      CustomLog.errorLog(value: "Exception in register(): $e");
+
+      return RegisterResModel(
+        code: 500,
+        email: "",
+        errors: [ValidationError(message: e.toString(), code: '')],
+      );
+    }
   }
+
+
 
 }

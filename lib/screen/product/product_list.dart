@@ -16,12 +16,15 @@ import '../../component/loading_overlay.dart';
 import '../../core/constant/colors_constant.dart';
 import '../../core/services/routeHelper/route_name.dart';
 import '../../theme/theme_data.dart';
+import '../../utils/custome_toast.dart';
+import '../../utils/hieght_width_map.dart';
 import '../cart/bloc/add_cart/add_cart_bloc.dart';
 import '../cart/bloc/add_cart/add_cart_event.dart';
 import '../cart/bloc/add_cart/add_cart_state.dart';
 import '../cart/bloc/cart_bloc.dart';
 import '../cart/bloc/cart_event.dart';
 import '../cart/bloc/cart_state.dart';
+import '../service/sharepref/get_all_pref.dart';
 import '../wish_list/bloc/wishlist_bloc.dart';
 import '../wish_list/bloc/wishlist_event.dart';
 import 'component/latest_product.dart';
@@ -68,121 +71,12 @@ class _ProductListPageState extends State<ProductListPage> {
     super.dispose();
   }
 
-  // ...items.asMap().entries.map((e){
-  // int index = e.key;
-  // String item = e.value;
-  // if(index < items.length - 1){
-  // return ListTile(
-  // title: Text(item),
-  // );
-  // }else{
-  // return Padding(
-  // padding: const EdgeInsets.all(16.0),
-  // child: Center(
-  // child: CircularProgressIndicator(),
-  // ),
-  // );
-  // }
-  // })
 
-
-  // GridView.builder(
-  // padding: const EdgeInsets.symmetric(horizontal: 10),
-  // shrinkWrap: true,
-  // physics: NeverScrollableScrollPhysics(),
-  // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-  // crossAxisCount: 2,
-  // mainAxisSpacing: 2,
-  // crossAxisSpacing: 2,
-  // childAspectRatio: 0.68,
-  // ),
-  // itemCount: state.listLoading ! +1 ,
-  // itemBuilder: (BuildContext context, int index) {
-  // // If this is the loading indicator position
-  //
-  // if (index == state.latestProductResModel!.products.length) {
-  // return const Padding(
-  // padding: EdgeInsets.all(20.0),
-  // child: Center(
-  // child: CircularProgressIndicator(),
-  // ),
-  // );
-  // }
-  //
-  // // Regular item
-  // if(state.latestProductResModel!.products.length > index) {
-  // final info = state.latestProductResModel!.products[index];
-  // return InkWell(
-  // onTap: () {
-  // // Navigator.push(
-  // //   context,
-  // //   MaterialPageRoute(
-  // //     builder: (context) => ProductDetails(productCode: info.product_code!, productName: info.product_name!, sellingPrice: double.parse(info.sell_price!), productImage: info.image_full_url,),
-  // //   ),
-  // // );
-  // },
-  // child: Card(
-  // elevation: 2,
-  // shape: RoundedRectangleBorder(
-  // borderRadius: BorderRadius.circular(8),
-  // ),
-  // child: Container(
-  // decoration: const BoxDecoration(
-  // color: Colors.white,
-  // borderRadius: BorderRadius.all(
-  // Radius.circular(10))
-  // ),
-  // child: Column(
-  // crossAxisAlignment: CrossAxisAlignment.start,
-  // children: [
-  // Stack(
-  // children: [
-  // ClipRRect(
-  // borderRadius: const BorderRadius.only(
-  // topRight: Radius.circular(5),
-  // topLeft: Radius.circular(5),
-  // ),
-  // child: CachedNetworkImage(
-  // imageUrl: info.image_full_url!,
-  // width: 200,
-  // height: 140,
-  // fit: BoxFit.cover,
-  // placeholder: (context, url) =>
-  // Container(),
-  // errorWidget: (context, url, error) =>
-  // Icon(Icons.error),
-  // ),
-  // ),
-  // Positioned(
-  // top: 5,
-  // right: 5,
-  // child: Container(
-  // height: 30,
-  // width: 30,
-  // padding: const EdgeInsets.all(7),
-  // decoration: BoxDecoration(
-  // borderRadius: BorderRadius.circular(
-  // 100),
-  // color: gPrimaryColor,
-  // ),
-  // child: Icon(Bootstrap.heart, size: 15,
-  // color: Colors.white),
-  // ),
-  // ),
-  // ],
-  // ),
-  // const SizedBox(height: 10),
-  // ],
-  // ),
-  // ),
-  // ),
-  // );
-  // }
-  // },
-  // ),
   int i = 0;
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title:  Text("Product List",style: GoogleFonts.poppins(
@@ -231,14 +125,15 @@ class _ProductListPageState extends State<ProductListPage> {
               child: Stack(
                 children: [
                       GridView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        padding:  EdgeInsets.symmetric(horizontal: 10),
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
+                        gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: ScreenHieght.getCrossAxisCount(context),
                           mainAxisSpacing: 1,
                           crossAxisSpacing: 1,
-                          childAspectRatio: 0.68,
+                          // Dynamically adjust based on screen size
+                          childAspectRatio: screenWidth / (screenHeight / 1.5),
                         ),
                         itemCount: state.product.length + 1,
                         itemBuilder: (BuildContext context, int index) {
@@ -257,13 +152,14 @@ class _ProductListPageState extends State<ProductListPage> {
                                       productCode: info.product_code!,
                                       productName: info.product_name!,
                                       sellingPrice: double.parse(info.sell_price!),
+                                      stock_quantity: info.stock_quantity,
                                       productImage: info.image_full_url,
                                       variation: info.has_variations,),
                                   ),
                                 );
                               },
                               child: Card(
-                                elevation: 2,
+                                elevation: 1,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5),
                                 ),
@@ -285,7 +181,8 @@ class _ProductListPageState extends State<ProductListPage> {
                                               topLeft: Radius.circular(5),
                                             ),
                                             child: CachedNetworkImage(
-                                              imageUrl: info.image_full_url!,
+                                              imageUrl: info.main_image_full_url != "" ? info.main_image_full_url! : info.image_full_url!,
+
                                               width: 200,
                                               height: 140,
                                               fit: BoxFit.cover,
@@ -296,23 +193,54 @@ class _ProductListPageState extends State<ProductListPage> {
                                             ),
                                           ),
                                           Positioned(
-                                            top: 5,
-                                            right: 5,
-                                            child: InkWell(
-                                              onTap: (){
-                                                LoadingOverlay.show(context);
-                                                BlocProvider.of<WishlistBloc>(context).add(WishlistSaveEvent(
-                                                    productCode: info.product_code!,context: context));
-                                                context.read<ProductListBloc>().add(ProductWishListUpdateEvent(index: index,flag: true,limit: 20));
-                                              },
-                                              child: Icon(
-                                                info.is_wishlisted!?
-                                                Bootstrap.heart_fill : Bootstrap.heart_fill,
-                                                size: 25,
-                                                color:  info.is_wishlisted!? Colors.red.shade800 : Colors.grey.shade400,
-                                              ),
-                                            ),
-                                          ),
+                                              top: 5,
+                                              right: 5,
+                                              child: InkWell(
+                                                onTap: ()async{
+                                                  if(await GetAllPref.loginSuccess()){
+                                                    if(!info.is_wishlisted!){
+                                                      LoadingOverlay.show(context);
+                                                      BlocProvider.of<WishlistBloc>(context).add(WishlistSaveEvent(
+                                                          productCode: info.product_code!,context: context));
+                                                      context.read<ProductListBloc>().add(ProductWishListUpdateEvent(
+                                                          index: index,flag: true,limit: 20));
+                                                    }else{
+                                                      //  context.read<WishlistBloc>().add(WishlistReqEvent());
+                                                      LoadingOverlay.show(context);
+                                                      BlocProvider.of<WishlistBloc>(context).add(WishlistRemovedEvent(
+                                                          item_code: info.product_code!,product_code: info.product_code!,context: context));
+                                                      context.read<ProductListBloc>().add(ProductWishListUpdateEvent(
+                                                          index: index,flag: false,limit: 20));
+                                                    }
+                                                  }else{
+                                                    CustomToast.showCustomRoast(context: context, message: "You are not login!", icon: Bootstrap.check_circle,iconColor: Colors.red);
+                                                  }
+
+                                                },
+                                                child: Icon(info.is_wishlisted! ?
+                                                Bootstrap.heart_fill : Bootstrap.heart,
+                                                    color:info.is_wishlisted! ?
+                                                    Colors.red :  Colors.grey.shade400),
+                                              )),
+                                          // Positioned(
+                                          //   top: 5,
+                                          //   right: 5,
+                                          //   child: InkWell(
+                                          //     onTap: (){
+                                          //       LoadingOverlay.show(context);
+                                          //       BlocProvider.of<WishlistBloc>(context).add(WishlistSaveEvent(
+                                          //           productCode: info.product_code!,context: context));
+                                          //       context.read<ProductListBloc>().add(ProductWishListUpdateEvent(
+                                          //           index: index,flag: true,limit: 20));
+                                          //     },
+                                          //     child: Icon(
+                                          //       info.is_wishlisted!?
+                                          //       Bootstrap.heart_fill : Bootstrap.heart_fill,
+                                          //       size: 25,
+                                          //       color:  info.is_wishlisted!? Colors.red.shade800 : Colors.grey.shade400,
+                                          //     ),
+                                          //   ),
+                                          // ),
                                         ],
                                       ),
                                       const SizedBox(height: 8),
@@ -657,10 +585,10 @@ class ProductAllItem extends StatelessWidget {
                     LoadingOverlay.show(context);
                     BlocProvider.of<AddCartBloc>(context).add(
                       AddCartReqEvent(
-                        productCode: productCode,
-                        price: price,
-                        quantity: "1",
-                        context: context
+                          productCode: productCode,
+                          price: price,
+                          quantity: "1",
+                          context: context
                       ),
                     );
                     // Listen for state changes and then dispatch the cart event
@@ -680,7 +608,7 @@ class ProductAllItem extends StatelessWidget {
                     padding: const EdgeInsets.all(7),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100), // Fully circular
-                     // color: gPrimaryColor,
+                      // color: gPrimaryColor,
                       color: Colors.white,
                       boxShadow: [
                         BoxShadow(

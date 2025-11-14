@@ -8,3 +8,11 @@ class ProductRelatedReqEvent extends ProductRelatedEvent{
   @override
   List<Object?> get props => throw UnimplementedError();
 }
+
+class ProductRelatedWishListFlagReqEvent extends ProductRelatedEvent{
+  bool flag;
+  int index;
+  ProductRelatedWishListFlagReqEvent({required this.flag, required this.index});
+  @override
+  List<Object?> get props => [];
+}

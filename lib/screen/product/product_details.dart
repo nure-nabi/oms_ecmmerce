@@ -34,7 +34,9 @@ import 'package:shimmer/shimmer.dart';
 import '../../constant/asstes_list.dart';
 import '../../core/constant/colors_constant.dart';
 import '../../storage/hive_storage.dart';
+import '../../theme/theme_data.dart';
 import '../../utils/custome_toast.dart';
+import '../../utils/hieght_width_map.dart';
 import '../address/bloc/address_bloc.dart';
 import '../address/bloc/address_event.dart';
 import '../address/bloc/address_state.dart';
@@ -62,6 +64,7 @@ class ProductDetails extends StatefulWidget {
   final double? sellingPrice;
   final String? productImage;
   final int? variation;
+  final int? stock_quantity;
   final bool? leadingFlag;
 
   const ProductDetails(
@@ -71,6 +74,7 @@ class ProductDetails extends StatefulWidget {
       required this.sellingPrice,
       required this.productImage,
       required this.variation,
+       this.stock_quantity,
        this.leadingFlag=false,
       });
 
@@ -81,6 +85,7 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails> {
   late AddressResponseModel addressResponseModel;
   int count = 1;
+  int stockQuantity = 1;
   bool _isExpanded1 = false;
   bool _isExpanded2 = false;
   bool _isExpanded3 = false;
@@ -107,7 +112,8 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
   @override
   Widget build(BuildContext context) {
-
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     Future<void> _shareContent(String imageUrl) async {
       try {
         // Show loading indicator
@@ -146,6 +152,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
 
 
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBarShow(
@@ -154,7 +161,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           leading: InkWell(
             onTap: ()=>Navigator.pop(context),
               child: Icon(Bootstrap.chevron_left)),
-          title: widget.productName!,
+          title:widget.productName!.isNotEmpty ? widget.productName! : "Product",
           onCartPressed: () {
             Navigator.push(
                 context,
@@ -164,33 +171,40 @@ class _ProductDetailsState extends State<ProductDetails> {
                         )));
           },
         ),
-        body: SingleChildScrollView(
+        body:widget.productName!.isNotEmpty ? SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              //call address
-              BlocBuilder<AddressBloc, AddressState>(
-                builder: (context, state) {
-                  if (state is AddressLoadedState) {
-                    // Navigate after a delay to avoid context issues
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      addressResponseModel = state.addressResponseModel!;
-
-                    });
+             // call profile
+              BlocConsumer<ProfileBloc, ProfileState>(
+                listener: (context, state) {
+                  if (state is ProfileLoadedState) {
+                    shipping_cost = state.userInfoResMode!.addresses![0].city!.shipping_cost!;
                   }
-                  return SizedBox.shrink();
-
+                },
+                builder: (context, state) {
+                  return SizedBox.shrink(); // or your UI widget
                 },
               ),
-              //profile
-              BlocBuilder<ProfileBloc,ProfileState>(builder: (BuildContext context, state) {
-                if(state is ProfileLoadedState){
-                  WidgetsBinding.instance.addPostFrameCallback((_){
-                    shipping_cost = state.userInfoResMode!.addresses![0].city!.shipping_cost!;
-                  });
-                }
-                return SizedBox.shrink();
-              },),
+              //call address
+              BlocConsumer<AddressBloc, AddressState>(
+                listener: (context, state) {
+                  if (state is AddressLoadedState) {
+                    // Navigate after a delay to avoid context issues
+                    addressResponseModel = state.addressResponseModel!;
+                    // WidgetsBinding.instance.addPostFrameCallback((_) {
+                    //   addressResponseModel = state.addressResponseModel!;
+                    //
+                    // });
+                  }
+                },
+                builder: (context, state) {
+                  return SizedBox.shrink(); // or your UI widget
+                },
+              ),
+
               BlocConsumer<ProductDetailsBloc, ProductDetailsState>(
                 builder: (BuildContext context, state) {
                   if (state is ProductDetailsLoadingState) {
@@ -238,7 +252,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       ],
                     );
                   }  else if (state is ProductDetailsLoadedState) {
-                  //  Fluttertoast.showToast(msg: state.productDetailsReqModel!.productDetailsResModel!.is_wishlisted .toString());
+                    stockQuantity = state.productDetailsReqModel!.productDetailsResModel!.stock_quantity!;
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -293,13 +307,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                           CachedNetworkImage(
                             // imageUrl: state.productDetailsResModel!.image_full_url!,
                             imageUrl: state.productDetailsReqModel!.productDetailsResModel!.image_full_url! != "" ? state.productDetailsReqModel!.productDetailsResModel!.image_full_url!: state.productDetailsReqModel!.productDetailsResModel!.main_image_full_url!,
-                            height: 350,
+                            height: MediaQuery.of(context).size.height * 0.4,
                             fit: BoxFit.cover,
                             width: MediaQuery.of(context).size.width,
-                            errorWidget: (context, url, error) => Image.asset("assets/icons/noimage.jpg"),
+                            errorWidget: (context, url, error) => Image.asset("assets/icons/gargimage.png"),
                           ),
                         ],
-
 
                         SizedBox(
                           height: 10,
@@ -332,7 +345,6 @@ class _ProductDetailsState extends State<ProductDetails> {
 
                               if(state.productDetailsReqModel!.productDetailsResModel!.has_variations == 0)
                               Row(
-
                                 children: [
                                   RichText(
                                     text: TextSpan(
@@ -342,6 +354,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                         TextSpan(
                                             text: 'Rs ',
                                             style: GoogleFonts.poppins(
+                                              color: lightColorScheme.primary,
                                                 fontSize: 10,
                                               )),
                                         TextSpan(
@@ -350,6 +363,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                               : state.sellPrice!.toStringAsFixed(2),
                                           style: GoogleFonts.poppins(
                                               fontSize: 17,
+                                               color: lightColorScheme.primary,
                                               fontWeight: FontWeight.w600,
                                              ),
                                         ),
@@ -378,7 +392,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                           style: GoogleFonts.poppins(
                                             fontSize: 15,
                                             fontWeight: FontWeight.w600,
-                                          //  color: Colors.grey,
+                                            color: Colors.grey,
                                             decoration:
                                                 TextDecoration.lineThrough,
                                             // Adds strikethrough line
@@ -412,6 +426,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     direction: Axis.horizontal,
                                     allowHalfRating: true,
                                     itemCount: 5,
+                                    ignoreGestures: true, // <-- makes it read-only
                                     itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
                                     itemBuilder: (context, _) => Icon(
                                       Icons.star,
@@ -430,14 +445,37 @@ class _ProductDetailsState extends State<ProductDetails> {
                                       splashColor: Colors.transparent, // Splash/ripple color when tapped
                                       highlightColor: Colors.red.withOpacity(0), // Highlight color when pressed
                                     onTap : (){
-                                      context.read<ProductDetailsBloc>().add(ProductWishListAddEvent(index: 0, flage: true));
-                                      LoadingOverlay.show(context);
+                                     // context.read<WishlistBloc>().add(WishlistReqEvent());
+                                     // Fluttertoast.showToast(msg: state.productDetailsReqModel!.productDetailsResModel!.is_wishlisted!.toString());
+                                    if(!state.productDetailsReqModel!.productDetailsResModel!.is_wishlisted!) {
                                       BlocProvider.of<WishlistBloc>(context).add(WishlistSaveEvent(
-                                          productCode: state.productDetailsReqModel!.productDetailsResModel!.product_code!,context: context));
-
+                                              productCode: state.productDetailsReqModel!
+                                                  .productDetailsResModel!.product_code!,
+                                              context: context));
+                                      context.read<ProductDetailsBloc>().add(
+                                          ProductWishListAddEvent(index: 0, flage: true,productCode:state.productDetailsReqModel!
+                                              .productDetailsResModel!.product_code!,));
+                                      LoadingOverlay.show(context);
+                                    }else{
+                                      BlocProvider.of<WishlistBloc>(context).add(
+                                          WishlistRemovedEvent(
+                                            product_code: state.productDetailsReqModel!
+                                                .productDetailsResModel!.product_code!,
+                                              item_code: state.productDetailsReqModel!
+                                                  .productDetailsResModel!.product_code!,
+                                              context: context));
+                                      context.read<ProductDetailsBloc>().add(
+                                          ProductWishListAddEvent(index: 0, flage: false,productCode:state.productDetailsReqModel!
+                                              .productDetailsResModel!.product_code!, ));
+                                      LoadingOverlay.show(context);
+                                    }
                                     },
-                                      child: Icon( state.productDetailsReqModel!.productDetailsResModel!.is_wishlisted! ? Bootstrap.heart_fill : Bootstrap.heart, color: state.productDetailsReqModel!.productDetailsResModel!.is_wishlisted! ?  Colors.red :  Colors.grey.shade400)),
+                                      child: Icon(state.productDetailsReqModel!.productDetailsResModel!.is_wishlisted! ?
+                                      Bootstrap.heart_fill : Bootstrap.heart,
+                                          color: state.productDetailsReqModel!.productDetailsResModel!.is_wishlisted! ?
+                                          Colors.red :  Colors.grey.shade400)),
                                   SizedBox(width: 20,),
+
                                   InkWell(
                                     onTap : (){
                                       _shareContent("https://gargdental.omsok.com/storage/app/public/backend/carousel_files/screenshot_2025_07_14_at_121129.png");
@@ -446,6 +484,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 ],
                               ),
                               SizedBox(height: 10,),
+                              if(state.productDetailsReqModel!.productDetailsResModel!.catalogue_full_url != "")
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                 decoration: BoxDecoration(
@@ -482,17 +521,16 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     children: [
                                       InkWell(
                                           onTap: () {
-                                            count--;
-                                            context
-                                                .read<ProductDetailsBloc>()
-                                                .add(ProductQtyDecrementEvent(
-                                                    count: state.qtyCount!,
-                                                    price: double.parse(state
-                                                        .productDetailsReqModel!.productDetailsResModel!
-                                                        .sell_price!),
-                                                    actualPrice: double.parse(state
-                                                        .productDetailsReqModel!.productDetailsResModel!
-                                                        .actual_price!)));
+                                            if(count > 1){
+                                              count--;
+                                              context
+                                                  .read<ProductDetailsBloc>()
+                                                  .add(ProductQtyDecrementEvent(
+                                                  count: state.qtyCount!,
+                                                  price: double.parse(state.productDetailsReqModel!.productDetailsResModel!.sell_price!),
+                                                  actualPrice: double.parse(state.productDetailsReqModel!.productDetailsResModel!.actual_price!)));
+                                            }
+
                                           },
                                           child: const Icon(Bootstrap.dash_circle)),
                                       SizedBox(
@@ -504,19 +542,22 @@ class _ProductDetailsState extends State<ProductDetails> {
                                       ),
                                       InkWell(
                                           onTap: () {
-                                            count++;
-                                            context
-                                                .read<ProductDetailsBloc>()
-                                                .add(ProductQtyIncrementEvent(
-                                                    count: state.qtyCount!,
-                                                    price: double.parse(
-                                                      state
-                                                          .productDetailsReqModel!.productDetailsResModel!
-                                                          .sell_price!,
-                                                    ),
-                                                    actualPrice: double.parse(state
+                                            if(count < stockQuantity){
+                                              count++;
+                                              context.read<ProductDetailsBloc>().add(ProductQtyIncrementEvent(
+                                                  count: state.qtyCount!,
+                                                  price: double.parse(
+                                                    state
                                                         .productDetailsReqModel!.productDetailsResModel!
-                                                        .actual_price!)));
+                                                        .sell_price!,
+                                                  ),
+                                                  actualPrice: double.parse(state
+                                                      .productDetailsReqModel!.productDetailsResModel!
+                                                      .actual_price!)));
+                                            }else{
+
+                                            }
+
                                           },
                                           child: Icon(Bootstrap.plus_circle)),
                                     ],
@@ -526,6 +567,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
                               //variations
                               if(state.productDetailsReqModel!.productDetailsResModel!.has_variations == 1)
+                                SizedBox(height: 10,),
                                 Column(
                                   children: List.generate(state.productDetailsReqModel!.productDetailsResModel!.variations.length, (index){
                                     var percentage = ((double.parse(state.productDetailsReqModel!.productDetailsResModel!.variations[index].actual_price!) - double.parse(state.productDetailsReqModel!.productDetailsResModel!.variations[index].sell_price!))/double.parse(state.productDetailsReqModel!.productDetailsResModel!.variations[index].actual_price!)) * 100;
@@ -621,7 +663,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   }),
                                 ),
                               // variation description
-                              if(state.productDetailsReqModel!.productDetailsResModel!.has_variations == 1)
+                              if(state.productDetailsReqModel!.productDetailsResModel!.has_variations == 0)
+                                SizedBox(height: 10,),
                                 Column(
                                   children: [
                                     htmlShow1("Description",context,state.productDetailsReqModel!.productDetailsResModel!.product_description,_isExpanded1),
@@ -668,22 +711,24 @@ class _ProductDetailsState extends State<ProductDetails> {
                 },
                 listener: (BuildContext context, Object? state) {},
               ),
+              //product related
               BlocBuilder<ProductRelatedBloc, ProductRelatedState>(
                 builder: (BuildContext context, state) {
                   if (state is ProductRelatedLoadingState) {
                     return GridView.builder(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding:  EdgeInsets.symmetric(horizontal: 10),
                       // Padding around the grid
                       shrinkWrap: true,
                       // Useful inside ScrollViews
-                      physics: const NeverScrollableScrollPhysics(),
+                      physics:  NeverScrollableScrollPhysics(),
                       // Disable scrolling if nested
                       gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 5,
-                        crossAxisSpacing: 5,
-                        childAspectRatio: 0.68,
+                       SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: ScreenHieght.getCrossAxisCount(context),
+                        mainAxisSpacing: 1,
+                        crossAxisSpacing: 1,
+                        // Dynamically adjust based on screen size
+                        childAspectRatio: screenWidth / (screenHeight / 1.5),
                       ),
                       itemCount: 4,
                       // Total number of items
@@ -702,6 +747,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       },
                     );
                   } else if (state is ProductRelatedLoadedState) {
+
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -722,18 +768,19 @@ class _ProductDetailsState extends State<ProductDetails> {
                         ),
                         if(state.productRelatedResModel!.data.isNotEmpty)
                         GridView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          padding:  EdgeInsets.symmetric(horizontal: 10),
                           // Padding around the grid
                           shrinkWrap: true,
                           // Useful inside ScrollViews
-                          physics: const NeverScrollableScrollPhysics(),
+                          physics:  NeverScrollableScrollPhysics(),
                           // Disable scrolling if nested
                           gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: 5,
-                                crossAxisSpacing: 5,
-                                childAspectRatio: 0.68,
+                               SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: ScreenHieght.getCrossAxisCount(context),
+                                mainAxisSpacing: 1,
+                                crossAxisSpacing: 1,
+                                // Dynamically adjust based on screen size
+                                childAspectRatio: screenWidth / (screenHeight / 1.4),
                               ),
                           itemCount: state.productRelatedResModel!.data.length,
                           // Total number of items
@@ -748,6 +795,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     builder: (context) => ProductDetails(
                                       productCode: info.product_code!,
                                       productName: info.product_name!,
+                                      stock_quantity: info.stock_quantity,
                                       sellingPrice: double.parse(info.sell_price!),
                                       productImage: info.image_full_url,
                                       variation: widget.variation,
@@ -755,72 +803,97 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   ),
                                 );
                               },
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                   // color: Colors.white60,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10))),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Stack(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius: const BorderRadius.only(
-                                            topRight: Radius.circular(5),
-                                            topLeft: Radius.circular(5),
-                                          ),
-                                          child: CachedNetworkImage(
-                                            imageUrl: info.image_full_url!,
-                                            width: 200,
-                                            height: 140,
-                                            fit: BoxFit.cover,
-                                            placeholder: (context, url) =>
-                                                Container(),
-                                            errorWidget: (context, url, error) =>
-                                                Icon(Icons.error),
-                                          ),
-                                          // child: Image.network(
-                                          //   info.image_full_url!,
-                                          //   width: 200,
-                                          //   height: 140,
-                                          //   fit: BoxFit.cover,
-                                          // ),
-                                        ),
-                                        Positioned(
-                                            top: 5,
-                                            right: 5,
-                                            child: InkWell(
-                                              onTap: (){
-
-
-                                              },
-                                              child: Icon(
-                                                 Bootstrap.heart_fill,
-                                                size: 25,
-                                                color:Colors.grey.shade400,
-                                              ),
-                                            )),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    // Product list
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(horizontal: 5.0),
-                                      child: Column(
+                              child: Card(
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                     // color: Colors.white60,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10))),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Stack(
                                         children: [
-                                          ProductItem(
-                                            name: info.product_name!,
-                                            brand: "Product's brand",
-                                            price: info.sell_price!,
+                                          ClipRRect(
+                                            borderRadius: const BorderRadius.only(
+                                              topRight: Radius.circular(5),
+                                              topLeft: Radius.circular(5),
+                                            ),
+                                            child: CachedNetworkImage(
+                                              imageUrl: info.main_image_full_url!.isNotEmpty ? info.main_image_full_url! : info.image_full_url!,
+                                              //imageUrl: info.image_full_url!,
+                                              width: 200,
+                                              height: 140,
+                                              fit: BoxFit.cover,
+                                              placeholder: (context, url) =>
+                                                  Container(),
+                                              errorWidget: (context, url, error) =>
+                                                  Icon(Icons.error),
+                                            ),
+                                            // child: Image.network(
+                                            //   info.image_full_url!,
+                                            //   width: 200,
+                                            //   height: 140,
+                                            //   fit: BoxFit.cover,
+                                            // ),
                                           ),
+                                          Positioned(
+                                              top: 5,
+                                              right: 5,
+                                              child: InkWell(
+                                                onTap: () async {
+                                                  if(await GetAllPref.loginSuccess()){
+                                
+                                                  if(!info.is_wishlisted!){
+                                                  LoadingOverlay.show(context);
+                                                  BlocProvider.of<WishlistBloc>(context).add(WishlistSaveEvent(
+                                                  productCode: info.product_code!,context: context));
+                                                  context.read<ProductRelatedBloc>().add(ProductRelatedWishListFlagReqEvent(
+                                                  flag: true, index: index));
+                                
+                                                  }else{
+                                                  //  context.read<WishlistBloc>().add(WishlistReqEvent());
+                                                  LoadingOverlay.show(context);
+                                                  BlocProvider.of<WishlistBloc>(context).add(WishlistRemovedEvent(
+                                                  item_code: info.product_code!,product_code: info.product_code!,context: context));
+                                                  context.read<ProductRelatedBloc>().add(ProductRelatedWishListFlagReqEvent(
+                                                  flag: false, index: index));
+                                                  }
+                                                  }else{
+                                                  CustomToast.showCustomRoast(context: context, message: "You are not login!", icon: Bootstrap.check_circle,iconColor: Colors.red);
+                                                  }
+                                
+                                                },
+                                                  child: Icon(
+                                                    info.is_wishlisted!?
+                                                    Bootstrap.heart_fill : Bootstrap.heart_fill,
+                                                    size: 25,
+                                                    color:  info.is_wishlisted!? Colors.red.shade800 : Colors.grey.shade400,
+                                                  ),
+                                              )),
                                         ],
                                       ),
-                                    ),
-                                  ],
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      // Product list
+                                      Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(horizontal: 5.0),
+                                        child: Column(
+                                          children: [
+                                            ProductItem(
+                                              name: info.product_name!,
+                                              brand: "No brand",
+                                              productCode: info.product_code,
+                                              price: info.sell_price!,
+                                              stockQuantity: info.stock_quantity!,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
@@ -832,21 +905,206 @@ class _ProductDetailsState extends State<ProductDetails> {
                     return Container();
                   }
                 },
-              )
+              ),
+
             ],
           ),
-        ),
+        ) : Center(child: Text("Product are not available....",style: GoogleFonts.poppins(
+          fontSize: 15
+        ),),),
+
         bottomNavigationBar: BlocBuilder<ThemeBloc,ThemeMode>(builder: (BuildContext context, state) {
+         // Fluttertoast.showToast(msg: widget.stock_quantity.toString());
           final bool isDarkMode = state == ThemeMode.dark;
           final Color backgroundColor = isDarkMode ? Colors.black : Colors.white;
           final Color textColor = HiveStorage.hasPermission("Thememode") ? Colors.white : Colors.black;
-          return Container(
-            padding: EdgeInsets.symmetric(horizontal: 0),
+          return widget.stock_quantity! > 0 ? Container(
+           height: 47,
+            padding: EdgeInsets.symmetric(horizontal: 0,vertical: 0),
             decoration: BoxDecoration(
+
                 border: Border(
                     top: BorderSide(width: .6,
                         color: Colors.grey))),
-            child: BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
+            child:  widget.productName!.isNotEmpty ?  BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
+              builder: (BuildContext context, state) {
+                if (state is ProductDetailsLoadingState) {
+                  return Row(
+                    children: [
+                      Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              // BlocProvider.of<AddCartBloc>(context).add(
+                              //     AddCartReqEvent(
+                              //         productCode: widget.productCode,
+                              //         price: "1200",
+                              //         quantity: count.toString()));
+                            },
+                            child: Text('',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.poppins(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    color: textColor)),
+                          )),
+                      Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // context.read<CartBloc>().add(CartReqEvent(0));
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 13),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0),
+                              ),
+                              backgroundColor: gPrimaryColor,
+                              // Make button bg transparent
+                              shadowColor: Colors.transparent, // Remove default shadow
+                            ),
+                            child: Text('Buy Now',
+                                style: GoogleFonts.poppins(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white)),
+                          ))
+                    ],
+                  );
+                } else if (state is ProductDetailsLoadedState) {
+                  return Row(
+                    children: [
+                      if(state.productDetailsReqModel!.productDetailsResModel!.sell_price != "")...[
+                        Expanded(
+                            child: Container(
+                              color: Colors.orange,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 14
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                            text: 'Rs ',
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 10,color: textColor )),
+                                        TextSpan(
+                                          text: state.sellPrice! == 0
+                                              ? state.productDetailsReqModel!.productDetailsResModel!.sell_price!
+                                              : state.sellPrice!.toStringAsFixed(2),
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 15,
+                                            color: textColor,
+                                            fontWeight: FontWeight.w600,
+
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      LoadingOverlay.show(context);
+                                      BlocProvider.of<AddCartBloc>(context).add(
+                                        AddCartReqEvent(
+                                            productCode: widget.productCode,
+                                            price: widget.sellingPrice?.toStringAsFixed(2),
+                                            quantity: count.toString(),
+                                            context: context
+                                        ),
+                                      );
+                                      // Listen for state changes and then dispatch the cart event
+                                      BlocProvider.of<AddCartBloc>(context).stream.firstWhere((state) {
+                                        // Define your condition for when the operation is complete
+                                        return state is AddCartLoadedState; // or whatever your success state is
+                                      }).then((_) {
+                                        context.read<CartBloc>().add(CartReqEvent(count:0,checkedCart:false));
+                                      });
+                                      //   BlocProvider.of<CartBloc>(context).add(CartReqEvent(0));
+                                    },
+                                    child: Text('Add to cart',
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 16,
+
+                                          fontWeight: FontWeight.w600,
+                                        )),
+                                  ),
+                                ],
+                              ),
+                            )),
+                      ]else ...[
+                        Expanded(child: SizedBox())
+                      ],
+
+                      Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // First, get the context before any async operation
+                              final currentContext = context;
+
+                              // Then perform the async operations
+                              Future(() async {
+                                if (await GetAllPref.loginSuccess()) {
+                                  if (addressResponseModel.addresses!.isNotEmpty) {
+                                    if (!currentContext.mounted) return; // Check if widget is still in the tree
+                                    Navigator.pushNamed(currentContext, orderDetailsPage, arguments: {
+                                      'productCode': widget.productCode,
+                                      'productName': widget.productName,
+                                      'productImage': widget.productImage,
+                                      'productQuantity': count.toString(),
+                                      'productPrice': widget.sellingPrice?.toStringAsFixed(2),
+                                      'shipping_cost': shipping_cost,
+                                    });
+                                  } else {
+                                    if (!currentContext.mounted) return;
+                                    CustomToast.showCustomRoast(
+                                      context: currentContext,
+                                      message: "Please first add address",
+                                      icon: Bootstrap.check_circle,
+                                      iconColor: Colors.red,
+                                    );
+                                    Navigator.pushNamed(currentContext, addressShow);
+                                  }
+                                } else {
+                                  if (!currentContext.mounted) return;
+                                  Navigator.pushNamed(currentContext, loginPath);
+                                }
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(vertical: 13),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0),
+                              ),
+                              backgroundColor: gPrimaryColor,
+                              // Make button bg transparent
+                              shadowColor: Colors.transparent, // Remove default shadow
+                            ),
+                            child: Text('Buy Now',
+                                style: GoogleFonts.poppins(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white)),
+                          ))
+                    ],
+                  );
+                } else {
+                  return Container();
+                }
+              },
+            ):SizedBox.shrink(),
+          )
+          :Container(
+            height: 47,
+            padding: EdgeInsets.symmetric(horizontal: 0,vertical: 0),
+            decoration: BoxDecoration(
+
+                border: Border(
+                    top: BorderSide(width: .6,
+                        color: Colors.grey))),
+            child:  widget.productName!.isNotEmpty ?  BlocBuilder<ProductDetailsBloc, ProductDetailsState>(
               builder: (BuildContext context, state) {
                 if (state is ProductDetailsLoadingState) {
                   return Row(
@@ -890,68 +1148,69 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ],
                   );
                 } else if (state is ProductDetailsLoadedState) {
-
                   return Row(
                     children: [
                       if(state.productDetailsReqModel!.productDetailsResModel!.sell_price != "")...[
                         Expanded(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-
-                                RichText(
-                                  text: TextSpan(
-                                    style: GoogleFonts.poppins(
-                                        fontSize: 14
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                          text: 'Rs ',
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 10,color: textColor )),
-                                      TextSpan(
-                                        text: state.sellPrice! == 0
-                                            ? state.productDetailsReqModel!.productDetailsResModel!.sell_price!
-                                            : state.sellPrice!.toStringAsFixed(2),
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 15,
-                                          color: textColor,
-                                          fontWeight: FontWeight.w600,
-
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    LoadingOverlay.show(context);
-                                    BlocProvider.of<AddCartBloc>(context).add(
-                                      AddCartReqEvent(
-                                          productCode: widget.productCode,
-                                          price: widget.sellingPrice?.toStringAsFixed(2),
-                                          quantity: count.toString(),
-                                          context: context
-                                      ),
-                                    );
-                                    // Listen for state changes and then dispatch the cart event
-                                    BlocProvider.of<AddCartBloc>(context).stream.firstWhere((state) {
-                                      // Define your condition for when the operation is complete
-                                      return state is AddCartLoadedState; // or whatever your success state is
-                                    }).then((_) {
-                                      context.read<CartBloc>().add(CartReqEvent(count:0,checkedCart:false));
-                                    });
-                                    //   BlocProvider.of<CartBloc>(context).add(CartReqEvent(0));
-                                  },
-                                  child: Text('Add to cart',
-                                      textAlign: TextAlign.center,
+                            child: Container(
+                              color: Colors.orange,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
                                       style: GoogleFonts.poppins(
-                                        fontSize: 16,
+                                          fontSize: 14
+                                      ),
+                                      children: [
+                                        TextSpan(
+                                            text: 'Rs ',
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 10,color: textColor )),
+                                        TextSpan(
+                                          text: state.sellPrice! == 0
+                                              ? state.productDetailsReqModel!.productDetailsResModel!.sell_price!
+                                              : state.sellPrice!.toStringAsFixed(2),
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 15,
+                                            color: textColor,
+                                            fontWeight: FontWeight.w600,
 
-                                        fontWeight: FontWeight.w600,
-                                      )),
-                                ),
-                              ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      LoadingOverlay.show(context);
+                                      BlocProvider.of<AddCartBloc>(context).add(
+                                        AddCartReqEvent(
+                                            productCode: widget.productCode,
+                                            price: widget.sellingPrice?.toStringAsFixed(2),
+                                            quantity: count.toString(),
+                                            context: context
+                                        ),
+                                      );
+                                      // Listen for state changes and then dispatch the cart event
+                                      BlocProvider.of<AddCartBloc>(context).stream.firstWhere((state) {
+                                        // Define your condition for when the operation is complete
+                                        return state is AddCartLoadedState; // or whatever your success state is
+                                      }).then((_) {
+                                        context.read<CartBloc>().add(CartReqEvent(count:0,checkedCart:false));
+                                      });
+                                      //   BlocProvider.of<CartBloc>(context).add(CartReqEvent(0));
+                                    },
+                                    child: Text('Add to cart',
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 16,
+
+                                          fontWeight: FontWeight.w600,
+                                        )),
+                                  ),
+                                ],
+                              ),
                             )),
                       ]else ...[
                         Expanded(child: SizedBox())
@@ -960,40 +1219,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                       Expanded(
                           child: ElevatedButton(
                             onPressed: () {
-                              // First, get the context before any async operation
-                              final currentContext = context;
 
-                              // Then perform the async operations
-                              Future(() async {
-                                if (await GetAllPref.loginSuccess()) {
-                                  if (addressResponseModel.addresses!.isNotEmpty) {
-                                    if (!currentContext.mounted) return; // Check if widget is still in the tree
-                                    Navigator.pushNamed(currentContext, orderDetailsPage, arguments: {
-                                      'productCode': widget.productCode,
-                                      'productName': widget.productName,
-                                      'productImage': widget.productImage,
-                                      'productQuantity': count.toString(),
-                                      'productPrice': widget.sellingPrice?.toStringAsFixed(2),
-                                      'shipping_cost': shipping_cost,
-                                    });
-                                  } else {
-                                    if (!currentContext.mounted) return;
-                                    CustomToast.showCustomRoast(
-                                      context: currentContext,
-                                      message: "Please first add address",
-                                      icon: Bootstrap.check_circle,
-                                      iconColor: Colors.red,
-                                    );
-                                    Navigator.pushNamed(currentContext, addressShow);
-                                  }
-                                } else {
-                                  if (!currentContext.mounted) return;
-                                  Navigator.pushNamed(currentContext, loginPath);
-                                }
-                              });
                             },
                             style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              padding: const EdgeInsets.symmetric(vertical: 13),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(0),
                               ),
@@ -1001,7 +1230,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                               // Make button bg transparent
                               shadowColor: Colors.transparent, // Remove default shadow
                             ),
-                            child: Text('Buy Now',
+                            child: Text('Out of stock',
                                 style: GoogleFonts.poppins(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
@@ -1013,7 +1242,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   return Container();
                 }
               },
-            ),
+            ):SizedBox.shrink(),
           );
         },),
       ),
@@ -1379,12 +1608,16 @@ class ProductItem extends StatelessWidget {
   final String name;
   final String brand;
   final String price;
+  final String? productCode;
+  final int stockQuantity;
 
   const ProductItem({
     super.key,
     required this.name,
     required this.brand,
     required this.price,
+    required this.productCode,
+    required this.stockQuantity,
   });
 
   @override
@@ -1420,6 +1653,7 @@ class ProductItem extends StatelessWidget {
                   text: price,
                   style: GoogleFonts.poppins(
                       fontSize: 17,
+                      color: Colors.purple,
                       fontWeight: FontWeight.w600,
 ),
                 ),
@@ -1439,6 +1673,7 @@ class ProductItem extends StatelessWidget {
                 direction: Axis.horizontal,
                 allowHalfRating: true,
                 itemCount: 5,
+                ignoreGestures: true, // <-- makes it read-only
                 itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
                 itemBuilder: (context, _) => Icon(
                   Icons.star,
@@ -1452,23 +1687,55 @@ class ProductItem extends StatelessWidget {
                   fontSize: 8
               ),),
               Spacer(),
-              Container(
-                height: 30,
-                width: 30,
-                padding: const EdgeInsets.all(7),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100), // Fully circular
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3), // Grey shadow
-                      spreadRadius: 2, // How far the shadow spreads
-                      blurRadius: 3, // How soft the shadow is
-                      offset: const Offset(0, 2), // Shadow position (x,y)
-                    ),
-                  ],
+              InkWell(
+                onTap: () {
+                  if(stockQuantity > 0){
+                    LoadingOverlay.show(context);
+                    BlocProvider.of<AddCartBloc>(context).add(
+                      AddCartReqEvent(
+                          productCode: productCode,
+                          price: price,
+                          quantity: "1",
+                          context: context
+                      ),
+                    );
+                    // Listen for state changes and then dispatch the cart event
+                    BlocProvider.of<AddCartBloc>(context)
+                        .stream
+                        .firstWhere((state) {
+                      // Define your condition for when the operation is complete
+                      return state
+                      is AddCartLoadedState; // or whatever your success state is
+                    }).then((_) {
+                      context.read<CartBloc>().add(CartReqEvent(count:0,checkedCart:false));
+                    });
+                  }else{
+                    CustomToast.showCustomRoast(
+                        context: context,
+                        message: "Out of Stock", icon: Bootstrap.check_circle,iconColor: Colors.red);
+
+                  }
+
+                },
+                child: Container(
+                  height: 30,
+                  width: 30,
+                  padding: const EdgeInsets.all(7),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100), // Fully circular
+                    //  color: gPrimaryColor,
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3), // Grey shadow
+                        spreadRadius: 2, // How far the shadow spreads
+                        blurRadius: 3, // How soft the shadow is
+                        offset: const Offset(0, 2), // Shadow position (x,y)
+                      ),
+                    ],
+                  ),
+                  child: Icon(Bootstrap.cart_plus,size: 15,color: gPrimaryColor,),
                 ),
-                child: Icon(Bootstrap.cart_plus,size: 15,color: gPrimaryColor,),
               )
             ],
           ),

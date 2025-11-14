@@ -9,7 +9,7 @@ class ProfileBloc extends Bloc<ProfileEvent,ProfileState>{
   UserInfoResMode? userInfoResMode;
   ProfileBloc(): super(ProfileInitialState()){
     on<ProfileReqEvent>((event,emit)async{
-      emit(ProfileLoadingState());
+      //emit(ProfileLoadingState());
       userInfoResMode = await UserRepo.getProfile();
       if(userInfoResMode == null) {
        // Fluttertoast.showToast(msg: "One");

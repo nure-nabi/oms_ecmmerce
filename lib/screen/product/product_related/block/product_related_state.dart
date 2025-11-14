@@ -15,11 +15,13 @@ class ProductRelatedLoadingState extends ProductRelatedState{
 
 class ProductRelatedLoadedState extends ProductRelatedState{
    ProductRelatedResModel? productRelatedResModel;
-   ProductRelatedLoadedState({required this.productRelatedResModel});
+   List<bool>? wishListFlag;
+   ProductRelatedLoadedState({required this.productRelatedResModel,this.wishListFlag});
 
-   ProductRelatedLoadedState copyWith(ProductRelatedResModel? productRelatedResModel){
+   ProductRelatedLoadedState copyWith(ProductRelatedResModel? productRelatedResModel, List<bool>? wishListFlag){
      return ProductRelatedLoadedState(
-         productRelatedResModel: productRelatedResModel ?? this.productRelatedResModel
+         productRelatedResModel: productRelatedResModel ?? this.productRelatedResModel,
+         wishListFlag: wishListFlag ?? this.wishListFlag
      );
    }
   @override
@@ -28,7 +30,9 @@ class ProductRelatedLoadedState extends ProductRelatedState{
 
 class ProductRelatedErrorState extends ProductRelatedState{
    String? errorMsg;
-   ProductRelatedErrorState({required this.errorMsg});
+   ProductRelatedResModel? productRelatedResModel;
+   List<bool>? wishListFlag;
+   ProductRelatedErrorState({required this.errorMsg,this.productRelatedResModel,this.wishListFlag});
   @override
-  List<Object?> get props => [errorMsg];
+  List<Object?> get props => [errorMsg,productRelatedResModel,wishListFlag];
 }

@@ -65,20 +65,24 @@ class CartProductModel{
   String? product_name;
   String? actual_price;
   String? sell_price;
+  String? stock_quantity;
   String? mr_price;
   String? quantity;
   String? product_description;
   String? image_full_url;
+  String? main_image;
   String? main_image_full_url;
 
   CartProductModel({required this.product_code,
     required this.product_name,
     required this.actual_price,
     required this.sell_price,
+    required this.stock_quantity,
     required this.mr_price,
      this.quantity,
     required this.product_description,
     required this.image_full_url,
+     this.main_image,
     required this.main_image_full_url,
   });
 
@@ -88,10 +92,12 @@ class CartProductModel{
         product_name: json["product_name"] ?? "",
       actual_price: json["actual_price"] ?? "",
       sell_price: json["sell_price"] ?? "",
+      stock_quantity: json["stock_quantity"] != null ? json["stock_quantity"] .toString() : "0",
       mr_price: json["mr_price"] ?? "",
       quantity: json["quantity"] ?? "",
         product_description: json["product_description"] ?? "",
         image_full_url: json["image_full_url"] ?? "",
+      main_image: json["main_image"] ?? "",
       main_image_full_url: json["main_image_full_url"] ?? "",
     );
   }

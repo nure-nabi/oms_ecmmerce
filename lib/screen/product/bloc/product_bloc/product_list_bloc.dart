@@ -15,7 +15,8 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
   ProductListBloc() : super(ProductListInitialState()) {
     on<ProductListReqEvent>(_onProductListReqEvent);
     on<ProductListLazyLoadEvent>(_onProductListLazyLoadEvent);
-    on<ProductWishListUpdateEvent>(_onProductWishListUpdateEvent);
+   // on<ProductWishListUpdateEvent>(_onProductWishListUpdateEvent);
+    on<ProductWishListUpdateEvent>(_onWishlistFlagUpdate);
   }
 
   Future<void> _onProductListReqEvent(
@@ -125,6 +126,22 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
     }
 
     }
+
+ Future<void> _onWishlistFlagUpdate(
+     ProductWishListUpdateEvent event,
+     Emitter<ProductListState> emit,
+     ) async {
+   if (productResModel == null) return;
+   try {
+     List<LatestProductModel> newProduct = List.from(productResModel.products);
+     newProduct[event.index] = newProduct[event.index].copyWith(
+       is_wishlisted: event.flag,
+     );
+     emit((state as ProductListLoadedState).copyWith(product: newProduct));
+   } catch (e) {
+     // debugPrint('Error updating wishlist: $e');
+   }
+ }
 }
 
 
