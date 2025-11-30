@@ -16,8 +16,10 @@ import 'package:oms_ecommerce/screen/order/bloc/order_state.dart';
 import 'package:oms_ecommerce/screen/profile/block/profile_bloc/profile_state.dart';
 
 import '../../component/loading_overlay.dart';
+import '../../constant/asstes_list.dart';
 import '../../core/constant/textstyle.dart';
 import '../../core/services/routeHelper/route_name.dart';
+import '../../payment/handle_order.dart';
 import '../../utils/custome_toast.dart';
 import '../profile/block/profile_bloc/profile_bloc.dart';
 import '../profile/block/profile_bloc/profile_event.dart';
@@ -49,10 +51,13 @@ class _OrderDetailsState extends State<OrderDetails> {
   TextEditingController emailController = TextEditingController();
   final _globalKey = GlobalKey<FormState>();
   int selectedValue = 0;
+  int selectedConnectIps = 0;
   int billingId = 0;
   int shoppingId = 0;
   double shoppingCost = 0;
   int count = 1;
+
+  double subTotal = 0;
 
   @override
   void initState() {
@@ -356,7 +361,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   fit: BoxFit.cover,
                                   placeholder: (context, url) => Container(),
                                   errorWidget: (context, url, error) =>
-                                      Icon(Icons.error),
+                                      Image.asset(AssetsList.gargImage),
                                 ),
                               ),),
                               SizedBox(
@@ -459,96 +464,131 @@ class _OrderDetailsState extends State<OrderDetails> {
                 height: 10,
               ),
               //subtotla
-              BlocBuilder<OrderBloc,OrderState>(builder: (BuildContext context, state) {
+              BlocConsumer<OrderBloc,OrderState>(builder: (BuildContext context, state) {
                 if(state is OrderLoadedState)
-                  {
+                {
                   return  Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                      child: Card(
-                        child: Padding(
-                          padding:
-                          const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(top: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "SubTotal(1 item)",
-                                      textAlign: TextAlign.left,
-                                      style: GoogleFonts.poppins(),
-                                    ),
-                                    Text(
-                                      //'Rs.${double.parse(widget.productPrice) * double.parse(widget.productQuantity)}',
-                                      'Rs.${state.subTotal}',
+                    padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                    child: Card(
+                      child: Padding(
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(top: 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "SubTotal(1 item)",
+                                    textAlign: TextAlign.left,
+                                    style: GoogleFonts.poppins(),
+                                  ),
+                                  Text(
+                                    //'Rs.${double.parse(widget.productPrice) * double.parse(widget.productQuantity)}',
+                                    'Rs.${state.subTotal}',
+                                    style: GoogleFonts.poppins(
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Shipping Fee SubTotal",
+                                    style: GoogleFonts.poppins(),
+                                  ),
+                                  // Text(shoppingCost.toStringAsFixed(2),
+                                  Text(widget.shipping_cost,
                                       style: GoogleFonts.poppins(
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
+                                          fontWeight: FontWeight.w600)),
+                                ],
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(top: 5),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Shipping Fee SubTotal",
-                                      style: GoogleFonts.poppins(),
-                                    ),
-                                   // Text(shoppingCost.toStringAsFixed(2),
-                                    Text(widget.shipping_cost,
-                                        style: GoogleFonts.poppins(
-                                            fontWeight: FontWeight.w600)),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                    );
-                  }else{
+                    ),
+                  );
+                }else{
                   return Container();
                 }
-              },),
+              }
+                , listener: (BuildContext context, state) {
+
+                if(state is OrderLoadedState){
+                  subTotal = state.subTotal! + double.parse(widget.shipping_cost);
+                }
+                },),
       
               SizedBox(
                 height: 10,
               ),
-              Card(
-                child: Column(
+
+
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
                   children: [
-                    RadioListTile<int>(
-                      title: const Text("Cash on delivery"),
-                      value: 1,
-                      groupValue: selectedValue,
-                      selectedTileColor: gPrimaryColor,
-                      activeColor: gPrimaryColor,
-                      onChanged: (int? value) {
-                        setState(() {
-                          selectedValue = value!;
-                        });
-                      },
+                    // ------------------ CASH ON DELIVERY ------------------
+                    Expanded(
+                      flex: 1,
+                      child: RadioListTile<int>(
+                        title: const Text("Cash on delivery"),
+                        value: 1,
+                        groupValue: selectedValue,
+                        activeColor: gPrimaryColor,
+                        onChanged: (int? value) {
+                          setState(() {
+                            selectedValue = value!;
+                            selectedConnectIps = 0;
+                          });
+                        },
+                      ),
                     ),
-                    RadioListTile<int>(
-                      title: Text("Esewa"),
-                      value: 2,
-                      groupValue: selectedValue,
-                      selectedTileColor: gPrimaryColor,
-                      activeColor: gPrimaryColor,
-                      onChanged: (int? value) {
-                        setState(() {
-                          selectedValue = value!;
-                        });
-                      },
+
+                    // ------------------ CONNECT IPS ------------------
+                    Expanded(
+                      flex: 1,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            if (selectedConnectIps == 0) {
+                              selectedConnectIps = 5;
+                              selectedValue = 0;
+                            } else if (selectedConnectIps == 5) {
+                              selectedConnectIps = 0;
+                            }
+                          });
+                        },
+                        child: Container(
+                          //width: MediaQuery.of(context).size.width,
+
+                          decoration: BoxDecoration(
+                              color: selectedConnectIps == 5 ? Colors.white : Colors.white,
+                              border: Border.all( color: selectedConnectIps == 5 ? Colors.orange : Colors.white,)
+                          ),
+                          child: Image.asset(
+                            'assets/images/connect_ips.png',
+                            height: 60,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(
+            ),
+
+
+            SizedBox(
                 height: 10,
               ),
               InkWell(
@@ -635,17 +675,34 @@ class _OrderDetailsState extends State<OrderDetails> {
                   const EdgeInsets.only(left: 10, right: 10, bottom: 8, top: 10),
               child: InkWell(
                 onTap: () {
-                  if (selectedValue > 0) {
+                  if (selectedValue > 0 || selectedConnectIps > 0) {
                     if( emailController.text.isNotEmpty){
-                      LoadingOverlay.show(context);
-                      context.read<OrderBloc>().add(OrderReqEvent(
-                          payment_method: selectedValue > 0 ? "C" : "Online",
-                          billing_address: billingId.toString(),
-                          shipping_address: shoppingId.toString(),
-                          invoice_email: emailController.text.trim(),
-                          product_code: widget.productCode,
-                          quantity: count.toString(),
-                          context: context));
+
+                      if(selectedConnectIps == 5){
+                        handleConfirmOrderIPS(
+                            payment_method: selectedConnectIps == 5 ? "IPS" : "c",
+                            billing_address: billingId.toString(),
+                            shipping_address: shoppingId.toString(),
+                            invoice_email: emailController.text.trim(),
+                            product_code: widget.productCode,
+                            quantity: count.toString(),
+                            totalAmount: subTotal,
+                            context: context
+                        );
+                      }else{
+                        LoadingOverlay.show(context);
+                        context.read<OrderBloc>().add(OrderReqEvent(
+                            payment_method: selectedValue > 0 ? "C" : "IPS",
+                            billing_address: billingId.toString(),
+                            shipping_address: shoppingId.toString(),
+                            invoice_email: emailController.text.trim(),
+                            product_code: widget.productCode,
+                            quantity: count.toString(),
+                            context: context
+                        ));
+                      }
+
+
                     }else{
                       CustomToast.showCustomRoast(context: context, message: "Please select invoice email", icon: Bootstrap.check_circle,iconColor: Colors.red);
                     }

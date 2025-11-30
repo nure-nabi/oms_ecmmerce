@@ -19,6 +19,7 @@ import 'package:oms_ecommerce/screen/order/bloc/order_state.dart';
 
 import '../../component/loading_overlay.dart';
 import '../../core/constant/textstyle.dart';
+import '../../payment/handle_order.dart';
 import '../address/model/address_model.dart';
 import '../cart/bloc/cart_bloc.dart';
 import '../cart/bloc/cart_event.dart';
@@ -50,6 +51,7 @@ class _OrderDetailsState extends State<OrderCartDetails> {
   TextEditingController emailController = TextEditingController();
   final _globalKey = GlobalKey<FormState>();
   int selectedValue = 0;
+  int selectedConnectIps = 0;
   int billingId = 0;
   int shoppingId = 0;
   double shoppingCost = 0;
@@ -469,36 +471,64 @@ class _OrderDetailsState extends State<OrderCartDetails> {
               SizedBox(
                 height: 10,
               ),
+
               Card(
-                child: Column(
-                  children: [
-                    RadioListTile<int>(
-                      title: Text("Cash on delivery"),
-                      value: 1,
-                      groupValue: selectedValue,
-                      selectedTileColor: gPrimaryColor,
-                      activeColor: gPrimaryColor,
-                      onChanged: (int? value) {
-                        setState(() {
-                          selectedValue = value!;
-                        });
-                      },
-                    ),
-                    RadioListTile<int>(
-                      title: Text("Esewa"),
-                      value: 2,
-                      groupValue: selectedValue,
-                      selectedTileColor: gPrimaryColor,
-                      activeColor: gPrimaryColor,
-                      onChanged: (int? value) {
-                        setState(() {
-                          selectedValue = value!;
-                        });
-                      },
-                    ),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      // ------------------ CASH ON DELIVERY ------------------
+                      Expanded(
+                        flex: 1,
+                        child: RadioListTile<int>(
+                          title: const Text("Cash on delivery"),
+                          value: 1,
+                          groupValue: selectedValue,
+                          activeColor: gPrimaryColor,
+                          onChanged: (int? value) {
+                            setState(() {
+                              selectedValue = value!;
+                              selectedConnectIps = 0;
+                            });
+                          },
+                        ),
+                      ),
+
+                      // ------------------ CONNECT IPS ------------------
+                      Expanded(
+                        flex: 1,
+                        child: InkWell(
+                          onTap: (){
+                            setState(() {
+                              if(selectedConnectIps == 0){
+                                selectedConnectIps = 5;
+                                selectedValue = 0;
+                              }else if(selectedConnectIps == 5){
+                                selectedConnectIps = 0;
+                              }
+                            });
+                          },
+                          child: Container(
+                            //width: MediaQuery.of(context).size.width,
+
+                            decoration: BoxDecoration(
+                              color: selectedConnectIps == 5 ? Colors.white : Colors.white,
+                              border: Border.all( color: selectedConnectIps == 5 ? Colors.orange : Colors.white,)
+                            ),
+                            child: Image.asset(
+                              'assets/images/connect_ips.png',
+                              height: 60,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
+
+
               SizedBox(
                 height: 10,
               ),
@@ -578,19 +608,28 @@ class _OrderDetailsState extends State<OrderCartDetails> {
                   const EdgeInsets.only(left: 10, right: 10, bottom: 8, top: 10),
               child: InkWell(
                 onTap: () {
-                  if (selectedValue > 0) {
-                    if( emailController.text.isNotEmpty){
+                  if (selectedValue > 0 || selectedConnectIps > 0) {
+                    if( emailController.text.isNotEmpty) {
+                      if(selectedConnectIps == 5){
+                        handleConfirmOrderIPS(
+                            payment_method: selectedConnectIps == 5 ? "IPS" : "c",
+                            billing_address: billingId.toString(),
+                            shipping_address: shoppingId.toString(),
+                            invoice_email: emailController.text.trim(),
+                            selected_items:  widget.checkedValue,
+                            totalAmount:(subTotal! + shoppingCost),
+                            context: context
+                        );
+                      }else{
                       LoadingOverlay.show(context);
-      
                       context.read<CartBloc>().add(CartItemsBuyEvent(
-                          payment_method: selectedValue > 0 ? "C" : "Online",
+                          payment_method: selectedValue > 0 ? "C" : "IPS",
                           billing_address: billingId.toString(),
                           shipping_address: shoppingId.toString(),
                           invoice_email: emailController.text.trim(),
-                          selected_items:widget.checkedValue,
+                          selected_items: widget.checkedValue,
                           context: context));
-      
-      
+                    }
                     }else{
                       Fluttertoast.showToast(
                           msg: "Please select invoice email");

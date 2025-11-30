@@ -82,7 +82,9 @@ class _ProcessingOrderState extends State<ProcessingOrder> {
               itemCount: state.orderResponse!.orders.orders.length,
               itemBuilder: (BuildContext context, index){
                 final infoOrder = state.orderResponse!.orders.orders[index];
-                return _buildOrderItem(index: index,orderModel: infoOrder,orderList: state.orderResponse!.orders.orders, orderId: state.orderResponse!.orders.orders[index].order_id!);
+                return _buildOrderItem(index: index,
+                    orderModel: infoOrder,orderList: state.orderResponse!.orders.orders,
+                    orderId: state.orderResponse!.orders.orders[index].order_id!);
               },
             ) : Center(child: Image.asset("assets/icons/orderno.png"),),
           );
@@ -95,16 +97,20 @@ class _ProcessingOrderState extends State<ProcessingOrder> {
   Widget _buildOrderItem({
     required int index,
     required int orderId,
+
     final OrderModel? orderModel,
     final List<OrderModel>? orderList,
   }) {
     return InkWell(
       onTap: (){
+
         Navigator.pushNamed(context,
             orderShowDetailsPage,
             arguments: {
+              'orderStatus':orderModel.order_status!,
               'orderList': orderList,
-              'index': index
+              'indexOrder': index,
+              'index': index,
             }
         );
       },

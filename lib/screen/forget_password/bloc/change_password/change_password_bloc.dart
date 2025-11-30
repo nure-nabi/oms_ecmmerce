@@ -5,6 +5,7 @@ import 'package:oms_ecommerce/screen/forget_password/bloc/forget_password_event.
 import 'package:oms_ecommerce/screen/forget_password/bloc/forget_password_state.dart';
 import 'package:oms_ecommerce/screen/forget_password/model/forget_password_model.dart';
 
+import '../../../../component/loading_overlay.dart';
 import 'change_password_event.dart';
 import 'change_password_state.dart';
 
@@ -12,6 +13,7 @@ class ChangePasswordBloc
     extends Bloc<ChangePasswordEvent, ChangePasswordState> {
   ChangePasswordBloc() : super(ChangePasswordInitialState()) {
     on<ChangePasswordReqEvent>(_onForgetPasswordReqEvent);
+    on<ChangePasswordClearReqEvent>(_onChangePasswordClearReqEvent);
   }
 
   Future<void> _onForgetPasswordReqEvent(
@@ -27,13 +29,23 @@ class ChangePasswordBloc
       );
 
       if (resp.success == true) {
+        LoadingOverlay.hide();
         emit(ChangePasswordLoadedState(basicModel: resp));
       } else {
+        LoadingOverlay.hide();
         emit(ChangePasswordErrorState(errorMsg:"Something wrong!"));
         emit(ChangePasswordInitialState());
       }
     } catch (e) {
+      LoadingOverlay.hide();
       emit(ChangePasswordErrorState(errorMsg: e.toString()));
     }
+  }
+  Future<void> _onChangePasswordClearReqEvent(
+      ChangePasswordClearReqEvent event,
+      Emitter<ChangePasswordState> emit,
+      ) async {
+    emit(ChangePasswordInitialState());
+
   }
 }

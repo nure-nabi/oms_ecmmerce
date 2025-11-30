@@ -10,3 +10,7 @@ class EditProfileReqEvent extends EditProfileEvent{
   @override
   List<Object?> get props => [userName,phone,image];
 }
+class EditProfileClearReqEvent extends EditProfileEvent{
+  @override
+  List<Object?> get props => [];
+}

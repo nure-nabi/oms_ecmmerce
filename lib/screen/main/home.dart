@@ -150,11 +150,13 @@ class _HomeScreenState extends State<HomeScreen> {
          if(state is ScrollLoadingState){
            return AppBar(
              bottomOpacity: 55,
+             centerTitle: true,
              title: Row(
                children: [
                  Align(
                    alignment: Alignment.center,
                    child: Text("Garg Dental",style: GoogleFonts.poppins(
+                     letterSpacing: 2,
                      fontWeight: FontWeight.w600,
                      // color: Colors.blueAccent
                    ),),
@@ -173,6 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
          }else if(state is ScrollLoadedState){
            return AppBar(
              bottomOpacity: 55,
+             centerTitle: true,
              title:
              Row(
                mainAxisAlignment: MainAxisAlignment.center,
@@ -180,6 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
                  Align(
                    alignment: Alignment.center,
                    child: Text("Garg Dental",style: GoogleFonts.poppins(
+                     letterSpacing: 2,
                      fontWeight: FontWeight.w600,
                     // color: Colors.blueAccent
                    ),),
@@ -198,6 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
          }else{
            return AppBar(
              bottomOpacity: 55,
+             centerTitle: true,
              title:
              // Text("Garg Dental",style: GoogleFonts.poppins(
              //
@@ -245,6 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
                  Align(
                    alignment: Alignment.center,
                    child: Text("Garg Dental",style: GoogleFonts.poppins(
+                     letterSpacing: 2,
                      fontWeight: FontWeight.w600,
                      // color: Colors.blueAccent
                    ),),

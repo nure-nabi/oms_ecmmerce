@@ -251,28 +251,16 @@ class _CategorySubcategoryListState extends State<CategorySubcategoryList> {
                           ),
                         );
                       }else if (state is CategoryLoadedState) {
-                      //  Fluttertoast.showToast(msg: 'category lenght  ${state
-                      //       .categoryResModel!
-                      //       .categoriesList[state.index!]
-                      //       .activeChildren!
-                      //       .length.toString()}');
                         return ListView.separated(
                           separatorBuilder: (context, index) =>
                               Divider(height: 1),
-                          //  padding: EdgeInsets.symmetric(horizontal: 7), // Padding around the grid
                           shrinkWrap: true,
-                          // Useful inside ScrollViews
-                          // physics: Scro(),
-                          // Disable scrolling if nested
-                          itemCount: state
-                              .categoryResModel!.categoriesList[state.index!].activeChildren!.length,
-                          // Total number of items
+                          itemCount: state.categoryResModel!.categoriesList[state.index!].activeChildren!.length,
                           itemBuilder: (BuildContext context, int index) {
                             final item = state
                                 .categoryResModel!
                                 .categoriesList[state.index!]
                                 .activeChildren![index];
-
                             return ExpansionTile(
                               onExpansionChanged: (isExpended) {
                                 setState(() {
@@ -289,17 +277,16 @@ class _CategorySubcategoryListState extends State<CategorySubcategoryList> {
                                   ),
                                   InkWell(
                                       onTap: () {
-                                        if (state
-                                            .categoryResModel!
-                                            .categoriesList[state.index!]
-                                            .activeChildren![index]
-                                            .activeChildren2!
-                                            .isEmpty) {
-                                          Navigator.pushNamed(context, topCategoryProductListPage,
-                                              arguments: state
-                                                  .categoryResModel!.categoriesList[state.index!].id
+                                        if (state.categoryResModel!.categoriesList[state.index!].activeChildren![index].activeChildren2!.isEmpty) {
+                                          Navigator.pushNamed(context, categoryWiseProductsPage,
+                                              arguments: {
+                                                 "categoryId" :  state.categoryResModel!.categoriesList[state.index!].activeChildren![index].id,
+                                                "title": state.categoryResModel!.categoriesList[state.index!].activeChildren![index].categoryName
+                                              }
+
                                           );
-                                          Fluttertoast.showToast(msg: "EMPITY");
+                                         // Fluttertoast.showToast(msg: "Two");
+                                         // Fluttertoast.showToast(msg: state.categoryResModel!.categoriesList[state.index!].activeChildren![index].id.toString());
                                         }
                                       },
                                       child: Text(
@@ -373,8 +360,7 @@ class _CategorySubcategoryListState extends State<CategorySubcategoryList> {
           .activeChildren![index2].activeChildren2!.length,
       // Total number of items
       itemBuilder: (BuildContext context, int index) {
-        final item = state.categoryResModel!.categoriesList[state.index!]
-            .activeChildren![index2].activeChildren2![index];
+        final item = state.categoryResModel!.categoriesList[state.index!].activeChildren![index2].activeChildren2![index];
         return InkWell(
           onTap: () {
             if (state
@@ -384,11 +370,21 @@ class _CategorySubcategoryListState extends State<CategorySubcategoryList> {
                 .activeChildren2![index]
                 .activeChildren3!
                 .isEmpty) {
-              Navigator.pushNamed(context, topCategoryProductListPage,
-                  arguments: state
-                      .categoryResModel!.categoriesList[state.index!].id
+              Navigator.pushNamed(context, categoryWiseProductsPage,
+                arguments: {
+                "categoryId" :state.categoryResModel!.categoriesList[state.index!]
+                    .activeChildren![index2].activeChildren2![index].id,
+                  "title":state.categoryResModel!.categoriesList[state.index!]
+                      .activeChildren![index2].activeChildren2![index].categoryName
+                }
               );
-              Fluttertoast.showToast(msg: "no");
+
+
+              // Fluttertoast.showToast(msg: state.categoryResModel!.categoriesList[state.index!]
+              //     .activeChildren![index2].activeChildren2![index].id.toString());
+
+              //  Fluttertoast.showToast(msg: "Three");
+             // Fluttertoast.showToast(msg: "Three");
               i = index;
               //exp = true;
               //BlocProvider.of<CategoryBloc>(context).add(CategoryReqEvent3(index));
@@ -471,8 +467,17 @@ class _CategorySubcategoryListState extends State<CategorySubcategoryList> {
               .activeChildren3![index];
           return InkWell(
             onTap: () {
-              //  Fluttertoast.showToast(msg:  state.categoryResModel!.categoriesList[state.index!].activeChildren![indexF].activeChildren2![index].activeChildren3!.length.toString());
-            },
+              if (state.categoryResModel!.categoriesList[state.index!].activeChildren![index2].activeChildren2![index3].activeChildren3!.isEmpty) {
+                Navigator.pushNamed(context, categoryWiseProductsPage,
+                    arguments: {
+                      "categoryId" :  state.categoryResModel!.categoriesList[state.index!].activeChildren![index2].activeChildren2![index3].activeChildren3![index].id,
+                      "title": state.categoryResModel!.categoriesList[state.index!].activeChildren![index2].activeChildren2![index3].activeChildren3![index].categoryName
+                    }
+
+                );
+                // Fluttertoast.showToast(msg: "Two");
+                // Fluttertoast.showToast(msg: state.categoryResModel!.categoriesList[state.index!].activeChildren![index].id.toString());
+              }            },
             child: Container(
               padding: EdgeInsets.all(0),
               decoration: BoxDecoration(

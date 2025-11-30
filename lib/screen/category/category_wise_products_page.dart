@@ -6,15 +6,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:oms_ecommerce/screen/brand/bloc/brand_bloc.dart';
-import 'package:oms_ecommerce/screen/brand/bloc/brand_state.dart';
-import 'package:oms_ecommerce/screen/flash_salse/bloc/flash_sale_bloc.dart';
-import 'package:oms_ecommerce/screen/flash_salse/bloc/flash_sale_event.dart';
-import 'package:oms_ecommerce/screen/flash_salse/bloc/flash_sale_state.dart';
-import 'package:oms_ecommerce/screen/product/bloc/product_bloc/product_list_bloc.dart';
-import 'package:oms_ecommerce/screen/product/bloc/product_bloc/product_list_event.dart';
-import 'package:oms_ecommerce/screen/product/bloc/product_bloc/product_list_state.dart';
-import 'package:oms_ecommerce/screen/product/product_details.dart';
 
 import '../../component/loading_overlay.dart';
 import '../../constant/asstes_list.dart';
@@ -27,37 +18,38 @@ import '../cart/bloc/add_cart/add_cart_state.dart';
 import '../cart/bloc/cart_bloc.dart';
 import '../cart/bloc/cart_event.dart';
 import '../cart/bloc/cart_state.dart';
+import '../product/product_details.dart';
 import '../wish_list/bloc/wishlist_bloc.dart';
 import '../wish_list/bloc/wishlist_event.dart';
+import 'bloc/category_product/category_product_bloc.dart';
+import 'bloc/category_product/category_product_event.dart';
+import 'bloc/category_product/category_product_state.dart';
 
-
-
-class FlashSaleProductPage extends StatefulWidget {
-
-  FlashSaleProductPage({super.key});
+class CategoryWiseProductsPage extends StatefulWidget {
+  final int categoryId;
+  final String title;
+   CategoryWiseProductsPage({super.key,required this.categoryId,required this.title});
 
   @override
-  State<FlashSaleProductPage> createState() => _FlashSaleProductPageState();
+  State<CategoryWiseProductsPage> createState() => _CategoryWiseProductsPageState();
 }
 
-class _FlashSaleProductPageState extends State<FlashSaleProductPage> {
+class _CategoryWiseProductsPageState extends State<CategoryWiseProductsPage> {
   final ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
     // Initial load
-    context.read<FlashSaleBloc>().add(FlashSalesReqEvent(limit: 20, offset: 0));
+    context.read<CategoryProductBloc>().add(CategoryProductsReqEvent(limit: 20, offset: 0, categoryId: widget.categoryId));
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent - 200) {
         // Load more when 200px from bottom
-        context.read<FlashSaleBloc>().add(FlashSalesLazyLoadEvent(limit: 20, offset: 0,));
+        context.read<CategoryProductBloc>().add(CategoryProductsReqEvent(limit: 20, offset: 0, categoryId: widget.categoryId));
       }
     });
   }
-
-
 
 
   @override
@@ -66,118 +58,6 @@ class _FlashSaleProductPageState extends State<FlashSaleProductPage> {
     super.dispose();
   }
 
-  // ...items.asMap().entries.map((e){
-  // int index = e.key;
-  // String item = e.value;
-  // if(index < items.length - 1){
-  // return ListTile(
-  // title: Text(item),
-  // );
-  // }else{
-  // return Padding(
-  // padding: const EdgeInsets.all(16.0),
-  // child: Center(
-  // child: CircularProgressIndicator(),
-  // ),
-  // );
-  // }
-  // })
-
-
-  // GridView.builder(
-  // padding: const EdgeInsets.symmetric(horizontal: 10),
-  // shrinkWrap: true,
-  // physics: NeverScrollableScrollPhysics(),
-  // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-  // crossAxisCount: 2,
-  // mainAxisSpacing: 2,
-  // crossAxisSpacing: 2,
-  // childAspectRatio: 0.68,
-  // ),
-  // itemCount: state.listLoading ! +1 ,
-  // itemBuilder: (BuildContext context, int index) {
-  // // If this is the loading indicator position
-  //
-  // if (index == state.latestProductResModel!.products.length) {
-  // return const Padding(
-  // padding: EdgeInsets.all(20.0),
-  // child: Center(
-  // child: CircularProgressIndicator(),
-  // ),
-  // );
-  // }
-  //
-  // // Regular item
-  // if(state.latestProductResModel!.products.length > index) {
-  // final info = state.latestProductResModel!.products[index];
-  // return InkWell(
-  // onTap: () {
-  // // Navigator.push(
-  // //   context,
-  // //   MaterialPageRoute(
-  // //     builder: (context) => ProductDetails(productCode: info.product_code!, productName: info.product_name!, sellingPrice: double.parse(info.sell_price!), productImage: info.image_full_url,),
-  // //   ),
-  // // );
-  // },
-  // child: Card(
-  // elevation: 2,
-  // shape: RoundedRectangleBorder(
-  // borderRadius: BorderRadius.circular(8),
-  // ),
-  // child: Container(
-  // decoration: const BoxDecoration(
-  // color: Colors.white,
-  // borderRadius: BorderRadius.all(
-  // Radius.circular(10))
-  // ),
-  // child: Column(
-  // crossAxisAlignment: CrossAxisAlignment.start,
-  // children: [
-  // Stack(
-  // children: [
-  // ClipRRect(
-  // borderRadius: const BorderRadius.only(
-  // topRight: Radius.circular(5),
-  // topLeft: Radius.circular(5),
-  // ),
-  // child: CachedNetworkImage(
-  // imageUrl: info.image_full_url!,
-  // width: 200,
-  // height: 140,
-  // fit: BoxFit.cover,
-  // placeholder: (context, url) =>
-  // Container(),
-  // errorWidget: (context, url, error) =>
-  // Icon(Icons.error),
-  // ),
-  // ),
-  // Positioned(
-  // top: 5,
-  // right: 5,
-  // child: Container(
-  // height: 30,
-  // width: 30,
-  // padding: const EdgeInsets.all(7),
-  // decoration: BoxDecoration(
-  // borderRadius: BorderRadius.circular(
-  // 100),
-  // color: gPrimaryColor,
-  // ),
-  // child: Icon(Bootstrap.heart, size: 15,
-  // color: Colors.white),
-  // ),
-  // ),
-  // ],
-  // ),
-  // const SizedBox(height: 10),
-  // ],
-  // ),
-  // ),
-  // ),
-  // );
-  // }
-  // },
-  // ),
   int i = 0;
   @override
   Widget build(BuildContext context) {
@@ -185,33 +65,55 @@ class _FlashSaleProductPageState extends State<FlashSaleProductPage> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title:  Text("Flash Sales Product",style: GoogleFonts.poppins(
+        title:  Text(widget.title,style: GoogleFonts.poppins(
             letterSpacing: 1
         ),),
         leading: InkWell(
             onTap: (){
-              Navigator.pop(context);
+              Navigator.pop(context); // Proceed with back navigation
             },
             child: Icon(Bootstrap.chevron_left)),
-        //backgroundColor: gPrimaryColor,
+        // backgroundColor: gPrimaryColor,
         actions: [
           getCartData()
         ],
       ),
-      body: BlocConsumer<FlashSaleBloc,FlashSaleState>(
+      body: BlocConsumer<CategoryProductBloc,CategoryProductState>(
         builder: (BuildContext context, state) {
-          if(state is BrandLoadingState){
-            return CircularProgressIndicator();
+          if(state is CategoryProductsLoadingState){
+            return  Center(
+              child: Container(
+                height: 40,
+                width: 40,
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 3,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: const CircularProgressIndicator(
+                  strokeWidth: 2,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                ),
+              ),
+            );
           } else
-          if(state is FlashSaleLoadedState){
+          if(state is CategoryProductsLoadedState){
             return SingleChildScrollView(
               controller: _scrollController,
               child: Stack(
                 children: [
-                  GridView.builder(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                  state.product!.isNotEmpty ?  GridView.builder(
+                    padding:  EdgeInsets.symmetric(horizontal: 10),
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics:  NeverScrollableScrollPhysics(),
                     gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: ScreenHieght.getCrossAxisCount(context),
                       mainAxisSpacing: 1,
@@ -219,13 +121,13 @@ class _FlashSaleProductPageState extends State<FlashSaleProductPage> {
                       // Dynamically adjust based on screen size
                       childAspectRatio: screenWidth / (screenHeight / 1.4),
                     ),
-                    itemCount: state.product.length + 1,
+                    itemCount: state.product!.length + 1,
                     itemBuilder: (BuildContext context, int index) {
 
-                      if (index >= state.product.length) {
+                      if (index >= state.product!.length) {
                         return SizedBox.shrink();
                       }
-                      final info = state.product[index];
+                      final info = state.product![index];
                       return InkWell(
                         onTap: () {
                           Navigator.push(
@@ -234,8 +136,8 @@ class _FlashSaleProductPageState extends State<FlashSaleProductPage> {
                               builder: (context) => ProductDetails(
                                 productCode: info.product_code!,
                                 productName: info.product_name!,
-                                stock_quantity: info.stock_quantity,
                                 sellingPrice: double.parse(info.sell_price!),
+                                stock_quantity: info.stock_quantity,
                                 productImage: info.image_full_url,
                                 variation: info.has_variations,),
                             ),
@@ -265,7 +167,6 @@ class _FlashSaleProductPageState extends State<FlashSaleProductPage> {
                                       ),
                                       child: CachedNetworkImage(
                                         imageUrl: info.image_full_url != "" ? info.image_full_url!: info.main_image_full_url!,
-                                      //  imageUrl: info.image_full_url!,
                                         width: 200,
                                         height: 140,
                                         fit: BoxFit.cover,
@@ -278,16 +179,34 @@ class _FlashSaleProductPageState extends State<FlashSaleProductPage> {
                                     Positioned(
                                       top: 5,
                                       right: 5,
-                                      child: InkWell(
-                                        onTap: (){
-                                          LoadingOverlay.show(context);
-                                          BlocProvider.of<WishlistBloc>(context).add(WishlistSaveEvent(
-                                              productCode: info.product_code!,context: context));
-                                        },
-                                        child: Icon(
-                                          Bootstrap.heart_fill,
-                                          size: 25,
-                                          color: Colors.grey.shade400,
+                                      child: Container(
+                                        height: 30,
+                                        width: 30,
+                                        padding: const EdgeInsets.all(7),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                              100),
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.withOpacity(0.3), // Grey shadow
+                                              spreadRadius: 2, // How far the shadow spreads
+                                              blurRadius: 3, // How soft the shadow is
+                                              offset: const Offset(0, 2), // Shadow position (x,y)
+                                            ),
+                                          ],
+                                        ),
+                                        child: InkWell(
+                                          onTap: (){
+                                            LoadingOverlay.show(context);
+                                            BlocProvider.of<WishlistBloc>(context).add(WishlistSaveEvent(
+                                                productCode: info.product_code!,context: context));
+                                          },
+                                          child: Icon(
+                                            Bootstrap.heart,
+                                            size: 15,
+                                            color: gPrimaryColor,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -321,7 +240,8 @@ class _FlashSaleProductPageState extends State<FlashSaleProductPage> {
                       );
 
                     },
-                  ),
+                  )
+                      :Center(child: Text("no data found...."),),
                   // if (state.isLoadingMore)
                   if (state.isLoadingMore!)
                     Positioned(
@@ -356,125 +276,16 @@ class _FlashSaleProductPageState extends State<FlashSaleProductPage> {
               ),
             );
 
-            // return Column(
-            //   children: [
-            //     GridView.builder(
-            //       padding: const EdgeInsets.symmetric(horizontal: 10),
-            //       shrinkWrap: true,
-            //       physics: NeverScrollableScrollPhysics(),
-            //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            //         crossAxisCount: 2,
-            //         mainAxisSpacing: 2,
-            //         crossAxisSpacing: 2,
-            //         childAspectRatio: 0.68,
-            //       ),
-            //       itemCount: state.product.length,
-            //       itemBuilder: (BuildContext context, int index) {
-            //         // If this is the loading indicator position
-            //
-            //         Fluttertoast.showToast(msg: state.product.length.toString());
-            //         // Regular item
-            //
-            //           final info = state.product[index];
-            //           return InkWell(
-            //             onTap: () {
-            //               // Navigator.push(
-            //               //   context,
-            //               //   MaterialPageRoute(
-            //               //     builder: (context) => ProductDetails(productCode: info.product_code!, productName: info.product_name!, sellingPrice: double.parse(info.sell_price!), productImage: info.image_full_url,),
-            //               //   ),
-            //               // );
-            //             },
-            //             child: Card(
-            //               elevation: 2,
-            //               shape: RoundedRectangleBorder(
-            //                 borderRadius: BorderRadius.circular(8),
-            //               ),
-            //               child: Container(
-            //                 decoration: const BoxDecoration(
-            //                     color: Colors.white,
-            //                     borderRadius: BorderRadius.all(
-            //                         Radius.circular(10))
-            //                 ),
-            //                 child: Column(
-            //                   crossAxisAlignment: CrossAxisAlignment.start,
-            //                   children: [
-            //                     Stack(
-            //                       children: [
-            //                         ClipRRect(
-            //                           borderRadius: const BorderRadius.only(
-            //                             topRight: Radius.circular(5),
-            //                             topLeft: Radius.circular(5),
-            //                           ),
-            //                           child: CachedNetworkImage(
-            //                             imageUrl: info.image_full_url!,
-            //                             width: 200,
-            //                             height: 140,
-            //                             fit: BoxFit.cover,
-            //                             placeholder: (context, url) =>
-            //                                 Container(),
-            //                             errorWidget: (context, url, error) =>
-            //                                 Icon(Icons.error),
-            //                           ),
-            //                         ),
-            //                         Positioned(
-            //                           top: 5,
-            //                           right: 5,
-            //                           child: Container(
-            //                             height: 30,
-            //                             width: 30,
-            //                             padding: const EdgeInsets.all(7),
-            //                             decoration: BoxDecoration(
-            //                               borderRadius: BorderRadius.circular(
-            //                                   100),
-            //                               color: gPrimaryColor,
-            //                             ),
-            //                             child: Icon(Bootstrap.heart, size: 15,
-            //                                 color: Colors.white),
-            //                           ),
-            //                         ),
-            //                       ],
-            //                     ),
-            //                     const SizedBox(height: 10),
-            //                   ],
-            //                 ),
-            //               ),
-            //             ),
-            //           );
-            //
-            //       },
-            //     ),
-            //   ],
-            // );
-
-          }else{
-            return Center(
-              child: Container(
-                height: 40,
-                width: 40,
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      spreadRadius: 2,
-                      blurRadius: 3,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: const CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-                ),
-              ),
+          }else if(state is CategoryProductsEmptyState){
+            return const Center(
+              child: Text("no data found...."),
             );
+          }else{
+            return SizedBox();
           }
         },
         listener: (context, state) {
-          if (state is FlashSalesErrorState) {
+          if (state is CategoryProductsErrorState) {
             Fluttertoast.showToast(msg: state.errorMsg!);
           }
         },
@@ -515,7 +326,7 @@ class _FlashSaleProductPageState extends State<FlashSaleProductPage> {
                     backgroundColor: Colors.red,
                     radius: 10,
                     child: Text(
-                      '${state.cartLenght.toString()}',
+                      state.cartResModel!.cart!.items.length.toString(),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 10,

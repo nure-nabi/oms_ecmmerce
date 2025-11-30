@@ -233,6 +233,7 @@ class _DeliveredOrderState extends State<DeliveredOrder> {
             orderShowDetailsPage,
             arguments: {
               'orderList': orderList,
+              'orderStatus':orderModel.order_status!,
               'indexOrder': indexOrder,
               'index': index,
             }

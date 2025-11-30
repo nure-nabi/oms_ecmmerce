@@ -9,6 +9,7 @@ import 'package:oms_ecommerce/theme/theme_bloc.dart';
 import 'package:oms_ecommerce/theme/theme_event.dart';
 
 import '../core/services/routeHelper/route_name.dart';
+import '../payment/handle_order.dart';
 import '../screen/cart/bloc/cart_bloc.dart';
 import '../screen/cart/bloc/cart_state.dart';
 import '../screen/login/google_auth_service/auth_service.dart';
@@ -106,8 +107,7 @@ class _DrawerShowState extends State<DrawerShow> {
                         color: textColor,
                         iconName: Bootstrap.heart,
                         onTap: () {
-                          Navigator.pushNamed(context, wishListPage,
-                              arguments: true);
+
                         },
                       ),
                       Divider(),

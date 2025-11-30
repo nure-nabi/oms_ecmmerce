@@ -14,7 +14,6 @@ class EditProfileBloc extends Bloc<EditProfileEvent,EditProfileState>{
     on<EditProfileReqEvent>((event, emit)async{
       emit(EditProfileLoadingState());
       try{
-        //Fluttertoast.showToast(msg: "update");
       UserInfoResMode userInfoResMode =   await UserRepo.updateProfile(
           full_name: event.userName!,
           phone: event.phone!,
@@ -25,9 +24,14 @@ class EditProfileBloc extends Bloc<EditProfileEvent,EditProfileState>{
        }
 
       }catch(e){
+       // Fluttertoast.showToast(msg: e.toString());
         LoadingOverlay.hide();
         emit(EditProfileErrorState(errorMsg: e.toString()));
       }
+    });
+
+    on<EditProfileClearReqEvent>((event,emit){
+      emit(EditProfileInitialState());
     });
   }
 

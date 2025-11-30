@@ -34,6 +34,7 @@ import 'package:oms_ecommerce/screen/wish_list/wish_list_page.dart';
 
 import '../../../screen/address/address_update_page.dart';
 import '../../../screen/cart/model/cart_model.dart';
+import '../../../screen/category/category_wise_products_page.dart';
 import '../../../screen/login/login_page.dart';
 import '../../../screen/order/order_cart_details.dart';
 import '../../../screen/order/order_confirm_page.dart';
@@ -120,11 +121,11 @@ class RouteGenerator {
           type: PageTransitionType.fade,
           child:  ProductSearch(),
         );
-      case paymentConnectipsPage:
-        return PageTransition(
-          type: PageTransitionType.fade,
-          child:  PaymentFormPage(),
-        );
+      // case paymentConnectipsPage:
+      //   return PageTransition(
+      //     type: PageTransitionType.fade,
+      //     child:  ConnectIPSWebView(),
+      //   );
       case brandProductListPage:
         var brandId = settings.arguments as int;
         return PageTransition(
@@ -151,6 +152,15 @@ class RouteGenerator {
         return PageTransition(
           type: PageTransitionType.fade,
           child:  TopCategoryProductListPage(categoryId: categoryId,),
+        );
+      case categoryWiseProductsPage:
+        var args = settings.arguments as Map<String,dynamic>;
+        return PageTransition(
+          type: PageTransitionType.fade,
+          child:  CategoryWiseProductsPage(
+            categoryId: args['categoryId'],
+            title: args['title'],
+          ),
         );
       case addressPage:
         // var addressUpdate = settings.arguments as String;
@@ -242,6 +252,7 @@ class RouteGenerator {
           type: PageTransitionType.fade,
           child:  OrderShowDetails(
             orderModel: args["orderList"] as List<OrderModel>,
+            orderStatus: args["orderStatus"] as String,
             index: args["index"] as int,
             indexOrder: args["indexOrder"] as int,
 

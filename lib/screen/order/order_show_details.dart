@@ -7,11 +7,15 @@ import 'package:oms_ecommerce/core/constant/colors_constant.dart';
 import 'package:oms_ecommerce/screen/order/model/order_model.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../constant/asstes_list.dart';
+
 class OrderShowDetails extends StatefulWidget {
  final List<OrderModel> orderModel;
  final int indexOrder;
  final int index;
-  const OrderShowDetails({super.key,required this.orderModel,required this.indexOrder,required this.index});
+ final String orderStatus;
+  const OrderShowDetails({super.key,required this.orderModel,
+    required this.indexOrder,required this.index,required this.orderStatus});
 
   @override
   State<OrderShowDetails> createState() => _OrderShowDetailsState();
@@ -134,6 +138,8 @@ class _OrderShowDetailsState extends State<OrderShowDetails> {
                               width:  MediaQuery.of(context).size.width * 0.120,
                             ),
                           ),
+                          errorWidget: (context, url, error) =>
+                              Image.asset(AssetsList.gargImage),
                           fit: BoxFit.cover,
                         ),
                         // child: Image.network(
@@ -161,19 +167,19 @@ class _OrderShowDetailsState extends State<OrderShowDetails> {
 
               const SizedBox(height: 16),
               if(widget.orderModel[widget.indexOrder].order_status == 'processing')
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    InkWell(
-                        onTap: (){
-                        //  bool nextPage =  showAlertDialog(data.data[0].orderModel.orderNumberId);
-
-                         // Fluttertoast.showToast(msg: nextPage.toString());
-
-                        },
-                        child: Text("Cancel Order",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.red),))
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.end,
+                //   children: [
+                //     InkWell(
+                //         onTap: (){
+                //         //  bool nextPage =  showAlertDialog(data.data[0].orderModel.orderNumberId);
+                //
+                //          // Fluttertoast.showToast(msg: nextPage.toString());
+                //
+                //         },
+                //         child: Text("Cancel Order",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.red),))
+                //   ],
+                // ),
 
               const SizedBox(height: 16),
               _buildPriceRow('Price ( item)',

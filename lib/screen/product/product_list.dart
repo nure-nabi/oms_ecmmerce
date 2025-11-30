@@ -133,7 +133,7 @@ class _ProductListPageState extends State<ProductListPage> {
                           mainAxisSpacing: 1,
                           crossAxisSpacing: 1,
                           // Dynamically adjust based on screen size
-                          childAspectRatio: screenWidth / (screenHeight / 1.5),
+                          childAspectRatio: screenWidth / (screenHeight / 1.4),
                         ),
                         itemCount: state.product.length + 1,
                         itemBuilder: (BuildContext context, int index) {

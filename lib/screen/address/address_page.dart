@@ -3,6 +3,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -160,9 +161,14 @@ class _AddressPageState extends State<AddressPage> {
                             prefixIcon: Icons.person,
                           ),
                         ),
+                        SizedBox(height: 5,),
                         TextFormField(
                           controller: mobileNoController,
                           keyboardType: TextInputType.phone,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(10),
+                          ],
                           onChanged: (value) {
                             if (value.isEmpty) {
 
@@ -180,6 +186,7 @@ class _AddressPageState extends State<AddressPage> {
                             prefixIcon: Icons.phone,
                           ),
                         ),
+                        SizedBox(height: 5,),
                         BlocBuilder<ProvienceBloc,ProvienceState>(builder: (BuildContext context, state) {
 
                           if(state is ProvienceLoadedState){
@@ -239,7 +246,7 @@ class _AddressPageState extends State<AddressPage> {
                                         isDense: true,
                                         isExpanded: true,
                                         hint: Text(
-                                          'Select provience',
+                                          'Select province',
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: Theme.of(context).hintColor,
@@ -935,7 +942,118 @@ class _AddressPageState extends State<AddressPage> {
                               ),
                             );
                           }else{
-                            return Container(child: Text("Loading..."),);
+                            return  Padding(
+                              padding: const EdgeInsets.only(left: 0,right: 0),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    color: textFormFieldColor,
+                                    padding: EdgeInsets.all(0),
+                                    child: DropdownButtonHideUnderline(
+                                      child: DropdownButton2<String>(
+                                        isDense: true,
+                                        isExpanded: true,
+                                        hint: Text(
+                                          'Select province',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: Theme.of(context).hintColor,
+                                          ),
+                                        ),
+                                        items: [],
+
+                                        buttonStyleData: ButtonStyleData(
+                                          height: 50,
+                                          width: MediaQuery.of(context).size.width,
+                                          padding: const EdgeInsets.only(left: 14, right: 14),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(5),
+                                            border: Border.all(
+                                              color: textColor,
+                                            ),
+                                            // color: Colors.redAccent,
+                                          ),
+                                          // elevation: 2,
+                                        ),
+                                        dropdownStyleData: DropdownStyleData(
+                                          maxHeight: MediaQuery.of(context).size.height * 0.8,
+                                          //maxHeight: 700,
+                                        ),
+                                        menuItemStyleData: MenuItemStyleData(
+                                          height:50,
+                                          // widght: MediaQuery.of(context).size.width,
+                                          padding: const EdgeInsets.only(left: 14, right: 14),
+                                        ),
+                                        dropdownSearchData: DropdownSearchData(
+                                          searchController: textEditingController,
+                                          searchInnerWidgetHeight: 50,
+                                          searchInnerWidget: Container(
+                                            height: 50,
+                                            padding: const EdgeInsets.only(
+                                              top: 8,
+                                              bottom: 4,
+                                              right: 8,
+                                              left: 8,
+                                            ),
+                                            child: TextFormField(
+                                              expands: true,
+                                              maxLines: null,
+                                              controller: textEditingController,
+                                              decoration: InputDecoration(
+                                                isDense: true,
+                                                contentPadding: const EdgeInsets.symmetric(
+                                                  horizontal: 10,
+                                                  vertical: 8,
+                                                ),
+                                                hintText: 'Search for provience...',
+                                                hintStyle: const TextStyle(fontSize: 12),
+                                                border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(8),
+                                                ),
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(8.0),
+                                                  borderSide: const BorderSide(
+                                                      color: Colors.orange, width: 1),
+                                                ),
+                                                enabledBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(8.0),
+                                                  borderSide: const BorderSide(
+                                                      color: Colors.orange, width: 1),
+                                                ),
+
+                                              ),
+                                            ),
+                                          ),
+                                          searchMatchFn: (item, searchValue) {
+                                            String itemValue = item.value.toString();
+                                            String lowercaseItemValue =
+                                            itemValue.toLowerCase();
+                                            String uppercaseItemValue =
+                                            itemValue.toUpperCase();
+                                            String lowercaseSearchValue =
+                                            searchValue.toLowerCase();
+                                            String uppercaseSearchValue =
+                                            searchValue.toUpperCase();
+                                            return lowercaseItemValue
+                                                .contains(lowercaseSearchValue) ||
+                                                uppercaseItemValue
+                                                    .contains(uppercaseSearchValue) ||
+                                                itemValue.contains(searchValue);
+                                          },
+                                        ),
+                                        //This to clear the search value when you close the menu
+                                        onMenuStateChange: (isOpen) {
+                                          if (!isOpen) {
+                                            textEditingController.clear();
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ),
+
+                                ],
+                              ),
+                            );
                           }
                         },),
 
@@ -959,6 +1077,7 @@ class _AddressPageState extends State<AddressPage> {
                             hintStyle: hintTextStyle,
                           ),
                         ),
+                        SizedBox(height: 5,),
                         TextFormField(
                           controller: landMarkController,
                           onChanged: (value) {
@@ -1189,7 +1308,10 @@ class _AddressPageState extends State<AddressPage> {
                 child: InkWell(
                   onTap: (){
 
-                    if(globalKey.currentState!.validate() && (widget.addressList!.isEmpty ? state.shippingFlag! : true) && (widget.addressList!.isEmpty ? state.billingFlag! : true)) {
+                    if(globalKey.currentState!.validate() &&
+                        (widget.addressList!.isEmpty ? state.shippingFlag! : true) &&
+                        (widget.addressList!.isEmpty ? state.billingFlag! : true )
+                        && provienceId!= null &&cityId != null && zoneId != null) {
                       LoadingOverlay.show(context);
                       AddressModel addressModel = AddressModel(
                           id: "0",
@@ -1207,7 +1329,7 @@ class _AddressPageState extends State<AddressPage> {
                       context.read<AddressBloc>().add(AddressSaveEvent(addressModel: addressModel,valueMap: widget.addressUpdate,context: context));
 
                     } else{
-                      //Fluttertoast.showToast(msg: "msg");
+                      Fluttertoast.showToast(msg: "Required all fields");
                     }
 
                     // if(globalKey.currentState!.validate() && ((state.shippingFlag! && state.billingFlag!) || state.addressTypeHomeFlag! || state.addressTypeOfficeFlag!)){

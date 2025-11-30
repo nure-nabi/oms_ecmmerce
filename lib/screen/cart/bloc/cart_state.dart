@@ -27,7 +27,8 @@ class CartLoadedState extends CartState{
   CartLoadedState({ this.cartResModel, this.count=0,this.totalAmount,
     this.cartLenght,this.qtyLits,
      this.updateFlag,this.checkedCart,this.checkedValue,this.tempCartList});
-  CartLoadedState copyWith({CartResModel? cartResModel, int? count,
+  CartLoadedState copyWith({
+    CartResModel? cartResModel, int? count,
     double?totalAmount,int? cartLenght, List<int>? qtyLits,updateFlag,
     List<bool>? checkedCart,List<String>? checkedValue,List<CartProductModel>? tempCartList}) {
     return CartLoadedState(

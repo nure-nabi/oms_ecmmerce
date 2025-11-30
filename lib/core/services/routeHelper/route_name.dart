@@ -36,6 +36,7 @@ const String forgetPasswordPage = "/forgetPasswordPage";
 const String resetPasswordPage = "/resetPasswordPage";
 const String changePasswordPage = "/changePasswordPage";
 const String topCategoryProductListPage = "/topCategoryProductListPage";
+const String categoryWiseProductsPage = "/categoryWiseProductsPage";
 const String paymentConnectipsPage = "/paymentConnectips";
 
 ///

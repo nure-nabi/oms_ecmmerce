@@ -38,6 +38,8 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController passwordController = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
 
+  bool isNewPasswordObscured = false;
+
   @override
   void initState() {
     super.initState();
@@ -172,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                          const SizedBox(height: 5),
                          TextFormField(
                            controller: passwordController,
-                           obscureText: true,
+                           obscureText: isNewPasswordObscured,
                            decoration: InputDecoration(
                              hintText: "Password",
                              hintStyle: GoogleFonts.poppins(
@@ -181,6 +183,16 @@ class _LoginPageState extends State<LoginPage> {
                                  color: Colors.black38),
                              fillColor: Colors.white,
                              filled: true,
+                             suffixIcon: IconButton(
+                               icon: Icon(
+                                 isNewPasswordObscured ? Icons.visibility_off : Icons.visibility,
+                               ),
+                               onPressed: () {
+                                 setState(() {
+                                   isNewPasswordObscured = !isNewPasswordObscured;
+                                 });
+                               },
+                             ),
                              border: OutlineInputBorder(
                                borderRadius: BorderRadius.circular(10),
                              ),
@@ -268,7 +280,7 @@ class _LoginPageState extends State<LoginPage> {
                              children: [
                                InkWell(
                                  onTap: (){
-                                   LoadingOverlay.show(context);
+
                                   // continueWithGoogle();
                                    AuthService.loginWithGoogle(context);
                                  },
@@ -320,12 +332,6 @@ class _LoginPageState extends State<LoginPage> {
                    ),
                  ),
                );
-             }else if(state is LoginLoadingState){
-               return const Center(child: CircularProgressIndicator(),);
-             }else if(state is LoginLoadedState){
-               return Center(child: Text(""),);
-             }else if(state is LoginErrorState){
-               return Center(child: Text(state.errorMsg??""),);
              }else{
                return Container();
              }

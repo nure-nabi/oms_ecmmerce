@@ -11,3 +11,9 @@ class ChangePasswordReqEvent extends ChangePasswordEvent{
   // TODO: implement props
   List<Object?> get props => [oldPassword,newPassword,newConfirmPassword];
 }
+
+class ChangePasswordClearReqEvent extends ChangePasswordEvent{
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}

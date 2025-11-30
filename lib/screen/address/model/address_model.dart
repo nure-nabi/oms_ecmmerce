@@ -4,13 +4,15 @@
 class AddressResponse{
   bool? success;
   String? message;
+  String? order_id;
 
-  AddressResponse({this.success,this.message});
+  AddressResponse({this.success,this.message,this.order_id});
 
   factory AddressResponse.fromJson(Map<String,dynamic> json){
     return AddressResponse(
     success: json["success"] ?? false,
     message: json["message"] ?? "",
+      order_id: json["order_id"] ?? "",
     );
 }
 }

@@ -47,7 +47,7 @@ class _ProductBannerImageSliderState extends State<ProductBannerImageSlider> {
           return ImageSlideshow(
             indicatorColor: Colors.deepPurple,
             indicatorBackgroundColor: Colors.white,
-            height: 200,
+            height: MediaQuery.of(context).size.height * 0.25,
             autoPlayInterval: 3000,
             indicatorRadius: 4,
             indicatorBottomPadding: 1,

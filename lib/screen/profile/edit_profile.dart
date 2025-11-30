@@ -48,6 +48,16 @@ class _EditProfileState extends State<EditProfile> {
   String filePath = "";
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<EditProfileBloc>().add(EditProfileClearReqEvent());
+    //  context.read<ProfileBloc>().add(ProfileReqEvent());
+    });
+
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
      // backgroundColor: Color(0xfff5fdff),
@@ -102,6 +112,11 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                     TextFormField(
                       controller: phoneController,
+                      keyboardType: TextInputType.phone,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(10),
+                      ],
                       onChanged: (value) {},
                       decoration: TextFormDecoration.decoration(
                         hintText: "Phone Number",
@@ -113,6 +128,7 @@ class _EditProfileState extends State<EditProfile> {
                       height: 5,
                     ),
                     TextFormField(
+                      readOnly: true,
                       controller: emailController,
                       onChanged: (value) {},
                       decoration: TextFormDecoration.decoration(
@@ -140,7 +156,7 @@ class _EditProfileState extends State<EditProfile> {
                                   //  Fluttertoast.showToast(msg: "msg");
                                     LoadingOverlay.show(context);
                                    BlocProvider.of<EditProfileBloc>(context).add(EditProfileReqEvent(userName: fullNameController.text.trim(), phone: phoneController.text.trim(),image: filePath));
-                                  }, child: Text("Update Profile",)),
+                                  }, child: Text("Update Profile1",style: TextStyle(color: Colors.white))),
                             );
                           } else  if(state is EditProfileLoadingState){
                             return Container(
@@ -152,7 +168,7 @@ class _EditProfileState extends State<EditProfile> {
                                   ),
                                   onPressed: (){
                                     BlocProvider.of<EditProfileBloc>(context).add(EditProfileReqEvent(userName: fullNameController.text.trim(), phone: phoneController.text.trim(),image: filePath));
-                                  }, child: Text("Update Profile",style: TextStyle(color: Colors.white))),
+                                  }, child: Text("Update Profile2",style: TextStyle(color: Colors.white))),
                             );
                           }else  if(state is EditProfileLoadedState){
                             return Container(
@@ -164,7 +180,7 @@ class _EditProfileState extends State<EditProfile> {
                                   ),
                                   onPressed: (){
                                  //   BlocProvider.of<EditProfileBloc>(context).add(EditProfileReqEvent(userName: fullNameController.text.trim(), phone: phoneController.text.trim(),image: base64Image));
-                                  }, child: Text("Update Profile",style: TextStyle(color: Colors.white) )),
+                                  }, child: Text("Update Profile3",style: TextStyle(color: Colors.white) )),
                             );
                           }else{
                             return Container();

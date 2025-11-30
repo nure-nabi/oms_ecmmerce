@@ -25,6 +25,7 @@ import '../login_page.dart';
 class AuthService {
 
   static Future<void> loginWithGoogle(BuildContext context) async {
+
     String webClientId = "487714998715-2f5e1fbrlkngea825u0eej84veth63po.apps.googleusercontent.com";
 
     try {
@@ -44,7 +45,7 @@ class AuthService {
         idToken: googleAuth.idToken,
       );
       await FirebaseAuth.instance.signInWithCredential(credential);
-
+      LoadingOverlay.show(context);
 
 
       final currentUser = await FirebaseAuth.instance.currentUser;
@@ -92,7 +93,7 @@ static  logOut(context) async {
   // Dispatch logout to all BLoCs
    // context.read<ProfileBloc>().add(ProfileErrorState());
    //  context.read<CartBloc>().add(CartReset());
-    LoadingOverlay.hide();
+   // LoadingOverlay.hide();
     await refreshPageToLogIn(context);
   }
 

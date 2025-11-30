@@ -21,7 +21,7 @@ class ProfileLoadedState extends ProfileState{
         userInfoResMode: userInfoResMode ?? this.userInfoResMode);
   }
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [userInfoResMode];
 }
 class ProfileErrorState extends ProfileState{
   String? errorMsg;

@@ -24,10 +24,13 @@ class UserRepo{
     required String image,
   }) async {
 
-    Map<String, dynamic> body = {
+    Map<String, dynamic> body = image != "" ? {
       "full_name": full_name,
       "phone": phone,
       "profile_photo_path": image
+
+    } : { "full_name": full_name,
+      "phone": phone,
 
     };
 

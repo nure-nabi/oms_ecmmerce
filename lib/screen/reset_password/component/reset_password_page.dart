@@ -35,6 +35,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   String currentText = "";
   String completeText = "";
   String verificationEmail = "";
+  bool isNewPasswordObscured = false;
 
   @override
   void initState() {
@@ -51,7 +52,6 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   Widget build(BuildContext context) {
     return GradientContainer(
       child: Scaffold(
-
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20),
@@ -137,7 +137,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                  SizedBox(height: 10,),
                                 TextFormField(
                                   controller: newPasswordController,
-                                  obscureText: true,
+                                  obscureText: isNewPasswordObscured,
                                   decoration: InputDecoration(
                                     hintText: "New Password",
                                     hintStyle: GoogleFonts.poppins(
@@ -146,6 +146,16 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                         color: Colors.black38),
                                     fillColor: Colors.white,
                                     filled: true,
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        isNewPasswordObscured ? Icons.visibility_off : Icons.visibility,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          isNewPasswordObscured = !isNewPasswordObscured;
+                                        });
+                                      },
+                                    ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                     ),

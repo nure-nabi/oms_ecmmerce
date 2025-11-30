@@ -17,7 +17,7 @@ class BannerBloc extends Bloc<BannerEvent, BannerState> {
     Emitter<BannerState> emit,
   ) async {
     if (resModel == null) {
-     // emit(BannerLoadingState());
+      emit(BannerLoadingState());
       resModel = await BannerRepo.getBanner();
     }
 

@@ -158,6 +158,7 @@ class CartBloc extends Bloc<CartEvent,CartState>{
         }
       }
       } catch (e) {
+        LoadingOverlay.hide();
         // 4️⃣ Handle errors & turn off loading
         emit((state as CartLoadedState).copyWith(updateFlag: false));
         Fluttertoast.showToast(msg: "Error: ${e.toString()}");
