@@ -611,6 +611,7 @@ class _OrderDetailsState extends State<OrderCartDetails> {
                   if (selectedValue > 0 || selectedConnectIps > 0) {
                     if( emailController.text.isNotEmpty) {
                       if(selectedConnectIps == 5){
+                        LoadingOverlay.show(context);
                         handleConfirmOrderIPS(
                             payment_method: selectedConnectIps == 5 ? "IPS" : "c",
                             billing_address: billingId.toString(),

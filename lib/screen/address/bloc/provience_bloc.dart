@@ -60,7 +60,17 @@ class ProvienceBloc extends Bloc<ProvienceEvent,ProvienceState>{
 
     });
 
+    on<ProvienceSelectedIndexEvent>((event,emit){
 
+
+      emit(ProvienceLoadedState(
+          provienceRes: resData,
+
+          cityValue: event.selectedCity
+      ));
+
+
+    });
 
 
   }

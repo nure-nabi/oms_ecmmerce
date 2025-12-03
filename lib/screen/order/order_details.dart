@@ -120,17 +120,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                           bool isAlternate = index % 2 == 0;
                           if (state.addressResponseModel!.addresses![index].default_shipping == 'Y') {
                             shoppingId =  state.addressResponseModel!.addresses![index].id!;
-                            shoppingCost = double.parse(state
-                                .addressResponseModel!
-                                .addresses![index]
-                                .city!
-                                .shipping_cost!);
+                            shoppingCost = double.parse(state.addressResponseModel!.addresses![index].city!.shipping_cost!);
+                         //   Fluttertoast.showToast(msg: shoppingCost.toString());
                           }
-                          if (state.addressResponseModel!.addresses![index]
-                              .default_billing ==
-                              'Y')
-                            billingId =
-                            state.addressResponseModel!.addresses![index].id!;
+                          if (state.addressResponseModel!.addresses![index].default_billing == 'Y') billingId = state.addressResponseModel!.addresses![index].id!;
                           return Container(
                         //    color: index == 1 ? Colors.white : Colors.white60,
                             child: Column(
@@ -245,95 +238,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           );
                         }
                     );
-                    // return GridView.builder(
-                    //     itemCount: state.addressResponseModel!.addresses!.length,
-                    //     physics: NeverScrollableScrollPhysics(),
-                    //     shrinkWrap: true,
-                    //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    //         crossAxisCount: 2,
-                    //         crossAxisSpacing: 2,
-                    //         mainAxisSpacing: 2,
-                    //         childAspectRatio: 1.5),
-                    //     itemBuilder: (context, index) {
-                    //       bool isAlternate = index % 2 == 0;
-                    //       if (state.addressResponseModel!.addresses![index]
-                    //               .default_shipping ==
-                    //           'Y') {
-                    //         shoppingId =
-                    //             state.addressResponseModel!.addresses![index].id!;
-                    //         shoppingCost = double.parse(state
-                    //             .addressResponseModel!
-                    //             .addresses![index]
-                    //             .city!
-                    //             .shipping_cost!);
-                    //       }
-                    //       if (state.addressResponseModel!.addresses![index]
-                    //               .default_billing ==
-                    //           'Y')
-                    //         billingId =
-                    //             state.addressResponseModel!.addresses![index].id!;
-                    //       return Container(
-                    //         color: index == 1 ? Colors.white : Colors.white60,
-                    //         child: Column(
-                    //           mainAxisAlignment: MainAxisAlignment.center,
-                    //           children: [
-                    //             if (state.addressResponseModel!.addresses![index]
-                    //                     .default_shipping ==
-                    //                 'Y')
-                    //               Column(
-                    //                 crossAxisAlignment: CrossAxisAlignment.start,
-                    //                 children: [
-                    //                   Text(
-                    //                     "Shipping Address",
-                    //                     style: GoogleFonts.poppins(
-                    //                         fontSize: 15,
-                    //                         fontWeight: FontWeight.w600),
-                    //                   ),
-                    //                   Text(
-                    //                     state.addressResponseModel!
-                    //                         .addresses![index].full_name!,
-                    //                     style: GoogleFonts.poppins(
-                    //                         color: Colors.grey),
-                    //                   ),
-                    //                   Text(
-                    //                     state.addressResponseModel!
-                    //                         .addresses![index].address!,
-                    //                     style: GoogleFonts.poppins(
-                    //                         color: Colors.grey),
-                    //                   ),
-                    //                 ],
-                    //               ),
-                    //             if (state.addressResponseModel!.addresses![index]
-                    //                     .default_billing ==
-                    //                 'Y')
-                    //               Column(
-                    //                 crossAxisAlignment: CrossAxisAlignment.start,
-                    //                 children: [
-                    //                   Text(
-                    //                     "Billing Address",
-                    //                     style: GoogleFonts.poppins(
-                    //                         fontSize: 15,
-                    //                         fontWeight: FontWeight.w600),
-                    //                   ),
-                    //                   Text(
-                    //                     state.addressResponseModel!
-                    //                         .addresses![index].full_name!,
-                    //                     style: GoogleFonts.poppins(
-                    //                         color: Colors.grey),
-                    //                   ),
-                    //                   Text(
-                    //                     state.addressResponseModel!
-                    //                         .addresses![index].address!,
-                    //                     style: GoogleFonts.poppins(
-                    //                         color: Colors.grey),
-                    //                   ),
-                    //                 ],
-                    //               ),
-                    //           ],
-                    //         ),
-                    //       );
-                    //     }
-                    //     );
+
                   } else {
                     return Container();
                   }
@@ -407,7 +312,11 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                     }else{
                                                       count--;
                                                     }
-                                                    context.read<OrderBloc>().add(OrderCartEvent(count: count,productPrice: double.parse(widget.productPrice) * count));
+                                                    context.read<OrderBloc>().add(OrderCartEvent(
+                                                        count: count,
+                                                        productPrice: double.parse(widget.productPrice) * count,
+                                                      qtyUpdate: "Update"
+                                                    ));
                                                   },
                                                   child: Container(
                                                       height: 25,
@@ -427,7 +336,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                     count = state.count!;
                                                     count++;
                                                     //count
-                                                    context.read<OrderBloc>().add(OrderCartEvent(count: count,productPrice: (double.parse(widget.productPrice) * count)));
+                                                    context.read<OrderBloc>().add(OrderCartEvent(count:
+                                                    count,productPrice: (double.parse(widget.productPrice) * count),qtyUpdate: "Update"));
                                                   },
                                                   child: Container(
                                                       height: 25,
@@ -679,6 +589,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                     if( emailController.text.isNotEmpty){
 
                       if(selectedConnectIps == 5){
+                        LoadingOverlay.show(context);
                         handleConfirmOrderIPS(
                             payment_method: selectedConnectIps == 5 ? "IPS" : "c",
                             billing_address: billingId.toString(),

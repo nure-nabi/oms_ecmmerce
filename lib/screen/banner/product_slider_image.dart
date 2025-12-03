@@ -12,6 +12,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../utils/check_network.dart';
 import '../../utils/custome_toast.dart';
+import '../../utils/hieght_width_map.dart';
 import 'banner_bloc/banner_bloc.dart';
 import 'banner_bloc/banner_event.dart';
 import 'banner_bloc/banner_state.dart';
@@ -47,7 +48,7 @@ class _ProductBannerImageSliderState extends State<ProductBannerImageSlider> {
           return ImageSlideshow(
             indicatorColor: Colors.deepPurple,
             indicatorBackgroundColor: Colors.white,
-            height: MediaQuery.of(context).size.height * 0.25,
+            height: MediaQuery.of(context).size.height * ScreenHieght.getHieght(context),
             autoPlayInterval: 3000,
             indicatorRadius: 4,
             indicatorBottomPadding: 1,

@@ -30,11 +30,12 @@ class OrderReqEvent extends OrderEvent{
 class OrderCartEvent extends OrderEvent{
   int count;
   double productPrice;
+  String? qtyUpdate;
 
 
-  OrderCartEvent({required this.count,required this.productPrice});
+  OrderCartEvent({required this.count,required this.productPrice,this.qtyUpdate});
   @override
-  List<Object?> get props => [count,productPrice];
+  List<Object?> get props => [count,productPrice,qtyUpdate];
 }
 
 class OrderShowEvent extends OrderEvent{

@@ -53,9 +53,16 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     on<OrderCartEvent>((event, omit) async{
       responseModel =await OrderRepo.getOrder(status: "processing");
       if(responseModel.success == true){
+        if(event.qtyUpdate != null){
+          LoadingOverlay.hide();
+        }
+       //
         omit(OrderLoadedState(orderResponse: responseModel,count: event.count,subTotal: (event.productPrice)));
 
       }else{
+        if(event.qtyUpdate!.isNotEmpty){
+          LoadingOverlay.hide();
+        }
         omit(OrderLoadingState());
       }
 

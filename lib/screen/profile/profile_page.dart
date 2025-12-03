@@ -53,6 +53,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
 
+  final pro =   context.read<ProfileBloc>().state;
+
   return   BlocBuilder<ThemeBloc,ThemeMode>(builder: (BuildContext context, state) {
     final bool isDarkMode = state == ThemeMode.dark;
 

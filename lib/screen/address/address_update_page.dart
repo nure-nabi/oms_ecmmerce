@@ -235,11 +235,7 @@ class _AddressUpdatePageState extends State<AddressUpdatePage> {
 
 
                       }
-
-
-
                       //   Fluttertoast.showToast(msg: widget.addressList![widget.index].zone!.zone_name!.toString());
-
                       return  Padding(
                         padding: const EdgeInsets.only(left: 0,right: 0),
                         child: Column(
@@ -626,8 +622,9 @@ class _AddressUpdatePageState extends State<AddressUpdatePage> {
 
                                       int index = state.provienceRes!.data[state.indexProvience! == -1 ? indexProvience : state.indexProvience!].cityies!.indexWhere((name) => name.name == value!);
 
-
                                       if(index != -1){
+                                        //
+                                      //  Fluttertoast.showToast(msg: "sadf");
                                         context.read<ProvienceBloc>().add(ProvienceZoneIndexEvent(
                                           // indexProvience:  state.indexProvience! == -1 ? indexProvience : state.indexProvience!,
                                           indexProvience:  -1,
@@ -730,7 +727,6 @@ class _AddressUpdatePageState extends State<AddressUpdatePage> {
                                 ),
                               ),
                             SizedBox(height: 10,),
-
                             if(hasZones)
                               Container(
                                 color: textFormFieldColor,
@@ -808,6 +804,7 @@ class _AddressUpdatePageState extends State<AddressUpdatePage> {
                                             zone: value,
                                             province: state.provienceValue,
                                             city: state.cityValue));
+                                        //  zoneId = state.provienceRes!.data[state.indexCity!].cityies![state.indexZone!].zone[index].id!;
                                         zoneId = state.provienceRes!.data[state.indexProvience! == -1 ? indexProvience : state.indexProvience!].cityies![state.indexCity == 0 ?indexCity : state.indexCity!].zone[index].id!;
                                         zoneTempIndexMap = 1;
                                       }

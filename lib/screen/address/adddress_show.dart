@@ -11,6 +11,7 @@ import 'package:oms_ecommerce/screen/address/bloc/address_bloc.dart';
 import 'package:oms_ecommerce/screen/address/bloc/address_event.dart';
 import 'package:oms_ecommerce/screen/address/bloc/address_state.dart';
 
+import '../profile/block/profile_bloc/profile_bloc.dart';
 import '../profile/model/user_model.dart';
 import 'bloc/provience_bloc.dart';
 import 'bloc/provience_event.dart';
@@ -55,6 +56,7 @@ class _AddressShowState extends State<AddressShow> {
          //   backgroundColor: Color(0xff003466),
             leading: InkWell(
                 onTap: (){
+                  context.watch<ProfileBloc>();
                   Navigator.pop(context);
                 },
                 child: Icon(Bootstrap.chevron_left)),

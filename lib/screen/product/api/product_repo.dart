@@ -7,6 +7,7 @@ import '../../service/apiprovider.dart';
 import '../../singup/model/register_model.dart';
 import '../model/latest_product_model.dart';
 import '../model/product_details_model.dart';
+import '../model/random_product_model.dart';
 import '../model/recommended_product_model.dart';
 
 //192.168.1.64:8000/api/v1/customer/cart/add
@@ -32,6 +33,14 @@ class ProductRepo{
     );
     CustomLog.successLog(value: "RESPONSE getProductDetails => $jsonData");
     return ProductDetailsReqModel.fromJson(jsonData);
+  }
+
+  static Future getAllRandomProduct() async {
+    var jsonData = await APIProvider.getAPI(
+      endPoint: "v1/products/get-random-wise-products",
+    );
+    CustomLog.successLog(value: "RESPONSE get-random-wise-products => $jsonData");
+    return RandomProductRes.fromJson(jsonData);
   }
 
 

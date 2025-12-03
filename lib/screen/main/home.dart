@@ -31,6 +31,7 @@ import '../product/bloc/product_bloc/product_list_bloc.dart';
 import '../product/bloc/product_bloc/product_list_event.dart';
 import '../product/bloc/product_bloc/product_list_state.dart';
 import '../product/component/latest_product.dart';
+import '../product/component/random_wise_product_home.dart';
 import '../product/feature_produdct_home_widget.dart';
 import '../product/product_details.dart';
 import '../product/product_list.dart';
@@ -429,7 +430,8 @@ class _HomeScreenState extends State<HomeScreen> {
                const ScrollingImages(),
               const SizedBox(height: 10,),
              // ALL PRODUCT
-              ProductListHome(scrollController: _scrollController,)
+              RandomWiseProductHome()
+             // ProductListHome(scrollController: _scrollController,)
 
             ],
           ),

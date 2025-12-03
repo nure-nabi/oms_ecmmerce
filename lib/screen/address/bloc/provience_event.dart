@@ -38,3 +38,12 @@ class ProvienceZoneIndexEvent extends ProvienceEvent{
   @override
   List<Object?> get props => [indexProvience,indexZone,indexcITY,zoneValue,province,city,zone];
 }
+
+class ProvienceSelectedIndexEvent extends ProvienceEvent{
+
+  String? selectedCity;
+
+  ProvienceSelectedIndexEvent({this.selectedCity});
+  @override
+  List<Object?> get props => [selectedCity];
+}

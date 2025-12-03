@@ -613,8 +613,12 @@ class _AddressPageState extends State<AddressPage> {
                                             int index = state.provienceRes!.data[state.indexCity!].cityies!.indexWhere((name) => name.name == value!);
                                             if(index != -1){
                                               context.read<ProvienceBloc>().add(ProvienceZoneIndexEvent(
-                                                  indexcITY:state.indexCity,indexZone: index,zoneValue: null,province: state.provienceValue,city: value));
-                                              cityId = state.provienceRes!.data[state.indexCity!].cityies![index].id!;
+                                                  indexcITY:state.indexCity,
+                                                  indexZone:
+                                                  index,zoneValue: null,
+                                                  province: state.provienceValue,
+                                                  city: value));
+                                                 cityId = state.provienceRes!.data[state.indexCity!].cityies![index].id!;
                                               //Fluttertoast.showToast(msg: state.cityValue!);
                                             }
                                           },
@@ -843,8 +847,12 @@ class _AddressPageState extends State<AddressPage> {
                                             );
                                             if(index != -1){
                                               context.read<ProvienceBloc>().add(ProvienceZoneIndexEvent(
-                                                  indexcITY:state.indexCity,indexZone: state.indexZone,zoneValue: value,province: state.provienceValue,city: state.cityValue));
-                                              zoneId = state.provienceRes!.data[state.indexCity!].cityies![state.indexZone!].zone[index].id!;
+                                                  indexcITY:state.indexCity,
+                                                  indexZone: state.indexZone,
+                                                  zoneValue: value,
+                                                  province: state.provienceValue,
+                                                  city: state.cityValue));
+                                                zoneId = state.provienceRes!.data[state.indexCity!].cityies![state.indexZone!].zone[index].id!;
                                             }
                                           },
                                           buttonStyleData: ButtonStyleData(

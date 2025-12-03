@@ -6,6 +6,7 @@ import 'package:oms_ecommerce/payment/payment_connectips.dart';
 import 'package:oms_ecommerce/screen/service/sharepref/get_all_pref.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../component/loading_overlay.dart';
 import '../screen/address/model/address_model.dart';
 import '../screen/order/api/order_repo.dart';
 import 'generate_uniqid.dart';
@@ -161,7 +162,7 @@ Future<void> handleConfirmOrderIPS(
 
   /// MERGE TOKEN
   final payload = {...transactionDetails, "TOKEN": token};
-
+  LoadingOverlay.hide();
   /// 5️⃣ OPEN WEBVIEW WITH AUTO-SUBMIT FORM
   Navigator.push(
     context,
