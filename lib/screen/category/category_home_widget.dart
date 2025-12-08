@@ -141,14 +141,15 @@ class _CategoryHomeWidgetState extends State<CategoryHomeWidget> {
       child: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.15,
-            width: 100,
+            //height: MediaQuery.of(context).size.height * 0.15,
+            height: 130,
+            width: 130,
             decoration: BoxDecoration(
              // shape: BoxShape.circle, // This makes the container perfectly circular
               color: Colors.white,
               image: DecorationImage(
                 image: NetworkImage(imageUrl),
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               ),
               boxShadow: [
                 BoxShadow(
@@ -157,14 +158,7 @@ class _CategoryHomeWidgetState extends State<CategoryHomeWidget> {
                 ),
               ],
             ),
-            // child: ClipOval( // ClipOval is better for circular clipping than ClipRRect
-            //   child: Image.network(
-            //     imageUrl,
-            //     fit: BoxFit.cover, // This ensures the image covers the entire space
-            //     height: 60,
-            //     width: 60,
-            //   ),
-            // ),
+
           ),
           SizedBox(height: 5,),
           Text(label,style: GoogleFonts.poppins(

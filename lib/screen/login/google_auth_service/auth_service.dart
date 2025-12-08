@@ -89,11 +89,7 @@ static  logOut(context) async {
     await SharedPref.removeData(key: PrefText.loginSuccess, type: "bool");
     await SharedPref.removeData(key: PrefText.token, type: "String");
     await SharedPref.removeData(key: PrefText.userName, type: "String");
-
-  // Dispatch logout to all BLoCs
-   // context.read<ProfileBloc>().add(ProfileErrorState());
-   //  context.read<CartBloc>().add(CartReset());
-   // LoadingOverlay.hide();
+    LoadingOverlay.hide();
     await refreshPageToLogIn(context);
   }
 

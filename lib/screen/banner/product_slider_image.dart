@@ -102,31 +102,11 @@ class _ProductBannerImageSliderState extends State<ProductBannerImageSlider> {
                           //imageUrl: info.products!.main_image_full_url != null ? info.products!.main_image_full_url! : info.products!.image_full_url!,
                           imageUrl:  bannerImage.imageFullUrl!,
                           height: MediaQuery.of(context).size.height * 0.40,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fill,
                           width: double.infinity,
                           errorWidget: (context, url, error) => Image.asset("assets/icons/noimage.jpg",fit: BoxFit.cover),
                         ),
-                        // Image.network(
-                        //   bannerImage.imageFullUrl!,
-                        //   height: 200,
-                        //   width: double.infinity,
-                        //   fit: BoxFit.cover,
-                        //   loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                        //     if (loadingProgress == null) {
-                        //       return child; // Image has finished loading
-                        //     } else {
-                        //       return Shimmer.fromColors(
-                        //         baseColor: Colors.grey[300]!,
-                        //         highlightColor: Colors.grey[100]!,
-                        //         child: Container(
-                        //           color: Colors.white,
-                        //           height: 200,
-                        //           width: double.infinity,
-                        //         ),
-                        //       ); // Show shimmer while loading
-                        //     }
-                        //   },
-                        // ),
+
 
                       ],
                     ),

@@ -129,14 +129,15 @@ class _BrandWidgetState extends State<BrandWidget> {
       child: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 0.15,
-            width: 100,
+            //height: MediaQuery.of(context).size.height * 0.15,
+            height: 130,
+            width: 130,
             decoration: BoxDecoration(
               // shape: BoxShape.circle, // This makes the container perfectly circular
               color: Colors.white,
               image: DecorationImage(
                 image: NetworkImage(imageUrl),
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
               ),
               boxShadow: [
                 BoxShadow(
