@@ -12,8 +12,8 @@ class ScreenHieght{
   static double  getHieght(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
 
-    if (width < 600) return 0.25; // phones
-    if (width < 900) return 0.40; // small tablets
-    return 0.40; // large tablets or desktop
+    if (width < 600) return 0.4; // phones
+    if (width < 900) return 0.6; // small tablets
+    return 0.8; // large tablets or desktop
   }
 }

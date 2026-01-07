@@ -35,7 +35,7 @@ class _CategoryHomeWidgetState extends State<CategoryHomeWidget> {
       builder: (BuildContext context, state) {
         if(state is CategoryTopLoadingState){
           return Padding(
-            padding: EdgeInsets.only(left: 10,right: 10,bottom: 10),
+            padding: EdgeInsets.only(left: 10,right: 10,bottom: 10,top: 5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

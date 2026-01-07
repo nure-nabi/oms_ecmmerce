@@ -86,12 +86,16 @@ class _CartPageState extends State<CartPage> {
             letterSpacing: 1
           ),),
           actions: [
-            TextButton(onPressed: (){
-              setState(() {
-                checked = !checked; // Toggles between true/false
-              });
-              LoadingOverlay.show(context);
-              BlocProvider.of<CartBloc>(context).add(CartItemsSelectAllEvent(checkedCart: checked));
+            TextButton(onPressed: ()async{
+
+                if (await GetAllPref.loginSuccess()) {
+                  LoadingOverlay.show(context);
+                  BlocProvider.of<CartBloc>(context).add(CartItemsSelectAllEvent(checkedCart: checked));
+                  setState(() {
+                    checked = !checked; // Toggles between true/false
+                  });
+                }
+
             },
                 child: Text(checked ? "UnSelect" : "Select All",style: GoogleFonts.poppins(
                   color: Colors.black,

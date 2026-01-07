@@ -15,7 +15,7 @@ Map<int, Color> swatch = {
 
 MaterialColor primarySwatch = MaterialColor(0xFF3F51B5, swatch);
 Color primaryColor = const Color(0xff003466);
-Color gPrimaryColor =   Color(0xff003466);
+Color gPrimaryColor =   Color(0xff003466).withOpacity(0.5);
 Color egPrimaryColor =  const Color(0XFFB7ABFF);
 Color hintColor = Colors.black45;
 // linear gradient

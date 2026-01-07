@@ -19,15 +19,20 @@ class BannerResModel {
 class BannerImageModel{
   String? productCode;
   String? imageFullUrl;
+  String? mobile_file_path;
+  String? mobile_image_full_url;
   BannerProductModel? products;
 
-  BannerImageModel({required this.productCode,required this.imageFullUrl,required this.products});
+  BannerImageModel({required this.productCode,required this.imageFullUrl,required this.products,
+    this.mobile_file_path,this.mobile_image_full_url});
 
   factory BannerImageModel.fromJson(Map<String,dynamic> json){
 
     return BannerImageModel(
         productCode: json["product_code"] ?? "",
         imageFullUrl: json["image_full_url"] ?? "",
+         mobile_file_path: json["mobile_file_path"] ?? "",
+      mobile_image_full_url: json["mobile_image_full_url"] ?? "",
         products: json["product"] != null ? BannerProductModel.fromJson(json["product"]) : null,
     );
 

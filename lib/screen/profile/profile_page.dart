@@ -98,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             Expanded(
                                 child: CircleAvatar(
                                   radius: 50,
-                                  backgroundImage: const AssetImage("assets/images/pro1.jpg"),
+                                  backgroundImage: const AssetImage("assets/icons/gargicon.png"),
                                 )
                               // Container(
                               //   width: 30,
@@ -374,7 +374,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     radius: 50,
                                     backgroundImage: state.userInfoResMode!.user!.image_full_url!.isNotEmpty
                                         ? NetworkImage( state.userInfoResMode!.user!.image_full_url!)
-                                        : const AssetImage("assets/images/pro1.jpg"),
+                                        : const AssetImage("assets/icons/gargicon.png"),
                                   )
                                 // Container(
                                 //   width: 30,
@@ -844,7 +844,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               Expanded(
                                   child: CircleAvatar(
                                     radius: 50,
-                                    backgroundImage: AssetImage("assets/icons/gargimage.png"),
+                                    backgroundImage: AssetImage("assets/icons/gargicon.png"),
                                   )
 
                               ),

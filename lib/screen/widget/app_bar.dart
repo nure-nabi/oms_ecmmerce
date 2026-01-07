@@ -60,7 +60,7 @@ class AppBarShow extends StatelessWidget implements PreferredSizeWidget {
               IconButton(
                 icon: Icon(Bootstrap.cart),
                 onPressed: () {
-                  // Navigate to cart page
+                  onCartPressed;
                 },
               ),
               Positioned(

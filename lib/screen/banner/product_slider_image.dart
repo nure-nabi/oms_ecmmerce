@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -32,90 +34,10 @@ class _ProductBannerImageSliderState extends State<ProductBannerImageSlider> {
   Widget build(BuildContext context) {
     BlocProvider.of<BannerBloc>(context).add(BannerReqEvent());
 
-    return BlocBuilder<BannerBloc,BannerState>(builder: (BuildContext context, state) {
-      if(state is BannerLoadingState){
-        return Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
-          child: Container(
-            color: Colors.white,
-            height: 200,
-            width: double.infinity,
-          ),
-        );
-      }else if(state is BannerLoadedState){
-        if( state.bannerResModel!.banners.isNotEmpty){
-          return ImageSlideshow(
-            indicatorColor: Colors.deepPurple,
-            indicatorBackgroundColor: Colors.white,
-            height: MediaQuery.of(context).size.height * ScreenHieght.getHieght(context),
-            autoPlayInterval: 3000,
-            indicatorRadius: 4,
-            indicatorBottomPadding: 1,
-            isLoop: true,
-            children: state.bannerResModel!.banners.map((bannerImage) {
-              return InkWell(
-                onTap: () {
-                  CheckNetwork.check().then((network){
-                    if(!network){
-                      CustomToast.showCustomRoast(context:context, message: "No network found.", icon: Bootstrap.check_circle,iconColor: Colors.red);
-                    }else{
-                      if(bannerImage.products == null){
-                     //   Fluttertoast.showToast(msg: "asdfsd");
-                      }
-                    //  final f = bannerImage.products!.product_name! ?? "f";
-                    //  Fluttertoast.showToast(msg: bannerImage.products!.product_name! ?? "f");
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductDetails(
-                            productCode: bannerImage.productCode!,
-                            stock_quantity: bannerImage.products!.stock_quantity,
-                            productName:bannerImage.products != null ? bannerImage.products!.product_name! : "",
-                            sellingPrice:bannerImage.products != null ? double.parse(bannerImage.products!.sell_price!) : 0,
-                            productImage: bannerImage.imageFullUrl,
-                            variation: 0,),
-                        ),
-                      );
-                    }
-                  });
-
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 10,top: 1),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(1.0),
-                    child: Stack(
-                      children: [
-                        // Shimmer effect as the placeholder
-                        Shimmer.fromColors(
-                          baseColor: Colors.grey[300]!,
-                          highlightColor: Colors.grey[100]!,
-                          child: Container(
-                            color: Colors.white,
-                            height: MediaQuery.of(context).size.height * 0.40,
-                            width: double.infinity,
-                          ),
-                        ),
-                        // Image with loading builder
-                        CachedNetworkImage(
-                          //imageUrl: info.products!.main_image_full_url != null ? info.products!.main_image_full_url! : info.products!.image_full_url!,
-                          imageUrl:  bannerImage.imageFullUrl!,
-                          height: MediaQuery.of(context).size.height * 0.40,
-                          fit: BoxFit.fill,
-                          width: double.infinity,
-                          errorWidget: (context, url, error) => Image.asset("assets/icons/noimage.jpg",fit: BoxFit.cover),
-                        ),
-
-
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
-          );
-        }else{
+    return Container(
+      margin: EdgeInsets.only(top: 8),
+      child: BlocBuilder<BannerBloc,BannerState>(builder: (BuildContext context, state) {
+        if(state is BannerLoadingState){
           return Shimmer.fromColors(
             baseColor: Colors.grey[300]!,
             highlightColor: Colors.grey[100]!,
@@ -125,12 +47,86 @@ class _ProductBannerImageSliderState extends State<ProductBannerImageSlider> {
               width: double.infinity,
             ),
           );
-        }
+        }else if(state is BannerLoadedState){
+          if( state.bannerResModel!.banners.isNotEmpty){
+            final double bannerHeight =
+                MediaQuery.of(context).size.width * ScreenHieght.getHieght(context); // 2:1 ratio
+            return  CarouselSlider(
+              options: CarouselOptions(
+                height:bannerHeight ,
+                autoPlay: true,
+                autoPlayInterval: const Duration(seconds: 5
+                ),
+                autoPlayAnimationDuration: Duration(milliseconds: 800),
+               // autoPlayCurve: Curves.fastOutSlowIn,
+                viewportFraction: 0.8,
+               // viewportFraction: 2, // full width
+                enlargeCenterPage: true,
+              ),
+              items: state.bannerResModel!.banners.map((bannerImage) {
+                return InkWell(
+                  onTap: (){
+                    // CheckNetwork.check().then((network){
+                    //   if(!network){
+                    //     CustomToast.showCustomRoast(context:context, message: "No network found.", icon: Bootstrap.check_circle,iconColor: Colors.red);
+                    //   }else{
+                    //     if(bannerImage.products == null){
+                    //       //   Fluttertoast.showToast(msg: "asdfsd");
+                    //     }
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //         builder: (context) => ProductDetails(
+                    //           productCode: bannerImage.productCode!,
+                    //           stock_quantity: bannerImage.products!.stock_quantity,
+                    //           productName:bannerImage.products != null ? bannerImage.products!.product_name! : "",
+                    //           sellingPrice:bannerImage.products != null ? double.parse(bannerImage.products!.sell_price!) : 0,
+                    //           productImage: bannerImage.imageFullUrl,
+                    //           variation: 0,),
+                    //       ),
+                    //     );
+                    //   }
+                    // });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: CachedNetworkImage(
+                        imageUrl: bannerImage.mobile_image_full_url!,
+                        width: double.infinity,
+                        height: (bannerHeight),
+                        fit: BoxFit.fill, // no stretch
+                        placeholder: (context, _) =>
+                            Container(color: Colors.grey.shade200),
+                        errorWidget: (context, _, __) =>
+                            Image.asset(
+                              "assets/icons/gargimage.png",
+                              fit: BoxFit.fill,
+                            ),
+                      ),
+                    ),
+                  ),
+                );
+              }).toList(),
+            );
+          }else{
+            return Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: Container(
+                color: Colors.white,
+                height: 200,
+                width: double.infinity,
+              ),
+            );
+          }
 
-      }else{
-        return Container();
-      }
-    },);
+        }else{
+          return Container();
+        }
+      },),
+    );
 
 
   }

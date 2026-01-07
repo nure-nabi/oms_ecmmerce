@@ -79,7 +79,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     return Scaffold(
       extendBodyBehindAppBar: true, // allows body to draw under status bar
-      backgroundColor:gPrimaryColor.withOpacity(0.5),
+      backgroundColor:gPrimaryColor,
       appBar: null,
       body: BlocConsumer<SplashBloc,SplashState>(builder: (
           BuildContext context, state) {
@@ -95,7 +95,7 @@ class _SplashScreenState extends State<SplashScreen>
                     const CircleAvatar(
                       radius: 60,
                       backgroundImage:
-                      AssetImage("assets/icons/gargimage.png"),
+                      AssetImage("assets/icons/gargicon.png"),
                     ),
                     const SizedBox(height: 20),
                     FadeTransition(

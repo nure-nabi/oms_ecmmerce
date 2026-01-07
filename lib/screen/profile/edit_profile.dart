@@ -156,7 +156,7 @@ class _EditProfileState extends State<EditProfile> {
                                   //  Fluttertoast.showToast(msg: "msg");
                                     LoadingOverlay.show(context);
                                    BlocProvider.of<EditProfileBloc>(context).add(EditProfileReqEvent(userName: fullNameController.text.trim(), phone: phoneController.text.trim(),image: filePath));
-                                  }, child: Text("Update Profile1",style: TextStyle(color: Colors.white))),
+                                  }, child: Text("Update Profile",style: TextStyle(color: Colors.white))),
                             );
                           } else  if(state is EditProfileLoadingState){
                             return Container(
@@ -168,7 +168,7 @@ class _EditProfileState extends State<EditProfile> {
                                   ),
                                   onPressed: (){
                                     BlocProvider.of<EditProfileBloc>(context).add(EditProfileReqEvent(userName: fullNameController.text.trim(), phone: phoneController.text.trim(),image: filePath));
-                                  }, child: Text("Update Profile2",style: TextStyle(color: Colors.white))),
+                                  }, child: Text("Update Profile",style: TextStyle(color: Colors.white))),
                             );
                           }else  if(state is EditProfileLoadedState){
                             return Container(
@@ -180,7 +180,7 @@ class _EditProfileState extends State<EditProfile> {
                                   ),
                                   onPressed: (){
                                  //   BlocProvider.of<EditProfileBloc>(context).add(EditProfileReqEvent(userName: fullNameController.text.trim(), phone: phoneController.text.trim(),image: base64Image));
-                                  }, child: Text("Update Profile3",style: TextStyle(color: Colors.white) )),
+                                  }, child: Text("Update Profile",style: TextStyle(color: Colors.white) )),
                             );
                           }else{
                             return Container();
@@ -189,7 +189,7 @@ class _EditProfileState extends State<EditProfile> {
 
                         listener: (BuildContext context, Object? state) {
                           if(state is EditProfileLoadedState){
-                            CustomToast.showCustomRoast(context: context!, message: "Profile updated successfully!",
+                            CustomToast.showCustomRoast(context: context, message: "Profile updated successfully!",
                                 icon: Bootstrap.check_circle,iconColor: Colors.green);
                             Navigator.pushReplacementNamed(context, homeNavbar,
                             arguments: 3);
@@ -239,7 +239,7 @@ class _EditProfileState extends State<EditProfile> {
               radius: 50,
               backgroundImage: imagePath.isNotEmpty
                   ? NetworkImage(imagePath)
-                  : const AssetImage("assets/images/pro1.jpg"),
+                  : const AssetImage("assets/icons/gargimage.png"),
             );
           }
 
@@ -249,7 +249,7 @@ class _EditProfileState extends State<EditProfile> {
             radius: 50,
             backgroundImage: imagePath.isNotEmpty
                 ? NetworkImage(imagePath)
-                : const AssetImage("assets/images/pro1.jpg"),
+                : const AssetImage("assets/icons/gargimage.png"),
           );
         }
 

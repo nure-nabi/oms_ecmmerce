@@ -51,12 +51,15 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin{
   final ScrollController _scrollController = ScrollController();
   double _lastScrollOffset = 0;
   bool _showToastOnScrollUp = false;
   Color whiteColor = Color(0xffFFFFFF);
   Color blueColor = Color(0xff003466);
+
+  @override
+  bool get wantKeepAlive => true;
   @override
   void initState() {
     context.read<CartBloc>().add(CartReqEvent(count:0,checkedCart:false));
@@ -542,6 +545,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget getCartData(bool flag){
     return InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      hoverColor: Colors.transparent,
       onTap: (){
         Navigator.pushNamed(context, cartPage,
           arguments: true

@@ -17,6 +17,7 @@ import '../../component/loading_overlay.dart';
 import '../../core/constant/colors_constant.dart';
 import '../../core/services/routeHelper/route_name.dart';
 import '../../utils/custome_toast.dart';
+import '../../utils/hieght_width_map.dart';
 import '../cart/bloc/add_cart/add_cart_bloc.dart';
 import '../cart/bloc/add_cart/add_cart_event.dart';
 import '../cart/bloc/add_cart/add_cart_state.dart';
@@ -67,6 +68,8 @@ class _BrandProductListPageState extends State<TopCategoryProductListPage> {
   int i = 0;
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title:  Text("Top Category Product",style: GoogleFonts.poppins(
@@ -118,11 +121,12 @@ class _BrandProductListPageState extends State<TopCategoryProductListPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
+                    gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: ScreenHieght.getCrossAxisCount(context),
                       mainAxisSpacing: 1,
                       crossAxisSpacing: 1,
-                      childAspectRatio: 0.65,
+                      // Dynamically adjust based on screen size
+                      childAspectRatio: screenWidth / (screenHeight / 1.5),
                     ),
                     itemCount: state.product!.length + 1,
                     itemBuilder: (BuildContext context, int index) {
@@ -170,7 +174,7 @@ class _BrandProductListPageState extends State<TopCategoryProductListPage> {
                                       ),
                                       child: CachedNetworkImage(
                                         imageUrl: info.main_image_full_url!.isNotEmpty ? info.main_image_full_url! : info.image_full_url!,
-                                        width: 200,
+                                        width: screenWidth,
                                         height: 140,
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) =>

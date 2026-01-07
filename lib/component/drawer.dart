@@ -107,7 +107,8 @@ class _DrawerShowState extends State<DrawerShow> {
                         color: textColor,
                         iconName: Bootstrap.heart,
                         onTap: () {
-
+                          Navigator.pushNamed(context, wishListPage,
+                              arguments: true);
                         },
                       ),
                       Divider(),
@@ -293,7 +294,7 @@ class _DrawerShowState extends State<DrawerShow> {
                 alignment: Alignment.center,
                 child: CircleAvatar(
                   radius: 40,
-                  backgroundImage: AssetImage("assets/icons/gargimage.png"),
+                  backgroundImage: AssetImage("assets/icons/gargicon.png"),
                 ),
               ),
               SizedBox(height: 10,),
@@ -333,7 +334,7 @@ class _DrawerShowState extends State<DrawerShow> {
                 alignment: Alignment.center,
                 child: CircleAvatar(
                   radius: 40,
-                  backgroundImage: AssetImage("assets/icons/gargimage.png"),
+                  backgroundImage: AssetImage("assets/icons/gargicon.png"),
                 ),
               ),
               SizedBox(height: 10,),

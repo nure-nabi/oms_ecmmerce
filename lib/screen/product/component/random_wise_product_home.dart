@@ -43,15 +43,15 @@ class _RandomWiseProductHomeState extends State<RandomWiseProductHome> {
     context.read<RandomProductListBloc>().add(RandomProductListReqEvent());
   }
 
-
   int i = 0;
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    return BlocConsumer<RandomProductListBloc,RandomProductListState>(
+    return BlocConsumer<RandomProductListBloc, RandomProductListState>(
       builder: (BuildContext context, state) {
-        if(state is RandomProductListInitialState){
+        if (state is RandomProductListInitialState) {
           return Center(
             child: Container(
               height: 40,
@@ -75,17 +75,15 @@ class _RandomWiseProductHomeState extends State<RandomWiseProductHome> {
               ),
             ),
           );
-        } else if(state is RandomProductListLoadedState){
-
+        } else if (state is RandomProductListLoadedState) {
           return SingleChildScrollView(
-
             child: Stack(
               children: [
                 GridView.builder(
-                  padding:  EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: ScreenHieght.getCrossAxisCount(context),
                     mainAxisSpacing: 1,
                     crossAxisSpacing: 1,
@@ -94,7 +92,6 @@ class _RandomWiseProductHomeState extends State<RandomWiseProductHome> {
                   ),
                   itemCount: state.product.length + 1,
                   itemBuilder: (BuildContext context, int index) {
-
                     if (index >= state.product.length) {
                       return SizedBox.shrink();
                     }
@@ -111,7 +108,8 @@ class _RandomWiseProductHomeState extends State<RandomWiseProductHome> {
                               sellingPrice: double.parse(info.sell_price!),
                               stock_quantity: info.stock_quantity,
                               productImage: info.image_full_url,
-                              variation: info.has_variations,),
+                              variation: info.has_variations,
+                            ),
                           ),
                         );
                       },
@@ -121,11 +119,10 @@ class _RandomWiseProductHomeState extends State<RandomWiseProductHome> {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Container(
-                          padding: EdgeInsets.only(top: 5,left: 5,right: 5),
+                          padding: EdgeInsets.only(top: 5, left: 5, right: 5),
                           decoration: const BoxDecoration(
                             // color: Colors.white,
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(5))
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,47 +135,88 @@ class _RandomWiseProductHomeState extends State<RandomWiseProductHome> {
                                       topLeft: Radius.circular(5),
                                     ),
                                     child: CachedNetworkImage(
-                                      imageUrl: info.main_image_full_url != "" ? info.main_image_full_url! : info.image_full_url!,
+                                      imageUrl: info.main_image_full_url != ""
+                                          ? info.main_image_full_url!
+                                          : info.image_full_url!,
 
-                                      width: 200,
+                                      width: MediaQuery.of(context).size.width,
                                       height: 140,
                                       fit: BoxFit.cover,
                                       placeholder: (context, url) =>
                                           Container(),
                                       errorWidget: (context, url, error) =>
-                                          Icon(Icons.error),
+                                          Image.asset(
+                                            "assets/icons/gargimage.png",
+                                          ),
                                     ),
                                   ),
                                   Positioned(
-                                      top: 5,
-                                      right: 5,
-                                      child: InkWell(
-                                        onTap: ()async{
-                                          if(await GetAllPref.loginSuccess()){
-                                            if(!info.is_wishlisted!){
-                                              LoadingOverlay.show(context);
-                                              BlocProvider.of<WishlistBloc>(context).add(WishlistSaveEvent(
-                                                  productCode: info.product_code!,context: context));
-                                              context.read<RandomProductListBloc>().add(RandomProductWishListUpdateEvent(
-                                                  index: index,flag: true,limit: 20));
-                                            }else{
-                                              //  context.read<WishlistBloc>().add(WishlistReqEvent());
-                                              LoadingOverlay.show(context);
-                                              BlocProvider.of<WishlistBloc>(context).add(WishlistRemovedEvent(
-                                                  item_code: info.product_code!,product_code: info.product_code!,context: context));
-                                              context.read<RandomProductListBloc>().add(RandomProductWishListUpdateEvent(
-                                                  index: index,flag: false,limit: 20));
-                                            }
-                                          }else{
-                                            CustomToast.showCustomRoast(context: context, message: "You are not login!", icon: Bootstrap.check_circle,iconColor: Colors.red);
+                                    top: 5,
+                                    right: 5,
+                                    child: InkWell(
+                                      onTap: () async {
+                                        if (await GetAllPref.loginSuccess()) {
+                                          if (!info.is_wishlisted!) {
+                                            LoadingOverlay.show(context);
+                                            BlocProvider.of<WishlistBloc>(
+                                              context,
+                                            ).add(
+                                              WishlistSaveEvent(
+                                                productCode: info.product_code!,
+                                                context: context,
+                                              ),
+                                            );
+                                            context
+                                                .read<RandomProductListBloc>()
+                                                .add(
+                                                  RandomProductWishListUpdateEvent(
+                                                    index: index,
+                                                    flag: true,
+                                                    limit: 20,
+                                                  ),
+                                                );
+                                          } else {
+                                            //  context.read<WishlistBloc>().add(WishlistReqEvent());
+                                            LoadingOverlay.show(context);
+                                            BlocProvider.of<WishlistBloc>(
+                                              context,
+                                            ).add(
+                                              WishlistRemovedEvent(
+                                                item_code: info.product_code!,
+                                                product_code:
+                                                    info.product_code!,
+                                                context: context,
+                                              ),
+                                            );
+                                            context
+                                                .read<RandomProductListBloc>()
+                                                .add(
+                                                  RandomProductWishListUpdateEvent(
+                                                    index: index,
+                                                    flag: false,
+                                                    limit: 20,
+                                                  ),
+                                                );
                                           }
-
-                                        },
-                                        child: Icon(info.is_wishlisted! ?
-                                        Bootstrap.heart_fill : Bootstrap.heart,
-                                            color:info.is_wishlisted! ?
-                                            Colors.red :  Colors.grey.shade400),
-                                      )),
+                                        } else {
+                                          CustomToast.showCustomRoast(
+                                            context: context,
+                                            message: "You are not login!",
+                                            icon: Bootstrap.check_circle,
+                                            iconColor: Colors.red,
+                                          );
+                                        }
+                                      },
+                                      child: Icon(
+                                        info.is_wishlisted!
+                                            ? Bootstrap.heart_fill
+                                            : Bootstrap.heart,
+                                        color: info.is_wishlisted!
+                                            ? Colors.red
+                                            : Colors.grey.shade400,
+                                      ),
+                                    ),
+                                  ),
                                   // Positioned(
                                   //   top: 5,
                                   //   right: 5,
@@ -205,20 +243,18 @@ class _RandomWiseProductHomeState extends State<RandomWiseProductHome> {
                               Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 5.0),
                                 child: Column(
-
                                   children: [
                                     ProductAllItem(
                                       latestProductModel: info,
-                                      name:  info.product_name!,
+                                      name: info.product_name!,
                                       brand: "Product's brand",
-                                      price:  info.sell_price!,
+                                      price: info.sell_price!,
                                       productCode: info.product_code,
                                       average_rating: info.average_rating,
                                       review_count: info.review_count,
                                       variation: info.has_variations.toString(),
                                       stockQuantity: info.stock_quantity,
                                     ),
-
                                   ],
                                 ),
                               ),
@@ -227,10 +263,8 @@ class _RandomWiseProductHomeState extends State<RandomWiseProductHome> {
                         ),
                       ),
                     );
-
                   },
                 ),
-
               ],
             ),
           );
@@ -325,8 +359,7 @@ class _RandomWiseProductHomeState extends State<RandomWiseProductHome> {
           //     ),
           //   ],
           // );
-
-        }else{
+        } else {
           return Center(
             child: Container(
               height: 40,
@@ -359,8 +392,8 @@ class _RandomWiseProductHomeState extends State<RandomWiseProductHome> {
       },
     );
   }
-
 }
+
 class ProductAllItem extends StatelessWidget {
   final RandomProductModel latestProductModel;
   final String name;
@@ -402,29 +435,39 @@ class ProductAllItem extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
-          Text(brand,
-              style: const TextStyle(
-                  overflow: TextOverflow.ellipsis, color: Colors.grey)),
+          Text(
+            brand,
+            style: const TextStyle(
+              overflow: TextOverflow.ellipsis,
+              color: Colors.grey,
+            ),
+          ),
           const SizedBox(height: 5),
-          if(variation == "1")
-            Text("Staring at",style: GoogleFonts.poppins(
-              //  color: Colors.green.shade700
-            ),),
+          if (variation == "1")
+            Text(
+              "Staring at",
+              style: GoogleFonts.poppins(
+                //  color: Colors.green.shade700
+              ),
+            ),
           RichText(
             text: TextSpan(
-              style: TextStyle( fontSize: 14),
+              style: TextStyle(fontSize: 14),
               children: [
                 TextSpan(
-                    text: 'Rs ',
-                    style:
-                    GoogleFonts.poppins(fontSize: 10,color: lightColorScheme.primary)),
+                  text: 'Rs ',
+                  style: GoogleFonts.poppins(
+                    fontSize: 10,
+                    color: lightColorScheme.primary,
+                  ),
+                ),
                 TextSpan(
                   text: price,
                   style: GoogleFonts.poppins(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
 
-                      color: lightColorScheme.primary
+                    color: lightColorScheme.primary,
                   ),
                 ),
               ],
@@ -443,48 +486,59 @@ class ProductAllItem extends StatelessWidget {
                 allowHalfRating: true,
                 itemCount: 5,
                 itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                itemBuilder: (context, _) => Icon(
-                  Icons.star,
-                  color: Colors.green.shade800,
-                ),
+                itemBuilder: (context, _) =>
+                    Icon(Icons.star, color: Colors.green.shade800),
                 onRatingUpdate: (rating) {
                   print(rating);
                 },
               ),
-              Text("(${review_count.toString()})",style: GoogleFonts.poppins(
-                  fontSize: 8
-              ),),
+              Text(
+                "(${review_count.toString()})",
+                style: GoogleFonts.poppins(fontSize: 8),
+              ),
 
               Spacer(),
-              if(variation! == "0")
+              if (variation! == "0")
                 InkWell(
                   onTap: () {
-                    LoadingOverlay.show(context);
-                    BlocProvider.of<AddCartBloc>(context).add(
-                      AddCartReqEvent(
+                    if (stockQuantity! > 0) {
+                      LoadingOverlay.show(context);
+                      BlocProvider.of<AddCartBloc>(context).add(
+                        AddCartReqEvent(
                           productCode: productCode,
                           price: price,
                           quantity: "1",
-                          context: context
-                      ),
-                    );
-                    // Listen for state changes and then dispatch the cart event
-                    BlocProvider.of<AddCartBloc>(context)
-                        .stream
-                        .firstWhere((state) {
-                      // Define your condition for when the operation is complete
-                      return state
-                      is AddCartLoadedState; // or whatever your success state is
-                    }).then((_) {
-                      context.read<CartBloc>().add(CartReqEvent(count:0,checkedCart:false));
-                    });
+                          context: context,
+                        ),
+                      );
+                      // Listen for state changes and then dispatch the cart event
+                      BlocProvider.of<AddCartBloc>(context).stream
+                          .firstWhere((state) {
+                            // Define your condition for when the operation is complete
+                            return state
+                                is AddCartLoadedState; // or whatever your success state is
+                          })
+                          .then((_) {
+                            context.read<CartBloc>().add(
+                              CartReqEvent(count: 0, checkedCart: false),
+                            );
+                          });
+                    } else {
+                      CustomToast.showCustomRoast(
+                        context: context,
+                        message: "Out of Stock",
+                        icon: Bootstrap.check_circle,
+                        iconColor: Colors.red,
+                      );
+                    }
                   },
                   child: Container(
                     height: 30,
                     width: 30,
                     padding: const EdgeInsets.all(7),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100), // Fully circular
+                      borderRadius: BorderRadius.circular(100),
+                      // Fully circular
                       // color: gPrimaryColor,
                       color: Colors.white,
                       boxShadow: [
@@ -496,10 +550,13 @@ class ProductAllItem extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: Icon(Bootstrap.cart_plus,size: 15,color: gPrimaryColor,),
+                    child: Icon(
+                      Bootstrap.cart_plus,
+                      size: 15,
+                      color: gPrimaryColor,
+                    ),
                   ),
-                )
-
+                ),
             ],
           ),
         ],

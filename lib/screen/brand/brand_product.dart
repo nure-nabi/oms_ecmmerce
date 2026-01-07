@@ -65,118 +65,7 @@ class _BrandProductListPageState extends State<BrandProductListPage> {
     super.dispose();
   }
 
-  // ...items.asMap().entries.map((e){
-  // int index = e.key;
-  // String item = e.value;
-  // if(index < items.length - 1){
-  // return ListTile(
-  // title: Text(item),
-  // );
-  // }else{
-  // return Padding(
-  // padding: const EdgeInsets.all(16.0),
-  // child: Center(
-  // child: CircularProgressIndicator(),
-  // ),
-  // );
-  // }
-  // })
 
-
-  // GridView.builder(
-  // padding: const EdgeInsets.symmetric(horizontal: 10),
-  // shrinkWrap: true,
-  // physics: NeverScrollableScrollPhysics(),
-  // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-  // crossAxisCount: 2,
-  // mainAxisSpacing: 2,
-  // crossAxisSpacing: 2,
-  // childAspectRatio: 0.68,
-  // ),
-  // itemCount: state.listLoading ! +1 ,
-  // itemBuilder: (BuildContext context, int index) {
-  // // If this is the loading indicator position
-  //
-  // if (index == state.latestProductResModel!.products.length) {
-  // return const Padding(
-  // padding: EdgeInsets.all(20.0),
-  // child: Center(
-  // child: CircularProgressIndicator(),
-  // ),
-  // );
-  // }
-  //
-  // // Regular item
-  // if(state.latestProductResModel!.products.length > index) {
-  // final info = state.latestProductResModel!.products[index];
-  // return InkWell(
-  // onTap: () {
-  // // Navigator.push(
-  // //   context,
-  // //   MaterialPageRoute(
-  // //     builder: (context) => ProductDetails(productCode: info.product_code!, productName: info.product_name!, sellingPrice: double.parse(info.sell_price!), productImage: info.image_full_url,),
-  // //   ),
-  // // );
-  // },
-  // child: Card(
-  // elevation: 2,
-  // shape: RoundedRectangleBorder(
-  // borderRadius: BorderRadius.circular(8),
-  // ),
-  // child: Container(
-  // decoration: const BoxDecoration(
-  // color: Colors.white,
-  // borderRadius: BorderRadius.all(
-  // Radius.circular(10))
-  // ),
-  // child: Column(
-  // crossAxisAlignment: CrossAxisAlignment.start,
-  // children: [
-  // Stack(
-  // children: [
-  // ClipRRect(
-  // borderRadius: const BorderRadius.only(
-  // topRight: Radius.circular(5),
-  // topLeft: Radius.circular(5),
-  // ),
-  // child: CachedNetworkImage(
-  // imageUrl: info.image_full_url!,
-  // width: 200,
-  // height: 140,
-  // fit: BoxFit.cover,
-  // placeholder: (context, url) =>
-  // Container(),
-  // errorWidget: (context, url, error) =>
-  // Icon(Icons.error),
-  // ),
-  // ),
-  // Positioned(
-  // top: 5,
-  // right: 5,
-  // child: Container(
-  // height: 30,
-  // width: 30,
-  // padding: const EdgeInsets.all(7),
-  // decoration: BoxDecoration(
-  // borderRadius: BorderRadius.circular(
-  // 100),
-  // color: gPrimaryColor,
-  // ),
-  // child: Icon(Bootstrap.heart, size: 15,
-  // color: Colors.white),
-  // ),
-  // ),
-  // ],
-  // ),
-  // const SizedBox(height: 10),
-  // ],
-  // ),
-  // ),
-  // ),
-  // );
-  // }
-  // },
-  // ),
   int i = 0;
   @override
   Widget build(BuildContext context) {
@@ -289,7 +178,7 @@ class _BrandProductListPageState extends State<BrandProductListPage> {
                                         imageUrl: info.main_image_full_url! != "" ? info.main_image_full_url! :
                                         info.main_image! != "" ? info.main_image! :
                                         info.image_full_url!,
-                                        width: 200,
+                                        width: MediaQuery.of(context).size.width,
                                         height: 140,
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) =>

@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:oms_ecommerce/component/loading_overlay.dart';
 import 'package:oms_ecommerce/screen/login/api/login_repo.dart';
 import 'package:oms_ecommerce/screen/login/block/login_event.dart';
 import 'package:oms_ecommerce/screen/login/block/login_state.dart';
@@ -15,16 +16,19 @@ class LoginBlock extends Bloc<LoginEvent, LoginState> {
             email: event.loginReqModel?.email ?? "",
             password: event.loginReqModel?.password ?? "");
         if(loginRespModel.success == true){
+          LoadingOverlay.hide();
           await SetAllPref.loginSuccess(value: true);
           await SetAllPref.userId(value: loginRespModel.user!.id.toString());
           await SetAllPref.token(value: loginRespModel.token!.toString());
           emit(LoginLoadedState(loginRespModel: loginRespModel));
         }else{
+          LoadingOverlay.hide();
           emit(LoginInitialState());
-          Fluttertoast.showToast(msg: loginRespModel.message!);
+          Fluttertoast.showToast(msg: "Please enter valid user/password");
         }
 
       }catch(e){
+        LoadingOverlay.hide();
         emit(LoginErrorState(errorMsg: e.toString()));
       }
 

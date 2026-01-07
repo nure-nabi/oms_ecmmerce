@@ -266,7 +266,7 @@ class _FlashSaleProductPageState extends State<FlashSaleProductPage> {
                                       child: CachedNetworkImage(
                                         imageUrl: info.image_full_url != "" ? info.image_full_url!: info.main_image_full_url!,
                                       //  imageUrl: info.image_full_url!,
-                                        width: 200,
+                                        width: MediaQuery.of(context).size.width,
                                         height: 140,
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) =>

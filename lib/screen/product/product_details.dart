@@ -476,11 +476,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                                           Colors.red :  Colors.grey.shade400)),
                                   SizedBox(width: 20,),
 
-                                  InkWell(
-                                    onTap : (){
-                                      _shareContent("https://gargdental.omsok.com/storage/app/public/backend/carousel_files/screenshot_2025_07_14_at_121129.png");
-                                    },
-                                      child: Icon(Bootstrap.share)),
+                                  // InkWell(
+                                  //   onTap : (){
+                                  //     _shareContent("https://gargdental.omsok.com/storage/app/public/backend/carousel_files/screenshot_2025_07_14_at_121129.png");
+                                  //   },
+                                  //     child: Icon(Bootstrap.share)),
                                 ],
                               ),
                               SizedBox(height: 10,),
@@ -555,7 +555,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                                       .productDetailsReqModel!.productDetailsResModel!
                                                       .actual_price!)));
                                             }else{
-
+                                              Fluttertoast.showToast(msg: "Out of stock");
                                             }
 
                                           },
@@ -822,7 +822,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                             child: CachedNetworkImage(
                                               imageUrl: info.main_image_full_url!.isNotEmpty ? info.main_image_full_url! : info.image_full_url!,
                                               //imageUrl: info.image_full_url!,
-                                              width: 200,
+                                              width: MediaQuery.of(context).size.width,
                                               height: 140,
                                               fit: BoxFit.cover,
                                               placeholder: (context, url) =>
@@ -974,64 +974,84 @@ class _ProductDetailsState extends State<ProductDetails> {
                     children: [
                       if(state.productDetailsReqModel!.productDetailsResModel!.sell_price != "")...[
                         Expanded(
-                            child: Container(
-                              color: Colors.orange,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  RichText(
-                                    text: TextSpan(
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 14
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                            text: 'Rs ',
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 10,color: textColor )),
-                                        TextSpan(
-                                          text: state.sellPrice! == 0
-                                              ? state.productDetailsReqModel!.productDetailsResModel!.sell_price!
-                                              : state.sellPrice!.toStringAsFixed(2),
-                                          style: GoogleFonts.poppins(
-                                            fontSize: 15,
-                                            color: textColor,
-                                            fontWeight: FontWeight.w600,
-
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                            child: InkWell(
+                              onTap : (){
+                                LoadingOverlay.show(context);
+                                BlocProvider.of<AddCartBloc>(context).add(
+                                  AddCartReqEvent(
+                                      productCode: widget.productCode,
+                                      price: widget.sellingPrice?.toStringAsFixed(2),
+                                      quantity: count.toString(),
+                                      context: context
                                   ),
-                                  InkWell(
-                                    onTap: () {
-                                      LoadingOverlay.show(context);
-                                      BlocProvider.of<AddCartBloc>(context).add(
-                                        AddCartReqEvent(
-                                            productCode: widget.productCode,
-                                            price: widget.sellingPrice?.toStringAsFixed(2),
-                                            quantity: count.toString(),
-                                            context: context
-                                        ),
-                                      );
-                                      // Listen for state changes and then dispatch the cart event
-                                      BlocProvider.of<AddCartBloc>(context).stream.firstWhere((state) {
-                                        // Define your condition for when the operation is complete
-                                        return state is AddCartLoadedState; // or whatever your success state is
-                                      }).then((_) {
-                                        context.read<CartBloc>().add(CartReqEvent(count:0,checkedCart:false));
-                                      });
-                                      //   BlocProvider.of<CartBloc>(context).add(CartReqEvent(0));
-                                    },
-                                    child: Text('Add to cart',
-                                        textAlign: TextAlign.center,
+                                );
+                                // Listen for state changes and then dispatch the cart event
+                                BlocProvider.of<AddCartBloc>(context).stream.firstWhere((state) {
+                                  // Define your condition for when the operation is complete
+                                  return state is AddCartLoadedState; // or whatever your success state is
+                                }).then((_) {
+                                  context.read<CartBloc>().add(CartReqEvent(count:0,checkedCart:false));
+                                });
+                              },
+                              child: Container(
+                                color: Colors.orange,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    RichText(
+                                      text: TextSpan(
                                         style: GoogleFonts.poppins(
-                                          fontSize: 16,
+                                            fontSize: 14
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                              text: 'Rs ',
+                                              style: GoogleFonts.poppins(
+                                                fontSize: 10,color: textColor )),
+                                          TextSpan(
+                                            text: state.sellPrice! == 0
+                                                ? state.productDetailsReqModel!.productDetailsResModel!.sell_price!
+                                                : state.sellPrice!.toStringAsFixed(2),
+                                            style: GoogleFonts.poppins(
+                                              fontSize: 15,
+                                              color: textColor,
+                                              fontWeight: FontWeight.w600,
 
-                                          fontWeight: FontWeight.w600,
-                                        )),
-                                  ),
-                                ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        LoadingOverlay.show(context);
+                                        BlocProvider.of<AddCartBloc>(context).add(
+                                          AddCartReqEvent(
+                                              productCode: widget.productCode,
+                                              price: widget.sellingPrice?.toStringAsFixed(2),
+                                              quantity: count.toString(),
+                                              context: context
+                                          ),
+                                        );
+                                        // Listen for state changes and then dispatch the cart event
+                                        BlocProvider.of<AddCartBloc>(context).stream.firstWhere((state) {
+                                          // Define your condition for when the operation is complete
+                                          return state is AddCartLoadedState; // or whatever your success state is
+                                        }).then((_) {
+                                          context.read<CartBloc>().add(CartReqEvent(count:0,checkedCart:false));
+                                        });
+                                        //   BlocProvider.of<CartBloc>(context).add(CartReqEvent(0));
+                                      },
+                                      child: Text('Add to cart',
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 16,
+
+                                            fontWeight: FontWeight.w600,
+                                          )),
+                                    ),
+                                  ],
+                                ),
                               ),
                             )),
                       ]else ...[

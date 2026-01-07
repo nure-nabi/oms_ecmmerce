@@ -8,12 +8,11 @@
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- Add this permission if not present -->
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <application
         android:label="OMS|Ecom"
         android:name="${applicationName}"
-        android:icon="@mipmap/gargimage">
+        android:icon="@mipmap/gargicon">
         <activity
             android:name=".MainActivity"
             android:exported="true"

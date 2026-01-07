@@ -65,7 +65,7 @@ class _FeatureProdudctHomeWidgetState extends State<FeatureProdudctHomeWidget> {
               SizedBox(height: 5,),
 
               SizedBox(
-                height: 227,
+                height: 232,
                 child: ListView.separated(
                   separatorBuilder: (context,index)=> SizedBox(width: 5,),
                   itemCount: 5,
@@ -182,7 +182,7 @@ class _FeatureProdudctHomeWidgetState extends State<FeatureProdudctHomeWidget> {
                     left: 0,
                     right: 0,
                     child:  SizedBox(
-                      height: 227,
+                      height: 232,
                       child: ListView.separated(
                         separatorBuilder: (context,index)=> SizedBox(width: 5,),
                         itemCount: state.product.length,
@@ -232,7 +232,7 @@ class _FeatureProdudctHomeWidgetState extends State<FeatureProdudctHomeWidget> {
                                           ),
                                           child: CachedNetworkImage(
                                             imageUrl: info.image_full_url != "" ? info.image_full_url!: info.main_image_full_url!,
-                                            width: 170,
+                                            width: MediaQuery.of(context).size.width,
                                             height: 100,
                                             fit: BoxFit.cover,
                                             placeholder: (context, url) => Container(),
