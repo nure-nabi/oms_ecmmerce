@@ -241,7 +241,7 @@ class _CategoryWiseProductsPageState extends State<CategoryWiseProductsPage> {
 
                     },
                   )
-                      :Center(child: Text("no data found...."),),
+                      :Center(child: Text("item not found"),),
                   // if (state.isLoadingMore)
                   if (state.isLoadingMore!)
                     Positioned(
@@ -278,7 +278,7 @@ class _CategoryWiseProductsPageState extends State<CategoryWiseProductsPage> {
 
           }else if(state is CategoryProductsEmptyState){
             return const Center(
-              child: Text("no data found...."),
+              child: Text("item not found"),
             );
           }else{
             return SizedBox();

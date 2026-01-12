@@ -158,9 +158,16 @@ class _ProductDetailsState extends State<ProductDetails> {
         appBar: AppBarShow(
         //  backgroundColor: gPrimaryColor,
           leadingFlag: widget.leadingFlag!,
-          leading: InkWell(
-            onTap: ()=>Navigator.pop(context),
-              child: Icon(Bootstrap.chevron_left)),
+            leading: GestureDetector(
+              behavior: HitTestBehavior.opaque, // Important!
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(Bootstrap.chevron_left),
+              ),
+            ),
           title:widget.productName!.isNotEmpty ? widget.productName! : "Product",
           onCartPressed: () {
             Navigator.push(
@@ -310,7 +317,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             height: MediaQuery.of(context).size.height * 0.4,
                             fit: BoxFit.cover,
                             width: MediaQuery.of(context).size.width,
-                            errorWidget: (context, url, error) => Image.asset("assets/icons/gargimage.png"),
+                            errorWidget: (context, url, error) => Image.asset("assets/icons/gargicon.png"),
                           ),
                         ],
 
@@ -512,12 +519,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                               SizedBox(height: 5,),
                               if(state.productDetailsReqModel!.productDetailsResModel!.has_variations == 0)
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Expanded(child: Text("")),
+                                  //Expanded(child: Text("")),
                                   Expanded(
                                       child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       InkWell(
                                           onTap: () {
@@ -532,7 +539,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                             }
 
                                           },
-                                          child: const Icon(Bootstrap.dash_circle)),
+                                          child: const Icon(Bootstrap.dash_circle,size: 30)),
                                       SizedBox(
                                         width: 5,
                                       ),
@@ -559,7 +566,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                             }
 
                                           },
-                                          child: Icon(Bootstrap.plus_circle)),
+                                          child: Icon(Bootstrap.plus_circle,size: 30,)),
                                     ],
                                   )),
                                 ],

@@ -66,27 +66,27 @@ class _ProductBannerImageSliderState extends State<ProductBannerImageSlider> {
               items: state.bannerResModel!.banners.map((bannerImage) {
                 return InkWell(
                   onTap: (){
-                    // CheckNetwork.check().then((network){
-                    //   if(!network){
-                    //     CustomToast.showCustomRoast(context:context, message: "No network found.", icon: Bootstrap.check_circle,iconColor: Colors.red);
-                    //   }else{
-                    //     if(bannerImage.products == null){
-                    //       //   Fluttertoast.showToast(msg: "asdfsd");
-                    //     }
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (context) => ProductDetails(
-                    //           productCode: bannerImage.productCode!,
-                    //           stock_quantity: bannerImage.products!.stock_quantity,
-                    //           productName:bannerImage.products != null ? bannerImage.products!.product_name! : "",
-                    //           sellingPrice:bannerImage.products != null ? double.parse(bannerImage.products!.sell_price!) : 0,
-                    //           productImage: bannerImage.imageFullUrl,
-                    //           variation: 0,),
-                    //       ),
-                    //     );
-                    //   }
-                    // });
+                    CheckNetwork.check().then((network){
+                      if(!network){
+                        CustomToast.showCustomRoast(context:context, message: "No network found.", icon: Bootstrap.check_circle,iconColor: Colors.red);
+                      }else{
+                        if(bannerImage.products == null){
+                          //   Fluttertoast.showToast(msg: "asdfsd");
+                        }
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductDetails(
+                              productCode: bannerImage.productCode!,
+                              stock_quantity: bannerImage.products!.stock_quantity,
+                              productName:bannerImage.products != null ? bannerImage.products!.product_name! : "",
+                              sellingPrice:bannerImage.products != null ? double.parse(bannerImage.products!.sell_price!) : 0,
+                              productImage: bannerImage.imageFullUrl,
+                              variation: 0,),
+                          ),
+                        );
+                      }
+                    });
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 0),

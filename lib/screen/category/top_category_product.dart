@@ -279,7 +279,7 @@ class _TopCategoryProductState extends State<TopCategoryProduct> {
 
           }else if(state is BrandWiseProductsEmptyState){
             return const Center(
-              child: Text("No data found...."),
+              child: Text("item not found"),
             );
           }else{
             return SizedBox();

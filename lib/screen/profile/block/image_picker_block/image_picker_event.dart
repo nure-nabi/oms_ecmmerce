@@ -15,3 +15,8 @@ class GalleryImageEvent extends ImagePickerEvent{
   @override
   List<Object?> get props => [];
 }
+
+class GalleryImageClearEvent extends ImagePickerEvent{
+  @override
+  List<Object?> get props => [];
+}

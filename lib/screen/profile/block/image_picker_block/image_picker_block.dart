@@ -13,6 +13,7 @@ class ImagePickerBlock extends Bloc<ImagePickerEvent,ImagePickerState>{
 
     on<CameraCaptureEvent>(cameraCapture);
     on<GalleryImageEvent>(galleryImage);
+    on<GalleryImageClearEvent>(_onGalleryImageClearEvent);
   }
 
   void cameraCapture(
@@ -34,6 +35,13 @@ class ImagePickerBlock extends Bloc<ImagePickerEvent,ImagePickerState>{
     //emit(state.copyWith(file: file,path: file!.path));
    // emit((state as ImagePickerLoadedState).copyWith(file: file,));
     emit(ImagePickerLoadedState(file: file,getPickedImage: imagePath,path: file.path));
+  }
+
+  void _onGalleryImageClearEvent(
+      GalleryImageClearEvent event,
+      Emitter<ImagePickerState> emit
+      )async{
+    emit(ImagePickerInitialState());
   }
 
 }
