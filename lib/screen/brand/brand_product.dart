@@ -76,11 +76,16 @@ class _BrandProductListPageState extends State<BrandProductListPage> {
         title:  Text("Brand Product",style: GoogleFonts.poppins(
           letterSpacing: 1
         ),),
-        leading: InkWell(
-            onTap: (){
-              Navigator.pop(context); // Proceed with back navigation
+          leading: GestureDetector(
+            behavior: HitTestBehavior.opaque, // Important!
+            onTap: () {
+              Navigator.pop(context);
             },
-            child: Icon(Bootstrap.chevron_left)),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Bootstrap.chevron_left),
+            ),
+          ),
         actions: [
           getCartData()
         ],
@@ -286,7 +291,7 @@ class _BrandProductListPageState extends State<BrandProductListPage> {
 
           }else if(state is BrandWiseProductsEmptyState){
             return const Center(
-              child: Text("No data found...."),
+              child: Text("item not found"),
             );
           }else{
              return SizedBox();

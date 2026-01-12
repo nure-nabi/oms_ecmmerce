@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:oms_ecommerce/basic_model/basic_model.dart';
@@ -28,13 +29,16 @@ class ComplainBloc extends Bloc<ComplainEvent, ComplainState> {
           imagePath: event.imagePath);
 
       if (basicModel.success!) {
+        Fluttertoast.showToast(msg: basicModel.message!);
         omit(ComplainLoadedState(basicModel: basicModel));
+        Navigator.pop(event.context!);
       }else{
         omit(ComplainErrorState(errorMsg: "Please filled all field!"));
       }
 
     }catch(e){
       omit(ComplainErrorState(errorMsg: e.toString()));
+      print('===============${e.toString()}');
     }
   }
 }

@@ -282,7 +282,7 @@ class _BrandProductListPageState extends State<TopCategoryProductListPage> {
 
           }else if(state is TopCategoryProductsEmptyState){
             return const Center(
-              child: Text("No data found...."),
+              child: Text("item not found"),
             );
           }else{
              return SizedBox();

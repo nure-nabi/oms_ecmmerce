@@ -28,9 +28,19 @@ class _PrivacyPolicyPageState extends State<PrivacyPolicyPage> {
   }
   @override
   Widget build(BuildContext context) {
+    String toClassName(String input) {
+      return input
+          .replaceAll('_', ' ')
+          .split(' ')
+          .map((word) => word.isNotEmpty
+          ? word[0].toUpperCase() + word.substring(1).toLowerCase()
+          : '')
+          .join(' ')
+          .trim();
+    }
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(toClassName(widget.title)),
         centerTitle: true,
       //  backgroundColor: gPrimaryColor,
         leading:  InkWell(

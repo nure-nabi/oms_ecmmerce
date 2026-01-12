@@ -32,21 +32,23 @@ static Future saveComplain({
 
   // Create the body (without jsonEncode yet)
   Map<String, dynamic> body = {
-    'name': name,
-    'email': email,
-    'city': city,
-    'phone': phone,
-    'remarks': remarks,
-    'document': imagePath, // This will trigger the toast
+    "name": name,
+    "email": email,
+    "city": city,
+    "phone": phone,
+    "remarks": remarks,
+    "document": [imagePath], // This will trigger the toast
   };
 
+  String encodedBody = jsonEncode(body);
+
   // Show toast if 'document' exists (before API call)
-  if (body.containsKey('document')) {
-    Fluttertoast.showToast(
-      msg: "Image attached: ${body['document']}",
-      toastLength: Toast.LENGTH_SHORT,
-    );
-  }
+  // if (body.containsKey('document')) {
+  //   Fluttertoast.showToast(
+  //     msg: "Image attached: ${body['document']}",
+  //     toastLength: Toast.LENGTH_SHORT,
+  //   );
+  // }
 
    // var body = jsonEncode({
    //    'name':name,
@@ -57,9 +59,9 @@ static Future saveComplain({
    //    'document':imagePath,
    //  });
 
- var jsonData = await  APIProvider.postAPI2(
+ var jsonData = await  APIProvider.postAPI(
        endPoint: 'v1/customer/grievance',
-       body: body
+       body: encodedBody
    );
 
  return BasicModel.fromJson(jsonData);

@@ -406,35 +406,12 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
               const SizedBox(height: 0,),
               const BrandWidget(),
 
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 10,bottom: 5),
-              //   child: Text("Popular Medicine",style: GoogleFonts.poppins(
-              //       color:  Color(0xff003466),
-              //     fontWeight: FontWeight.w500,
-              //     fontSize: 18,
-              //   ),),
-              // ),
-           //   Product Grid
-           //    GridView.count(
-           //      padding: EdgeInsets.only(left: 10,right: 10),
-           //      shrinkWrap: true,
-           //      physics: const NeverScrollableScrollPhysics(),
-           //      crossAxisCount: 2,
-           //      childAspectRatio: 0.75,
-           //      mainAxisSpacing: 2,
-           //      crossAxisSpacing: 2,
-           //      children: [
-           //        _buildProductCard(context,'Supplyment', '\$4.30', 3.5),
-           //        _buildProductCard(context,'Vitamined', '\$4.30', 3.5),
-           //        _buildProductCard(context,'Vitamined', '\$4.30', 3.5),
-           //      ],
-           //    ),
 
                const LatestProduct(),
                const FlashSaleHomeWidget(),
                const FeatureProdudctHomeWidget(title: "Today Deals", one: Colors.blue, two: Colors.black,),
               // FeatureProdudctHomeWidget(title: "Weekly Product",one: Colors.cyan, two: Colors.black,),
-               const ScrollingImages(),
+               //const ScrollingImages(),
               const SizedBox(height: 10,),
              // ALL PRODUCT
               RandomWiseProductHome()
