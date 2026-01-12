@@ -19,7 +19,7 @@ class AssetsList {
   static String topBuying = "assets/icons/top_buying.png";
   static String todo = "assets/icons/todo.png";
   static String questionReport = "assets/icons/question_report.png";
-  static String gargImage = "assets/icons/gargimage.png";
+  static String gargImage = "assets/icons/gargicon.png";
 
   /// Images
   static String errorImage = "assets/images/errorImage.png";

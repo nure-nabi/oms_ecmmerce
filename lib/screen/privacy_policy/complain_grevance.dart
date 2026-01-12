@@ -10,6 +10,7 @@ import 'package:oms_ecommerce/core/constant/colors_constant.dart';
 import 'package:oms_ecommerce/screen/privacy_policy/bloc/compain_bloc/complain_bloc.dart';
 import 'package:oms_ecommerce/screen/privacy_policy/bloc/compain_bloc/complain_event.dart';
 import 'package:oms_ecommerce/screen/privacy_policy/bloc/compain_bloc/complain_state.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/constant/textstyle.dart';
 import '../../utils/whatsapp.dart';
@@ -36,13 +37,22 @@ class _ComplainGrievanceState extends State<ComplainGrievance> {
   TextEditingController remarkController = TextEditingController();
   String imagePath = "";
   String base64Image = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    context.read<ImagePickerBlock>().add(GalleryImageClearEvent());
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Complain or Grievance"),
-          backgroundColor: gPrimaryColor,
+          title:  Text("Complain or Grievance",style: GoogleFonts.poppins(
+
+          ),),
+        //  backgroundColor: gPrimaryColor,
           leading: InkWell(
             onTap: ()=>Navigator.pop(context),
               child: Icon(Bootstrap.chevron_left)),
@@ -74,6 +84,7 @@ class _ComplainGrievanceState extends State<ComplainGrievance> {
                       prefixIcon: Icons.person,
                     ),
                   ),
+                  SizedBox(height: 10,),
                   TextFormField(
                     controller: emailController,
                     onChanged: (value) {
@@ -97,6 +108,7 @@ class _ComplainGrievanceState extends State<ComplainGrievance> {
                       prefixIcon: Icons.email,
                     ),
                   ),
+                  SizedBox(height: 10,),
                   TextFormField(
                     controller: phoneController,
                     onChanged: (value) {
@@ -117,6 +129,7 @@ class _ComplainGrievanceState extends State<ComplainGrievance> {
                       prefixIcon: Icons.phone,
                     ),
                   ),
+                  SizedBox(height: 10,),
                   TextFormField(
                     controller: cityController,
                     onChanged: (value) {
@@ -136,6 +149,7 @@ class _ComplainGrievanceState extends State<ComplainGrievance> {
                       prefixIcon: Icons.location_city,
                     ),
                   ),
+                  SizedBox(height: 10,),
                   TextFormField(
                     controller: remarkController,
                     maxLines: 3,
@@ -228,7 +242,6 @@ class _ComplainGrievanceState extends State<ComplainGrievance> {
                       listener: (context,state){
                         if(state is ImagePickerLoadedState){
                           imagePath = state.path.toString();
-                          Fluttertoast.showToast(msg: state.path.toString());
                         }
                       })
                 ],
@@ -248,7 +261,9 @@ class _ComplainGrievanceState extends State<ComplainGrievance> {
                     city: cityController.text.trim(),
                     phone: phoneController.text.trim(),
                     remark: remarkController.text.trim(),
-                    imagePath: imagePath
+                   // imagePath: imagePath
+                    imagePath: base64Image,
+                  context: context
                 )
                 );
               }else{

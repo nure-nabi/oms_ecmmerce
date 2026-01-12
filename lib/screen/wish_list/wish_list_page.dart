@@ -234,22 +234,22 @@ class _WishListPageState extends State<WishListPage> {
                   Icon(Bootstrap.heart, size: 80, color: Colors.grey[400]),
                   const SizedBox(height: 20),
                   const Text(
-                    'Oops!! Your wishlist is empty.',
+                    'Oops!! item not found.',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Let\'s do some shopping and fill it up.',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                  // const SizedBox(height: 10),
+                  // const Text(
+                  //   'Let\'s do some shopping and fill it up.',
+                  //   style: TextStyle(
+                  //     fontSize: 16,
+                  //     color: Colors.grey,
+                  //   ),
+                  //   textAlign: TextAlign.center,
+                  // ),
                   SizedBox(height: 30),
                   Divider(thickness: 1),
 
