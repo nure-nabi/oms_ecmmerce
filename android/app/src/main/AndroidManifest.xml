@@ -10,7 +10,7 @@
     <!-- Add this permission if not present -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <application
-        android:label="OMS|Ecom"
+        android:label="Garg Dental"
         android:name="${applicationName}"
         android:icon="@mipmap/gargicon">
         <activity
