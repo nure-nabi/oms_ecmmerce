@@ -9,6 +9,7 @@ import 'package:oms_ecommerce/screen/splash/splash_bloc/splash_state.dart';
 
 import 'package:oms_ecommerce/screen/widget/gredient_container.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/constant/asstes_list.dart';
 import '../../core/constant/colors_constant.dart';
@@ -65,6 +66,11 @@ class _SplashScreenState extends State<SplashScreen>
     loginSuccess = await GetAllPref.loginSuccess();
   }
 
+  setDialogShow()async{
+    final prefs = await SharedPreferences.getInstance();
+    final today = DateTime.now().toIso8601String().substring(0, 10);
+    prefs.setString('last_alert_date',today.toString());
+  }
   @override
   void dispose() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
@@ -75,11 +81,9 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       extendBodyBehindAppBar: true, // allows body to draw under status bar
-      backgroundColor:gPrimaryColor,
+      backgroundColor:Colors.white,
       appBar: null,
       body: BlocConsumer<SplashBloc,SplashState>(builder: (
           BuildContext context, state) {
@@ -92,16 +96,19 @@ class _SplashScreenState extends State<SplashScreen>
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const CircleAvatar(
-                      radius: 60,
-                      backgroundImage:
-                      AssetImage("assets/icons/gargicon.png"),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const CircleAvatar(
+                        radius: 60,
+                        backgroundImage:
+                        AssetImage("assets/icons/gargicon.png"),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     FadeTransition(
                       opacity: _fadeAnimation,
                       child: Text(
-                        "Loading...",
+                        "",
                         style: GoogleFonts.poppins(
                           color: Colors.white,
                           fontSize: 20,
