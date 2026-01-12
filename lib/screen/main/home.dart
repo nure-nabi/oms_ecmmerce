@@ -17,6 +17,7 @@ import 'package:oms_ecommerce/scroll/scroll_state.dart';
 import '../../component/drawer.dart';
 import '../../component/loading_overlay.dart';
 import '../../core/services/routeHelper/route_name.dart';
+import '../../utils/alert_dialog_show_daily.dart';
 import '../../utils/custome_toast.dart';
 import '../banner/product_slider_image.dart';
 import '../brand/bloc/brand_bloc.dart';
@@ -62,6 +63,9 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   bool get wantKeepAlive => true;
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showFlashSaleAlert(context);
+    });
     context.read<CartBloc>().add(CartReqEvent(count:0,checkedCart:false));
     context.read<ProfileBloc>().add(ProfileReqEvent());
     _scrollController.addListener(_scrollListener);
