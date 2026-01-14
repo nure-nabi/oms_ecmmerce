@@ -39,6 +39,7 @@ import '../screen/brand/bloc/brand_wise_products_bloc/brand_wise_products_bloc.d
 import '../screen/cart/bloc/add_cart/add_cart_bloc.dart';
 import '../screen/cart/bloc/cart_bloc.dart';
 import '../screen/category/bloc/category_product/category_product_bloc.dart';
+import '../screen/offers/bloc/offer_bloc.dart';
 import '../screen/order/bloc/order_bloc.dart';
 import '../screen/product/bloc/product_details_bloc.dart';
 import '../screen/product/bloc/random_product_bloc/random_product_list_bloc.dart';
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
       BlocProvider(create: (context)=>TopCategoryProductsBloc()),
       BlocProvider(create: (context)=>CategoryProductBloc()),
       BlocProvider(create: (context)=>CartBloc()),
+      BlocProvider(create: (context)=>OfferBloc()),
       BlocProvider(create: (context)=>ProductDetailsBloc()),
       BlocProvider(create: (context)=>AddCartBloc()),
       BlocProvider(create: (context)=>ProductRelatedBloc()),

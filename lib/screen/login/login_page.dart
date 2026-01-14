@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -274,6 +275,7 @@ class _LoginPageState extends State<LoginPage> {
                          const SizedBox(height: 10),
                          const Center(child: Text('Or')),
                          const SizedBox(height: 20),
+                         if (Platform.isAndroid)
                          Visibility(
                            visible: true,
                            child: Row(
@@ -525,6 +527,7 @@ class _LoginPageState extends State<LoginPage> {
                                const SizedBox(height: 10),
                                const Center(child: Text('Or')),
                                const SizedBox(height: 20),
+                               if (Platform.isAndroid)
                                Visibility(
                                  visible: true,
                                  child: Row(
