@@ -35,6 +35,7 @@ import '../core/constant/colors_constant.dart';
 import '../core/services/routeHelper/route_helper.dart';
 import '../core/services/routeHelper/route_name.dart';
 import '../screen/banner/banner_bloc/banner_bloc.dart';
+import '../screen/banner/banner_bloc/promotion_bloc/promotion_bloc.dart';
 import '../screen/brand/bloc/brand_wise_products_bloc/brand_wise_products_bloc.dart';
 import '../screen/cart/bloc/add_cart/add_cart_bloc.dart';
 import '../screen/cart/bloc/cart_bloc.dart';
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
       BlocProvider(create: (context)=>RegisterBloc()),
       BlocProvider(create: (context)=>VerificationBloc()),
       BlocProvider(create: (context)=>BannerBloc()),
+      BlocProvider(create: (context)=>PromotionBloc()),
       BlocProvider(create: (context)=>CategoryBloc()),
       BlocProvider(create: (context)=>ProductLatestBloc()),
       BlocProvider(create: (context)=>TopCategoryProductsBloc()),

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:oms_ecommerce/basic_model/basic_model.dart';
 
 import '../../model/user_model.dart';
 
@@ -13,15 +14,16 @@ class ProfileLoadingState extends ProfileState{
   List<Object?> get props => [];
 }
 class ProfileLoadedState extends ProfileState{
-  UserInfoResMode? userInfoResMode;
-  ProfileLoadedState({required this.userInfoResMode});
+ final UserInfoResMode? userInfoResMode;
+ final BasicModel? basicModel;
+  ProfileLoadedState({ this.userInfoResMode,this.basicModel});
 
   ProfileLoadedState copyWith(UserInfoResMode? userInfoResMode){
     return ProfileLoadedState(
         userInfoResMode: userInfoResMode ?? this.userInfoResMode);
   }
   @override
-  List<Object?> get props => [userInfoResMode];
+  List<Object?> get props => [userInfoResMode,basicModel];
 }
 class ProfileErrorState extends ProfileState{
   String? errorMsg;

@@ -111,7 +111,7 @@ class APIProvider {
 
   static Future<Map<String, dynamic>> deleteAPI({
     required String endPoint,
-    required String body,
+     String? body,
   }) async {
     return _makeRequest(endPoint: endPoint, method: 'DELETE', body: body);
   }

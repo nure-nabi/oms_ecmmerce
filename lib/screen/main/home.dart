@@ -21,6 +21,7 @@ import '../../core/services/routeHelper/route_name.dart';
 import '../../utils/alert_dialog_show_daily.dart';
 import '../../utils/custome_toast.dart';
 import '../banner/product_slider_image.dart';
+import '../banner/promotion_slider_image.dart';
 import '../brand/bloc/brand_bloc.dart';
 import '../brand/bloc/brand_event.dart';
 import '../cart/bloc/cart_bloc.dart';
@@ -416,6 +417,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                const FeatureProdudctHomeWidget(title: "Today Deals", one: Colors.blue, two: Colors.black,),
               // FeatureProdudctHomeWidget(title: "Weekly Product",one: Colors.cyan, two: Colors.black,),
                //const ScrollingImages(),
+              const PromotionSliderImage(),
               const SizedBox(height: 10,),
              // ALL PRODUCT
               RandomWiseProductHome()
