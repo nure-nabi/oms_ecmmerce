@@ -25,3 +25,14 @@ class ErrorsModel{
     return ErrorsModel(code: json['code'] ?? "", message:  json['message'] ?? "");
   }
 }
+
+class BasicModel2{
+  List<ErrorsModel> errors;
+  BasicModel2({required this.errors});
+  factory BasicModel2.fromJson(Map<String, dynamic> json){
+    return BasicModel2(
+      errors: json['errors'] != null ? List<ErrorsModel>.from(json['errors'].map((x)=>ErrorsModel.fromJson(x))) : [],
+    );
+  }
+}
+

@@ -20,6 +20,7 @@ import '../../core/constant/colors_constant.dart';
 import '../../core/constant/textstyle.dart';
 import '../../core/services/routeHelper/route_name.dart';
 import '../../theme/theme_data.dart';
+import '../../utils/alert_dialog_show_daily.dart';
 import '../../utils/custome_toast.dart';
 import '../address/address_page.dart';
 import '../login/google_auth_service/auth_service.dart';
@@ -589,13 +590,42 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 Divider(color: Colors.grey.shade400,height: 1,),
+                                SizedBox(height: 10,),
+
+                                InkWell(
+                                  onTap: (){
+                                    showDeleteAccountAlert(context);
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      // border: Border.all(width: 1,color: Colors.grey)
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Icon(Bootstrap.trash,size: 20,color: Colors.red,),
+                                        SizedBox(width: 10,),
+                                        InkWell(
+                                            onTap: (){
+                                              showDeleteAccountAlert(context);
+                                            },
+                                            child: Text("Account Delete",style: GoogleFonts.poppins(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500
+                                            ),)),
+                                        Spacer(),
+                                        Icon(Bootstrap.chevron_right,color: Colors.grey.shade400,size: 15,),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
                         ),
                       ],
                     ),
-
+//
                   SizedBox(height: 12,),
                   //legitimacy
                   //compliance
