@@ -1,6 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+
+import '../storage/hive_storage.dart';
 
 void showFlashSaleAlert(BuildContext context) {
   showDialog(
@@ -24,7 +27,8 @@ Widget _buildFlashSaleContent(BuildContext context) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     children: [
-      // Flash Sale Header
+      // Flash Sale Header HiveStorage.get(UserKey.offerImage.name)
+      //Image.network("https://garg.omsok.com/storage/app/public/backend/productimages/A100001/fleximeter_strips_blue.jpeg",width: MediaQuery.of(context).size.width,)
       Stack(
         children: [
           Container(
@@ -34,7 +38,18 @@ Widget _buildFlashSaleContent(BuildContext context) {
             ),
             child: ClipRRect(
                 borderRadius:BorderRadius.all(Radius.circular(5)),
-                child: Image.asset('assets/icons/gargicon.png')),
+                child:
+                CachedNetworkImage(
+                  imageUrl: HiveStorage.get(UserKey.offerImage.name),
+                  //imageUrl: info.image_full_url!,
+                  width: MediaQuery.of(context).size.width,
+                  height: 300,
+                  fit: BoxFit.fill,
+                  placeholder: (context, url) =>
+                      Container(),
+                  errorWidget: (context, url, error) =>
+                      Icon(Icons.error),
+                )),
           ),
           Positioned(
             left: 10,

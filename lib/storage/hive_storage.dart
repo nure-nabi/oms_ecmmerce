@@ -3,6 +3,11 @@ import 'package:hive/hive.dart';
 
 import '../constant/values.dart';
 
+enum UserKey {
+  offerActive,
+  offerImage,
+
+}
 
 class HiveData {
   HiveData(this.key, this.value);

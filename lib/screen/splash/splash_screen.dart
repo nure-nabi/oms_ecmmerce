@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:oms_ecommerce/screen/offers/bloc/offer_bloc.dart';
+import 'package:oms_ecommerce/screen/offers/bloc/offer_event.dart';
 import 'package:oms_ecommerce/screen/service/sharepref/get_all_pref.dart';
 import 'package:oms_ecommerce/screen/splash/splash_bloc/splash_bloc.dart';
 import 'package:oms_ecommerce/screen/splash/splash_bloc/splash_event.dart';
@@ -32,6 +34,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     BlocProvider.of<SplashBloc>(context).add(SplashReqEvent());
+    BlocProvider.of<OfferBloc>(context).add(OfferReqEvent());
     loginSuccessShow();
     super.initState();
   //  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
@@ -83,7 +86,7 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true, // allows body to draw under status bar
-      backgroundColor:Colors.white,
+      backgroundColor:Colors.grey,
       appBar: null,
       body: BlocConsumer<SplashBloc,SplashState>(builder: (
           BuildContext context, state) {
@@ -97,13 +100,20 @@ class _SplashScreenState extends State<SplashScreen>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const CircleAvatar(
-                        radius: 60,
-                        backgroundImage:
-                        AssetImage("assets/icons/gargicon.png"),
+                      padding: const EdgeInsets.all(20.0),
+                      child: Container(
+                       // width: 200,
+                       // height: 200,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100)
+                        ),
+                        child: ClipRRect(
+                           borderRadius: BorderRadius.circular(50),
+                            child: Image.asset("assets/icons/gargicon.png",height: 100,width: 100,)),
+                        ),
                       ),
-                    ),
+
+
                     const SizedBox(height: 20),
                     FadeTransition(
                       opacity: _fadeAnimation,

@@ -13,6 +13,7 @@ import 'package:oms_ecommerce/screen/flash_salse/flash_sale_home_widget.dart';
 import 'package:oms_ecommerce/scroll/scroll_bloc.dart';
 import 'package:oms_ecommerce/scroll/scroll_event.dart';
 import 'package:oms_ecommerce/scroll/scroll_state.dart';
+import 'package:oms_ecommerce/storage/hive_storage.dart';
 
 import '../../component/drawer.dart';
 import '../../component/loading_overlay.dart';
@@ -64,7 +65,10 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      showFlashSaleAlert(context);
+      if(HiveStorage.get(UserKey.offerActive.name) == "1"){
+        showFlashSaleAlert(context);
+      }
+
     });
     context.read<CartBloc>().add(CartReqEvent(count:0,checkedCart:false));
     context.read<ProfileBloc>().add(ProfileReqEvent());
@@ -474,7 +478,8 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child:  Center(
-                      child: Image.network("https://garg.omsok.com/storage/app/public/backend/productimages/A100001/fleximeter_strips_blue.jpeg",width: MediaQuery.of(context).size.width,)
+                      child:
+                      Image.network("https://garg.omsok.com/storage/app/public/backend/productimages/A100001/fleximeter_strips_blue.jpeg",width: MediaQuery.of(context).size.width,)
                   ),
                 ),
                 Positioned(
