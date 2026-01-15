@@ -168,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                children: [
                  Align(
                    alignment: Alignment.center,
-                   child: Text("Garg Dental",style: GoogleFonts.poppins(
+                   child: Text("Dental Nepal",style: GoogleFonts.poppins(
                      letterSpacing: 2,
                      fontWeight: FontWeight.w600,
                      // color: Colors.blueAccent
