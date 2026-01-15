@@ -414,7 +414,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
 
                const LatestProduct(),
                const FlashSaleHomeWidget(),
-               const FeatureProdudctHomeWidget(title: "Today Deals", one: Colors.blue, two: Colors.black,),
+             // const FeatureProdudctHomeWidget(title: "Today Deals", one: Colors.blue, two: Colors.black,),
               // FeatureProdudctHomeWidget(title: "Weekly Product",one: Colors.cyan, two: Colors.black,),
                //const ScrollingImages(),
               const PromotionSliderImage(),
