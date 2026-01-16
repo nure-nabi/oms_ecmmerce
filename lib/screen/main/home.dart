@@ -168,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                children: [
                  Align(
                    alignment: Alignment.center,
-                   child: Text("Garg Dental",style: GoogleFonts.poppins(
+                   child: Text("Dental Nepal",style: GoogleFonts.poppins(
                      letterSpacing: 2,
                      fontWeight: FontWeight.w600,
                      // color: Colors.blueAccent
@@ -414,7 +414,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
 
                const LatestProduct(),
                const FlashSaleHomeWidget(),
-               const FeatureProdudctHomeWidget(title: "Today Deals", one: Colors.blue, two: Colors.black,),
+             // const FeatureProdudctHomeWidget(title: "Today Deals", one: Colors.blue, two: Colors.black,),
               // FeatureProdudctHomeWidget(title: "Weekly Product",one: Colors.cyan, two: Colors.black,),
                //const ScrollingImages(),
               const PromotionSliderImage(),

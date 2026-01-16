@@ -7,6 +7,7 @@ import 'package:oms_ecommerce/screen/profile/block/profile_bloc/profile_state.da
 import 'package:oms_ecommerce/screen/profile/model/user_model.dart';
 
 import '../../../../basic_model/basic_model.dart';
+import '../../../login/google_auth_service/auth_service.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent,ProfileState>{
   UserInfoResMode? userInfoResMode;
@@ -54,7 +55,7 @@ class ProfileBloc extends Bloc<ProfileEvent,ProfileState>{
       try{
         if(basicModel.success == true){
           Fluttertoast.showToast(msg: basicModel.message!);
-          Navigator.pop(event.context);
+          AuthService.logout(event.context);
           emit(ProfileLoadedState(basicModel: basicModel));
        }else{
           Navigator.pop(event.context);

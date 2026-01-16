@@ -1,3 +1,4 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:oms_ecommerce/utils/custom_log.dart';
 
 import '../../service/apiprovider.dart';
@@ -17,6 +18,7 @@ class BannerRepo{
     var jsonData = await APIProvider.getAPI(
       endPoint: "v1/promotions/mobile",
     );
+
     CustomLog.successLog(value: "RESPONSE banners Data => $jsonData");
     return PromotionRes.fromJson(jsonData);
   }

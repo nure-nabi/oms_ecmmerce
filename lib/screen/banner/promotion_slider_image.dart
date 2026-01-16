@@ -34,11 +34,17 @@ class PromotionSliderImage extends StatefulWidget {
 class _PromotionSliderImageState extends State<PromotionSliderImage> {
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     BlocProvider.of<PromotionBloc>(context).add(PromotionReqEvent());
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
 
     return Container(
-      margin: EdgeInsets.only(top: 8),
+      margin: EdgeInsets.only(top: 0),
       child: BlocBuilder<PromotionBloc,PromotionState>(builder: (BuildContext context, state) {
         if(state is PromotionLoadingState){
           return Shimmer.fromColors(
@@ -62,8 +68,8 @@ class _PromotionSliderImageState extends State<PromotionSliderImage> {
                 ),
                 autoPlayAnimationDuration: Duration(milliseconds: 800),
                // autoPlayCurve: Curves.fastOutSlowIn,
-                viewportFraction: 0.8,
-               // viewportFraction: 2, // full width
+               // viewportFraction: 0.8,
+                viewportFraction: 1, // full width
                 enlargeCenterPage: true,
               ),
               items: state.promotionRes!.banners.map((bannerImage) {
