@@ -6,9 +6,9 @@ class PromotionRes {
 
  factory PromotionRes.fromJson(Map<String, dynamic> json){
    return PromotionRes(
-     banners: json["banners"] != null
+     banners: json["promotions"] != null
          ? List<BannerImageModel>.from(
-         json["banners"].map((x) => BannerImageModel.fromJson(x)))
+         json["promotions"].map((x) => BannerImageModel.fromJson(x)))
          : [],
    );
  }

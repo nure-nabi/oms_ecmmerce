@@ -24,7 +24,7 @@ class PromotionBloc extends Bloc<PromotionEvent, PromotionState> {
       emit(PromotionLoadingState());
       resModel = await BannerRepo.getPromotion();
     }
-
+    //Fluttertoast.showToast(msg: resModel.banners);
     emit(PromotionLoadedState(promotionRes: resModel));
   }
 }
