@@ -107,7 +107,7 @@ class MyApp extends StatelessWidget {
         child: BlocBuilder<ThemeBloc, ThemeMode>(builder: (BuildContext context, state) {
           var themeMode = HiveStorage.hasPermission("Thememode") ? ThemeMode.dark : ThemeMode.light;
           return MaterialApp(
-            title: 'OMS Ecommerce',
+            title: 'Dental Nepal',
             debugShowCheckedModeBanner: false,
             theme: lighTheme,
             themeMode:themeMode,

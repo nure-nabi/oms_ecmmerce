@@ -207,7 +207,9 @@ class _SingUpPageState extends State<SingUpPage> {
                             return null; // Valid input
                           },
                         ),
+                          if(Platform.isAndroid)
                         const SizedBox(height: 10),
+                        if(Platform.isAndroid)
                         Text(
                           'Mobile Number',
                           style: GoogleFonts.poppins(

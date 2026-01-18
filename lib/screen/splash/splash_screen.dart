@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oms_ecommerce/screen/offers/bloc/offer_bloc.dart';
@@ -86,7 +87,7 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true, // allows body to draw under status bar
-      backgroundColor:Colors.grey,
+      backgroundColor:Colors.white,
       appBar: null,
       body: BlocConsumer<SplashBloc,SplashState>(builder: (
           BuildContext context, state) {
@@ -105,11 +106,19 @@ class _SplashScreenState extends State<SplashScreen>
                        // width: 200,
                        // height: 200,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100)
+                          // borderRadius: BorderRadius.circular(100)
                         ),
-                        child: ClipRRect(
-                           borderRadius: BorderRadius.circular(50),
-                            child: Image.asset("assets/icons/gargicon.png",height: 100,width: 100,)),
+                        child:
+                         ClipRRect(
+                              child: Image.asset(
+                                Platform.isIOS
+                                    ? "assets/icons/playstore.png"
+                                    : "assets/icons/gargicon.png",
+                                height: 100,
+                                width: 100,
+                                // fit: BoxFit.contain,
+                              ),
+                            ),
                         ),
                       ),
 
