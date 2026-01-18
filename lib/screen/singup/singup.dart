@@ -249,9 +249,9 @@ class _SingUpPageState extends State<SingUpPage> {
                             ),
                           ),
                           validator: (value) {
-
                             if (value == null || value.isEmpty) {
-                              return 'Please enter mobile number';
+                            return null; // Valid input
+                              // return 'Please enter mobile number';
                             }
                             return null; // Valid input
                           },
@@ -397,13 +397,14 @@ class _SingUpPageState extends State<SingUpPage> {
                             onPressed: () async{
                               if(_formKey.currentState!.validate()){
                                 await SetAllPref.verificationEmail(value: emailController.text.trim());
+                                   final phoneValue = phoneController.text.trim();
                                 BlocProvider.of<RegisterBloc>(context).add(
                                     RegisterReqEvent(
                                         registerReqModel: RegisterReqModel(
                                           firstName: firstNameController.text.trim(),
                                           lastName: lastNameController.text.trim(),
                                           password: passwordController.text.trim(),
-                                          phone:phoneController.text.trim(),
+                                          phone: phoneValue.isEmpty ? null : phoneValue,
                                           email:emailController.text.trim(),)));
                               }
                             },
