@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -214,7 +215,9 @@ class _SingUpPageState extends State<SingUpPage> {
                               fontWeight: FontWeight.w600,
                               color: Colors.black38),
                         ),
+                        if(Platform.isAndroid)
                         const SizedBox(height: 5),
+                        if(Platform.isAndroid)
                         TextFormField(
                           keyboardType: TextInputType.phone,
                           controller: phoneController,
@@ -244,6 +247,7 @@ class _SingUpPageState extends State<SingUpPage> {
                             ),
                           ),
                           validator: (value) {
+
                             if (value == null || value.isEmpty) {
                               return 'Please enter mobile number';
                             }
