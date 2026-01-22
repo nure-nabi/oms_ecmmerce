@@ -101,16 +101,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   radius: 50,
                                   backgroundImage: const AssetImage("assets/icons/gargicon.png"),
                                 )
-                              // Container(
-                              //   width: 30,
-                              //   height: 70,
-                              //   decoration: const BoxDecoration(
-                              //     //  color: Colors.orange,
-                              //       borderRadius: BorderRadius.all(Radius.circular(100)),
-                              //       image: DecorationImage(
-                              //           image: AssetImage("assets/images/pro1.jpg"),
-                              //           fit: BoxFit.cover)),
-                              // ),
+
                             ),
 
                           ],
@@ -119,86 +110,116 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   SizedBox(height: 20,),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Card(
-                      child: Column(
-                        children: [
+                  Visibility(
+                    visible: true,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Card(
+                        child: Column(
+                          children: [
 
-                          SizedBox(height: 5,),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              // border: Border.all(width: 1,color: Colors.grey)
-                            ),
-                            child: Row(
-                              //  mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Bootstrap.person,size: 20,),
-                                SizedBox(width: 10,),
-                                InkWell(
-                                    onTap: (){
-                                      Fluttertoast.showToast(msg: "Please login");
-                                    },
-                                    child: Text("My Profile",style: GoogleFonts.poppins(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500
-                                    ),)),
-                                Spacer(),
-                                Icon(Bootstrap.chevron_right,color: Colors.grey.shade400,size: 20,),
+                            SizedBox(height: 5,),
+                            InkWell(
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              onTap: (){
+                                Fluttertoast.showToast(msg: "Please login");
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  // border: Border.all(width: 1,color: Colors.grey)
+                                ),
+                                child: Row(
+                                  //  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Bootstrap.person,size: 20,),
+                                    SizedBox(width: 10,),
+                                    InkWell(
+                                        onTap: (){
+                                          Fluttertoast.showToast(msg: "Please login");
+                                        },
+                                        child: Text("My Profile",style: GoogleFonts.poppins(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500
+                                        ),)),
+                                    Spacer(),
+                                    Icon(Bootstrap.chevron_right,color: Colors.grey.shade400,size: 20,),
 
-                              ],
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
-                          Divider(color: Colors.grey.shade300,),
-                          //SizedBox(height: 5,),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              // border: Border.all(width: 1,color: Colors.grey)
-                            ),
-                            child: Row(
+                            Divider(color: Colors.grey.shade300,),
+                            //SizedBox(height: 5,),
+                            InkWell(
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              onTap: (){
+                                Fluttertoast.showToast(msg: "Please login");
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  // border: Border.all(width: 1,color: Colors.grey)
+                                ),
+                                child: Row(
 
-                              children: [
-                                Icon(Bootstrap.shop,size: 20,),
-                                SizedBox(width: 10,),
-                                InkWell(
-                                    onTap: (){
-                                      Fluttertoast.showToast(msg: "Please login");
-                                    },
-                                    child: Text("Orders",style: GoogleFonts.poppins(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500
-                                    ),)),
+                                  children: [
+                                    Icon(Bootstrap.shop,size: 20,),
+                                    SizedBox(width: 10,),
+                                    InkWell(
+                                        onTap: (){
+                                          Fluttertoast.showToast(msg: "Please login");
+                                        },
+                                        child: Text("Orders",style: GoogleFonts.poppins(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500
+                                        ),)),
 
-                              ],
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
-                          Divider(color: Colors.grey.shade300,),
-                          SizedBox(height: 10,),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              // border: Border.all(width: 1,color: Colors.grey)
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(Bootstrap.file_earmark,size: 20,),
-                                SizedBox(width: 10,),
-                                InkWell(
-                                    onTap: (){
+                            Divider(color: Colors.grey.shade300,),
+                            SizedBox(height: 10,),
+                            InkWell(
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              onTap: (){
+                                Fluttertoast.showToast(msg: "Please login");
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  // border: Border.all(width: 1,color: Colors.grey)
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(Bootstrap.file_earmark,size: 20,),
+                                    SizedBox(width: 10,),
+                                    InkWell(
+                                        onTap: (){
 
-                                      Fluttertoast.showToast(msg: "Please login");
-                                    },
-                                    child: Text("My Address",style: GoogleFonts.poppins(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500
-                                    ),)),
+                                          Fluttertoast.showToast(msg: "Please login");
+                                        },
+                                        child: Text("My Address",style: GoogleFonts.poppins(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500
+                                        ),)),
 
-                              ],
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -322,32 +343,41 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                   SizedBox(height: 30,),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: (){
-                            Navigator.pushNamed(context, loginPath);
-                          },
-                          child: Container(
-                            height: 25,
-                            width: 25,
-                            padding: EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(50)),
-                                color: Colors.green
+                  InkWell(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    onTap: (){
+                      Navigator.pushNamed(context, loginPath);
+                    },
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: (){
+                              Navigator.pushNamed(context, loginPath);
+                            },
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              padding: EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                                  color: Colors.green
 
+                              ),
+                              child: Icon(Bootstrap.box_arrow_right,color: Colors.white,size: 20,),
                             ),
-                            child: Icon(Bootstrap.box_arrow_right,color: Colors.white,size: 15,),
                           ),
-                        ),
-                        SizedBox(width: 5,),
-                        Text("Login",style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w600
-                        ),),
-                      ],
+                          SizedBox(width: 5,),
+                          Text("Login",style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600
+                          ),),
+                        ],
+                      ),
                     ),
                   )
 
@@ -895,75 +925,102 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
 
                           SizedBox(height: 5,),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              // border: Border.all(width: 1,color: Colors.grey)
-                            ),
-                            child: Row(
-                              //  mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Bootstrap.person,size: 20,),
-                                SizedBox(width: 10,),
-                                InkWell(
-                                    onTap: (){
-                                      CustomToast.showCustomRoast(context: context, message: "Please login", icon: Bootstrap.check_circle,iconColor: Colors.red);
-                                    },
-                                    child: Text("My Profile",style: GoogleFonts.poppins(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500
-                                    ),)),
-                                Spacer(),
-                                Icon(Bootstrap.chevron_right,color: Colors.grey.shade400,size: 20,),
+                          InkWell(
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            onTap: (){
+                              Fluttertoast.showToast(msg: "Please login");
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                // border: Border.all(width: 1,color: Colors.grey)
+                              ),
+                              child: Row(
+                                //  mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Bootstrap.person,size: 20,),
+                                  SizedBox(width: 10,),
+                                  InkWell(
+                                      onTap: (){
+                                        CustomToast.showCustomRoast(context: context, message: "Please login", icon: Bootstrap.check_circle,iconColor: Colors.red);
+                                      },
+                                      child: Text("My Profile",style: GoogleFonts.poppins(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500
+                                      ),)),
+                                  Spacer(),
+                                  Icon(Bootstrap.chevron_right,color: Colors.grey.shade400,size: 20,),
 
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                           Divider(color: Colors.grey.shade300,),
                           //SizedBox(height: 5,),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              // border: Border.all(width: 1,color: Colors.grey)
-                            ),
-                            child: Row(
+                          InkWell(
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            onTap: (){
+                              Fluttertoast.showToast(msg: "Please login");
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                // border: Border.all(width: 1,color: Colors.grey)
+                              ),
+                              child: Row(
 
-                              children: [
-                                Icon(Bootstrap.shop,size: 20,),
-                                SizedBox(width: 10,),
-                                InkWell(
-                                    onTap: (){
-                                      CustomToast.showCustomRoast(context: context, message: "Please login", icon: Bootstrap.check_circle,iconColor: Colors.red);
-                                    },
-                                    child: Text("Orders",style: GoogleFonts.poppins(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500
-                                    ),)),
+                                children: [
+                                  Icon(Bootstrap.shop,size: 20,),
+                                  SizedBox(width: 10,),
+                                  InkWell(
+                                      onTap: (){
+                                        CustomToast.showCustomRoast(context: context, message: "Please login", icon: Bootstrap.check_circle,iconColor: Colors.red);
+                                      },
+                                      child: Text("Orders",style: GoogleFonts.poppins(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500
+                                      ),)),
 
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                           Divider(color: Colors.grey.shade300,),
                           SizedBox(height: 10,),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              // border: Border.all(width: 1,color: Colors.grey)
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(Bootstrap.file_earmark,size: 20,),
-                                SizedBox(width: 10,),
-                                InkWell(
-                                    onTap: (){
-                                      CustomToast.showCustomRoast(context: context, message: "Please login", icon: Bootstrap.check_circle,iconColor: Colors.red);
-                                    },
-                                    child: Text("My Address",style: GoogleFonts.poppins(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500
-                                    ),)),
+                          InkWell(
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            focusColor: Colors.transparent,
+                            onTap: (){
+                              Fluttertoast.showToast(msg: "Please login");
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                // border: Border.all(width: 1,color: Colors.grey)
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(Bootstrap.file_earmark,size: 20,),
+                                  SizedBox(width: 10,),
+                                  InkWell(
+                                      onTap: (){
+                                        CustomToast.showCustomRoast(context: context, message: "Please login", icon: Bootstrap.check_circle,iconColor: Colors.red);
+                                      },
+                                      child: Text("My Address",style: GoogleFonts.poppins(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w500
+                                      ),)),
 
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -1090,32 +1147,41 @@ class _ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                   SizedBox(height: 30,),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: (){
-                            Navigator.pushNamed(context, loginPath);
-                          },
-                          child: Container(
-                            height: 25,
-                            width: 25,
-                            padding: EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(50)),
-                                color: Colors.green
+                  InkWell(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    onTap: (){
+                      Navigator.pushNamed(context, loginPath);
+                    },
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            onTap: (){
+                              Navigator.pushNamed(context, loginPath);
+                            },
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              padding: EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                                  color: Colors.green
 
+                              ),
+                              child: Icon(Bootstrap.box_arrow_right,color: Colors.white,size: 20,),
                             ),
-                            child: Icon(Bootstrap.box_arrow_right,color: Colors.white,size: 15,),
                           ),
-                        ),
-                        SizedBox(width: 5,),
-                        Text("Login",style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w600
-                        ),),
-                      ],
+                          SizedBox(width: 5,),
+                          Text("Login",style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w600
+                          ),),
+                        ],
+                      ),
                     ),
                   )
 

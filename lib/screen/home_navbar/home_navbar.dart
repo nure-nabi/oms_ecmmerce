@@ -37,47 +37,50 @@ class _HomeNavbarState extends State<HomeNavbar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: IndexedStack(
-        index: currentIndex,
-        children: _screens,
-      ),
-
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: gPrimaryColor,
-        unselectedItemColor: Colors.grey,
-        selectedLabelStyle: bottomAppBarTextStyle,
-        unselectedLabelStyle: bottomAppBarTextStyle,
-        iconSize: 20,
-        elevation: 0,
-
-        onTap: (index) {
-          if (index == currentIndex) return;
-          setState(() {
-            currentIndex = index;
-          });
-        },
-
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(EvaIcons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Bootstrap.grid_3x3_gap_fill),
-            label: 'Category',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(EvaIcons.heart),
-            label: 'Wishlist',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(EvaIcons.people),
-            label: 'Me',
-          ),
-        ],
+    return WillPopScope(
+      onWillPop: () async => Future.value(false),
+      child: Scaffold(
+        body: IndexedStack(
+          index: currentIndex,
+          children: _screens,
+        ),
+      
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: currentIndex,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: gPrimaryColor,
+          unselectedItemColor: Colors.grey,
+          selectedLabelStyle: bottomAppBarTextStyle,
+          unselectedLabelStyle: bottomAppBarTextStyle,
+          iconSize: 20,
+          elevation: 0,
+      
+          onTap: (index) {
+            if (index == currentIndex) return;
+            setState(() {
+              currentIndex = index;
+            });
+          },
+      
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(EvaIcons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Bootstrap.grid_3x3_gap_fill),
+              label: 'Category',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(EvaIcons.heart),
+              label: 'Wishlist',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(EvaIcons.people),
+              label: 'Me',
+            ),
+          ],
+        ),
       ),
     );
   }
