@@ -14,37 +14,20 @@ import 'package:oms_ecommerce/scroll/scroll_bloc.dart';
 import 'package:oms_ecommerce/scroll/scroll_event.dart';
 import 'package:oms_ecommerce/scroll/scroll_state.dart';
 import 'package:oms_ecommerce/storage/hive_storage.dart';
-
 import '../../component/drawer.dart';
-import '../../component/loading_overlay.dart';
 import '../../core/services/routeHelper/route_name.dart';
 import '../../utils/alert_dialog_show_daily.dart';
-import '../../utils/custome_toast.dart';
 import '../banner/product_slider_image.dart';
 import '../banner/promotion_slider_image.dart';
-import '../brand/bloc/brand_bloc.dart';
-import '../brand/bloc/brand_event.dart';
 import '../cart/bloc/cart_bloc.dart';
 import '../cart/bloc/cart_event.dart';
 import '../cart/bloc/cart_state.dart';
-import '../cart/cart.dart';
-import '../category/category_home.dart';
 import '../category/category_home_widget.dart';
-import '../product/bloc/product_bloc/product_list_bloc.dart';
-import '../product/bloc/product_bloc/product_list_event.dart';
-import '../product/bloc/product_bloc/product_list_state.dart';
 import '../product/component/latest_product.dart';
 import '../product/component/random_wise_product_home.dart';
-import '../product/feature_produdct_home_widget.dart';
-import '../product/product_details.dart';
-import '../product/product_list.dart';
-import '../product/product_list_home.dart';
 import '../profile/block/profile_bloc/profile_bloc.dart';
 import '../profile/block/profile_bloc/profile_event.dart';
-import '../service/sharepref/get_all_pref.dart';
-import '../widget/scrolling.dart';
-import '../wish_list/bloc/wishlist_bloc.dart';
-import '../wish_list/bloc/wishlist_event.dart';
+
 
 
 class HomeScreen extends StatefulWidget {
@@ -217,49 +200,10 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
              bottomOpacity: 55,
              centerTitle: true,
              title:
-             // Text("Garg Dental",style: GoogleFonts.poppins(
-             //
-             // ),),
-
              Row(
                mainAxisAlignment: MainAxisAlignment.center,
                children: [
-                 // Expanded(
-                 //   child: Padding(
-                 //     padding: const EdgeInsets.symmetric(horizontal: 0),
-                 //     child: Container(
-                 //       height: 40,
-                 //       decoration: BoxDecoration(
-                 //         border: Border.all(width: 1, color: Colors.grey.shade400),
-                 //         borderRadius: const BorderRadius.all(Radius.circular(3)),
-                 //         color: Colors.white.withOpacity(0.2),
-                 //       ),
-                 //       child: TextFormField(
-                 //         readOnly: true,
-                 //         decoration: InputDecoration(
-                 //           hintText: 'Search products',
-                 //           // suffixText: 'Search',
-                 //           // Suffix text
-                 //           border: InputBorder.none,
-                 //           prefixIcon: const Icon(
-                 //             EvaIcons.search,
-                 //             size: 20,
-                 //           ),
-                 //           prefixIconColor: Colors.grey,
-                 //           hintStyle: const TextStyle(color: Colors.grey),
-                 //           suffixStyle: const TextStyle(color: Colors.white),
-                 //           filled: true,
-                 //           fillColor: gPrimaryColor.withOpacity(0.2), // Fill color of the TextField
-                 //         ),
-                 //         style: const TextStyle(color: Colors.black),
-                 //         onTap: () {
-                 //         Navigator.pushNamed(context, searchScreenPath);
-                 //        // Navigator.pushNamed(context, paymentConnectipsPage);
-                 //         },
-                 //       ),
-                 //     ),
-                 //   ),
-                 // ),
+
                  Align(
                    alignment: Alignment.center,
                    child: Text("Garg Dental",style: GoogleFonts.poppins(
