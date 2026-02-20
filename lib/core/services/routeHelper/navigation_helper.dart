@@ -25,11 +25,9 @@ class NavigationHelper {
       case profileEdit:
         Navigator.pushNamed(context, profileEdit);
         break;
-
       case productSearch:
         Navigator.pushNamed(context, profileEdit);
         break;
-
       case addressPage:
         Navigator.pushNamed(context, addressPage);
         break;

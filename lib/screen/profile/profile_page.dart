@@ -924,6 +924,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Column(
                         children: [
 
+
                           SizedBox(height: 5,),
                           InkWell(
                             splashColor: Colors.transparent,
@@ -1081,7 +1082,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                     SizedBox(width: 10,),
                                     InkWell(
                                         onTap: (){
-                                          // Navigator.push(context, MaterialPageRoute(builder: (context)=>AddressPage()));
                                           Navigator.pushNamed(context, privacyPolicyPage,
                                               arguments: "return_refund_policy"
                                           );

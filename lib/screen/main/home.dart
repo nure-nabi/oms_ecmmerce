@@ -138,6 +138,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
   }
     @override
   Widget build(BuildContext context) {
+      super.build(context); // 👈 REQUIRED
     return Scaffold(
     //  backgroundColor: Color(0xffEBF0F1),
       appBar: PreferredSize(
@@ -154,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                    child: Text("Dental Nepal",style: GoogleFonts.poppins(
                      letterSpacing: 2,
                      fontWeight: FontWeight.w600,
-                     // color: Colors.blueAccent
+                      color: Colors.blueAccent
                    ),),
                  ),
                  Spacer(),
@@ -181,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                    child: Text("Garg Dental",style: GoogleFonts.poppins(
                      letterSpacing: 2,
                      fontWeight: FontWeight.w600,
-                    // color: Colors.blueAccent
+                       color: Colors.blueAccent
                    ),),
                  ),
                  Spacer(),
@@ -209,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
                    child: Text("Garg Dental",style: GoogleFonts.poppins(
                      letterSpacing: 2,
                      fontWeight: FontWeight.w600,
-                     // color: Colors.blueAccent
+                       color: Colors.blueAccent
                    ),),
                  ),
                  Spacer(),
@@ -361,7 +362,7 @@ class _HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMi
              // const FeatureProdudctHomeWidget(title: "Today Deals", one: Colors.blue, two: Colors.black,),
               // FeatureProdudctHomeWidget(title: "Weekly Product",one: Colors.cyan, two: Colors.black,),
                //const ScrollingImages(),
-              const PromotionSliderImage(),
+              //const PromotionSliderImage(),
               const SizedBox(height: 10,),
              // ALL PRODUCT
               RandomWiseProductHome()

@@ -1180,9 +1180,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                       if(state.productDetailsReqModel!.productDetailsResModel!.sell_price != "")...[
                         Expanded(
                             child: Container(
+                              height: double.infinity,
                               color: Colors.orange,
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   RichText(
                                     text: TextSpan(
@@ -1208,6 +1210,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                       ],
                                     ),
                                   ),
+                                  if(state.productDetailsReqModel!.productDetailsResModel!.stock_quantity! > 0)
                                   InkWell(
                                     onTap: () {
                                       LoadingOverlay.show(context);

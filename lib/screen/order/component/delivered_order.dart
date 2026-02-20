@@ -307,7 +307,7 @@ class _DeliveredOrderState extends State<DeliveredOrder> {
                   if(orderItemModel!.reviewed == 0)
                     InkWell(
                       onTap: (){
-                        Navigator.pushNamed(context, productReviewAndRatingPage,
+                        Navigator.pushNamed(context,  productReviewAndRatingPage,
                             arguments: {
                               'productsModel' : orderModel.orderItems[index].productsModel,
                               'orderId':orderModel.order_id.toString()
@@ -322,7 +322,6 @@ class _DeliveredOrderState extends State<DeliveredOrder> {
                 ],
               ),
             ),
-
             Icon(Bootstrap.chevron_right,size: 20,color: Colors.grey.shade500,),
           ],
         ),
