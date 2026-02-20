@@ -10,7 +10,7 @@
     <!-- Add this permission if not present -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <application
-        android:label="Dental Nepal"
+        android:label="GargDental"
         android:name="${applicationName}"
         android:icon="@mipmap/gargicon">
         <activity
@@ -40,9 +40,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <meta-data
-            android:name="flutterEmbedding"
-            android:value="2" />
+
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="fullSensor"

@@ -59,9 +59,9 @@ class _ProductBannerImageSliderState extends State<ProductBannerImageSlider> {
                 ),
                 autoPlayAnimationDuration: Duration(milliseconds: 800),
                // autoPlayCurve: Curves.fastOutSlowIn,
-                viewportFraction: 0.8,
-               // viewportFraction: 2, // full width
-                enlargeCenterPage: true,
+               // viewportFraction: 0.8,
+                viewportFraction: 1, // full width
+               // enlargeCenterPage: true,
               ),
               items: state.bannerResModel!.banners.map((bannerImage) {
                 return InkWell(
@@ -91,7 +91,7 @@ class _ProductBannerImageSliderState extends State<ProductBannerImageSlider> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 0),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: BorderRadius.circular(1),
                       child: CachedNetworkImage(
                         imageUrl: bannerImage.mobile_image_full_url!,
                         width: double.infinity,
