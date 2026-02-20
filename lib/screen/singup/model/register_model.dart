@@ -6,7 +6,7 @@ class RegisterReqModel{
   String? phone;
   String? email;
 
-  RegisterReqModel({required this.firstName,required this.lastName,required this.password,required this.phone,required this.email});
+  RegisterReqModel({required this.firstName,required this.lastName,required this.password, this.phone,required this.email});
 
   Map<String, dynamic> toJson() => {
     "first_name":firstName,
