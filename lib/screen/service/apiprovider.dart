@@ -24,8 +24,8 @@ class APIProvider {
     required String method,
     dynamic body,
   }) async {
-   //String api = "http://192.168.1.64:8000/api/" + endPoint;
-    String api = "https://gargdental.omsok.com/api/" + endPoint;
+      String api = "http://192.168.1.107:3000/api/" + endPoint;
+    //String api = "https://gargdental.omsok.com/api/" + endPoint;
     //final String api = await GetAllPref.apiUrl() + endPoint;
       final headers = {
      // 'Content-Type': 'application/json'
